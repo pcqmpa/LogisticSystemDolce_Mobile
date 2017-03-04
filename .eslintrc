@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb",
+  "plugins": [
+    "react",
+    "react-native",
+    "jsx-a11y",
+    "import"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "indent": ["error", 2],
+    "no-debugger": "warn",
+    "linebreak-style": "off",
+    "comma-dangle": ["error", "never"],
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }]
+  }
+}
