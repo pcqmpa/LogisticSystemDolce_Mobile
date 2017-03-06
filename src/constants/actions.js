@@ -7,6 +7,13 @@ export const PUSH = 'PUSH';
 export const POP = 'POP';
 export const REPLACE = 'REPLACE';
 
+// Common.
+export const TOGGLE_LOADING = 'TOGGLE_LOADING';
+
+// Form Rules.
+export const UPDATE_RULES_VALIDATION = 'UPDATE_RULES_VALIDATION';
+export const CLEAR_RULES_VALIDATION = 'CLEAR_RULES_VALIDATION';
+
 // Login.
 export const UPDATE_USERNAME_INPUT = 'UPDATE_USERNAME_INPUT';
 export const UPDATE_PASSWORD_INPUT = 'UDPATE_PASSWORD_INPUT';

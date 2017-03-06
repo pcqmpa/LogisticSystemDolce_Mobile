@@ -7,6 +7,9 @@ export { default as AppNavigator } from './navigation/AppNavigator';
 export { default as Navigator } from './navigation/Navigator';
 export { default as SceneContainer } from './navigation/SceneContainer';
 
+// Layout.
+export { default as Loading } from './layout/Loading';
+
 // Login.
 export { default as Login } from './login/Login';
 

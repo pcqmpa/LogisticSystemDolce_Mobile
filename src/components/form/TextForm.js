@@ -16,16 +16,18 @@ import {
 
 // Styles.
 import { formStyles } from '../../styles/components/';
+import { colors } from '../../styles/values/';
 
 const TextForm = ({
   style,
   theme,
   layout,
   value,
-  onChange,
+  onChangeText,
   returnKeyType,
   placeholder,
-  placeholderTextColor
+  placeholderTextColor,
+  secureTextEntry
 }) => {
   const styles = componentHelpers
     .concatStyles(formStyles.textForm, [
@@ -38,10 +40,12 @@ const TextForm = ({
     <TextInput
       style={styles}
       value={value}
-      onChange={onChange}
+      onChangeText={onChangeText}
       returnKeyType={returnKeyType}
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
+      secureTextEntry={secureTextEntry}
+      underlineColorAndroid={colors.greyDarker}
     />
   );
 };
@@ -51,10 +55,11 @@ TextForm.propTypes = {
   theme: PropTypes.number,
   layout: PropTypes.number,
   value: PropTypes.string,
-  onChange: PropTypes.func,
+  onChangeText: PropTypes.func,
   returnKeyType: PropTypes.string,
   placeholder: PropTypes.string,
-  placeholderTextColor: PropTypes.string
+  placeholderTextColor: PropTypes.string,
+  secureTextEntry: PropTypes.bool
 };
 
 TextForm.defaultProps = {
@@ -62,10 +67,11 @@ TextForm.defaultProps = {
   theme: null,
   layout: null,
   value: '',
-  onChange: noop,
+  onChangeText: noop,
   returnKeyType: 'done',
   placeholder: '',
-  placeholderTextColor: '#CCCCCC'
+  placeholderTextColor: '#CCCCCC',
+  secureTextEntry: false
 };
 
 export default TextForm;

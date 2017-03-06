@@ -8,7 +8,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 // React Native.
-import { View } from 'react-native';
+import {
+  View
+} from 'react-native';
 
 // Components.
 import {
@@ -21,6 +23,7 @@ import {
   updateUsernameInput,
   updatePasswordInput
 } from '../../actions/login';
+import { toggleLoading } from '../../actions/common';
 
 // Utils.
 import { noop } from '../../utils/';
@@ -39,32 +42,36 @@ class Login extends Component {
     username: PropTypes.string,
     password: PropTypes.string,
     updateUsernameInput: PropTypes.func,
-    updatePasswordInput: PropTypes.func
+    updatePasswordInput: PropTypes.func,
+    toggleLoading: PropTypes.func
   };
 
   static defaultProps = {
     username: '',
     password: '',
     updateUsernameInput: noop,
-    updatePasswordInput: noop
+    updatePasswordInput: noop,
+    toggleLoading: noop
   };
 
   /**
    * Triggers the update of the username input.
-   * @param {Event} event -> The event object.
+   * @param {String} value -> The updated value of the input.
    */
-  handleUsernameUpdates = (event) => {
-    const { value } = event.target;
+  handleUsernameUpdates = (value) => {
     this.props.updateUsernameInput(value);
   };
 
   /**
    * Triggers the update of the password input.
-   * @param {Event} event -> The event object.
+   * @param {String} value -> The updated value of the input.
    */
-  handlePasswordUpdates = (event) => {
-    const { value } = event.target;
+  handlePasswordUpdates = (value) => {
     this.props.updatePasswordInput(value);
+  };
+
+  handleLoginSubmit = () => {
+    this.props.toggleLoading();
   };
 
   render() {
@@ -79,20 +86,21 @@ class Login extends Component {
           <TextForm
             value={username}
             placeholder={USERNAME_INPUT}
-            onChange={this.handleUsernameUpdates}
+            onChangeText={this.handleUsernameUpdates}
           />
         </View>
         <View style={loginStyles.containerItems}>
           <TextForm
             value={password}
             placeholder={PASSWORD_INPUT}
-            onChange={this.handlePasswordUpdates}
+            onChangeText={this.handlePasswordUpdates}
+            secureTextEntry
           />
         </View>
         <View
           style={[loginStyles.containerItems, loginStyles.buttonContainer]}
         >
-          <Button>
+          <Button onPress={this.handleLoginSubmit}>
             Ingresar
           </Button>
         </View>
@@ -106,7 +114,8 @@ const mapStateToProps = state => ({ ...state.login });
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     updateUsernameInput,
-    updatePasswordInput
+    updatePasswordInput,
+    toggleLoading
   }, dispatch)
 );
 

@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "~15.4.0",
     "react-native": "0.41.2",
+    "react-native-loading-spinner-overlay": "^0.4.1",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
     "redux-create-reducer": "^1.1.1",
