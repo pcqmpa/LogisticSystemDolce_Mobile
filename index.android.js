@@ -21,10 +21,16 @@ import rootEpic from './src/epics/';
 // Components.
 import { AppNavigator } from './src/containers/';
 
+// Actions.
+import { initStore } from './src/actions/common';
+
 // Utils.
 import { configureStore } from './src/utils/';
 
+// Initialize the App Store.
 const store = configureStore(reducer, rootEpic);
+store.dispatch(initStore());
+
 
 const App = () => (
   <Provider store={store}>

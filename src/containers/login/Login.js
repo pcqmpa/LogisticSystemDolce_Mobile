@@ -20,18 +20,26 @@ import {
 
 // Actions.
 import {
+  requestLogin,
   updateUsernameInput,
   updatePasswordInput
 } from '../../actions/login';
-import { toggleLoading } from '../../actions/common';
+import { updateRules } from '../../actions/form-rules';
+import { showToast } from '../../actions/common';
+
+// Lib.
+import validator from '../../lib/validator';
 
 // Utils.
 import { noop } from '../../utils/';
 
 // Constants.
+import { ARGS_ABSENCE } from '../../constants/messages';
 import {
   USERNAME_INPUT,
-  PASSWORD_INPUT
+  PASSWORD_INPUT,
+
+  LOGIN_RULES
 } from '../../constants/strings';
 
 // Styles.
@@ -41,17 +49,28 @@ class Login extends Component {
   static propTypes = {
     username: PropTypes.string,
     password: PropTypes.string,
+    showToast: PropTypes.func,
+    requestLogin: PropTypes.func,
     updateUsernameInput: PropTypes.func,
     updatePasswordInput: PropTypes.func,
-    toggleLoading: PropTypes.func
+
+    formRules: PropTypes.shape({
+      username: PropTypes.object,
+      password: PropTypes.object
+    }),
+    updateRules: PropTypes.func
   };
 
   static defaultProps = {
     username: '',
     password: '',
+    showToast: noop,
+    requestLogin: noop,
     updateUsernameInput: noop,
     updatePasswordInput: noop,
-    toggleLoading: noop
+
+    formRules: {},
+    updateRules: noop
   };
 
   /**
@@ -71,13 +90,32 @@ class Login extends Component {
   };
 
   handleLoginSubmit = () => {
-    this.props.toggleLoading();
+    const {
+      username,
+      password,
+      formRules
+    } = this.props;
+    const user = { username, password };
+
+    const formValidation = validator.run(formRules, user);
+
+    this.props.updateRules(
+      LOGIN_RULES,
+      formValidation.resume
+    );
+
+    if (formValidation.valid) {
+      this.props.requestLogin(user);
+    } else {
+      this.props.showToast(ARGS_ABSENCE);
+    }
   };
 
   render() {
     const {
       username,
-      password
+      password,
+      formRules
     } = this.props;
 
     return (
@@ -85,6 +123,7 @@ class Login extends Component {
         <View style={loginStyles.containerItems}>
           <TextForm
             value={username}
+            valid={formRules.username.valid}
             placeholder={USERNAME_INPUT}
             onChangeText={this.handleUsernameUpdates}
           />
@@ -92,6 +131,7 @@ class Login extends Component {
         <View style={loginStyles.containerItems}>
           <TextForm
             value={password}
+            valid={formRules.password.valid}
             placeholder={PASSWORD_INPUT}
             onChangeText={this.handlePasswordUpdates}
             secureTextEntry
@@ -109,13 +149,18 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.login });
+const mapStateToProps = state => ({
+  ...state.login,
+  formRules: state.formRules.loginForm
+});
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
+    requestLogin,
     updateUsernameInput,
     updatePasswordInput,
-    toggleLoading
+    updateRules,
+    showToast
   }, dispatch)
 );
 

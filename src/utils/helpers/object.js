@@ -4,12 +4,12 @@
  */
 
 /**
- * Validate if an object has any keys.
- * @param {Object} obj -> The object to validate.
- * @returns {Bool} -> If the object has keys.
+ * Check if the element is an object.
+ * @param {Any} element -> The element to validate.
+ * @returns {Bool} -> If the element is an object.
  */
-const hasKeys = obj => (
-  obj && Object.keys(obj).length
+const isObject = element => (
+  element.constructor === Object
 );
 
-export default { hasKeys };
+export default { isObject };

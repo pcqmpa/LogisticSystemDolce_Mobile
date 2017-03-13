@@ -7,7 +7,12 @@ import { createReducer } from 'redux-create-reducer';
 
 // Constants.
 import {
-  TOGGLE_LOADING
+  TOGGLE_LOADING,
+
+  SHOW_TOAST,
+  HIDE_TOAST,
+
+  UPDATE_APP_SYNCED
 } from '../constants/actions';
 
 //
@@ -15,11 +20,22 @@ import {
 // -----------------------------------------------------------------------------
 
 /**
+ * The Toast component initial state.
+ * @type {Object}
+ */
+const toastInitialState = {
+  show: false,
+  message: ''
+};
+
+/**
  * Reducer initial state.
  * @type {Object}
  */
 const initialState = {
-  loading: false
+  loading: false,
+  toast: toastInitialState,
+  synced: false
 };
 
 //
@@ -34,6 +50,21 @@ const actionHandlers = {
   [TOGGLE_LOADING]: state => ({
     ...state,
     loading: !state.loading
+  }),
+  [SHOW_TOAST]: (state, { message }) => ({
+    ...state,
+    toast: {
+      show: true,
+      message
+    }
+  }),
+  [HIDE_TOAST]: state => ({
+    ...state,
+    toast: toastInitialState
+  }),
+  [UPDATE_APP_SYNCED]: (state, { synced }) => ({
+    ...state,
+    synced
   })
 };
 

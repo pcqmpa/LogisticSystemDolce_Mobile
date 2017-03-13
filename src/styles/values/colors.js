@@ -10,6 +10,8 @@ const brand = '#2c3e50';
 
 const greyDarker = '#7B9298';
 
+const errorDarker = '#c4170b';
+
 const greyAlpha = 'rgba(0, 0, 0, 0.85)';
 
 export default {
@@ -17,5 +19,6 @@ export default {
   black,
   brand,
   greyDarker,
+  errorDarker,
   greyAlpha
 };

@@ -6,11 +6,17 @@
 import { StyleSheet } from 'react-native';
 
 // Styles.
-import textForm from './text-form';
+import {
+  textForm,
+  textFormContainer,
+  validIconTextForm
+} from './text-form';
 import { button, buttonText } from './button';
 
 export default StyleSheet.create({
   button,
   buttonText,
-  textForm
+  textForm,
+  textFormContainer,
+  validIconTextForm
 });

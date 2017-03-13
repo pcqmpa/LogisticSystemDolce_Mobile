@@ -6,6 +6,9 @@
     "jsx-a11y",
     "import"
   ],
+  "globals": {
+    "fetch": true
+  },
   "parser": "babel-eslint",
   "rules": {
     "indent": ["error", 2],

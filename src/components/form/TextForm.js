@@ -6,7 +6,10 @@
 import React, { PropTypes } from 'react';
 
 // React Native.
-import { TextInput } from 'react-native';
+import { View, TextInput } from 'react-native';
+
+// Components.
+import { TextFormIcon } from '../';
 
 // Utils.
 import {
@@ -23,6 +26,7 @@ const TextForm = ({
   theme,
   layout,
   value,
+  valid,
   onChangeText,
   returnKeyType,
   placeholder,
@@ -37,16 +41,22 @@ const TextForm = ({
     ]);
 
   return (
-    <TextInput
-      style={styles}
-      value={value}
-      onChangeText={onChangeText}
-      returnKeyType={returnKeyType}
-      placeholder={placeholder}
-      placeholderTextColor={placeholderTextColor}
-      secureTextEntry={secureTextEntry}
-      underlineColorAndroid={colors.greyDarker}
-    />
+    <View style={formStyles.textFormContainer}>
+      <TextInput
+        style={styles}
+        value={value}
+        onChangeText={onChangeText}
+        returnKeyType={returnKeyType}
+        placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
+        secureTextEntry={secureTextEntry}
+        underlineColorAndroid={colors.greyDarker}
+      />
+      <TextFormIcon
+        show={!valid}
+        style={formStyles.validIconTextForm}
+      />
+    </View>
   );
 };
 
@@ -55,6 +65,7 @@ TextForm.propTypes = {
   theme: PropTypes.number,
   layout: PropTypes.number,
   value: PropTypes.string,
+  valid: PropTypes.bool,
   onChangeText: PropTypes.func,
   returnKeyType: PropTypes.string,
   placeholder: PropTypes.string,
@@ -67,6 +78,7 @@ TextForm.defaultProps = {
   theme: null,
   layout: null,
   value: '',
+  valid: true,
   onChangeText: noop,
   returnKeyType: 'done',
   placeholder: '',

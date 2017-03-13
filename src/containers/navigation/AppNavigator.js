@@ -13,6 +13,7 @@ import { Scene } from '../../components/';
 import {
   Navigator,
   Loading,
+  ToastContainer,
 
   Login,
   Orders,
@@ -35,6 +36,10 @@ const AppNavigator = () => (
       <Scene name={scenes.PICTURE_PREVIEW} component={PicturePreview} />
     </Navigator>
     <Loading />
+    <ToastContainer
+      show
+      message="Aasadafasf"
+    />
   </View>
 );
 

@@ -6,10 +6,12 @@
 import { combineEpics } from 'redux-observable';
 
 // Epics.
+import toast from './toast';
 import login from './login';
 
 
 const rootEpic = combineEpics(
+  toast,
   login
 );
 

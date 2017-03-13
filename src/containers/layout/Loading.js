@@ -20,18 +20,15 @@ import { LOADING_TEXT } from '../../constants/strings';
 import { colors } from '../../styles/values/';
 import themes from '../../styles/themes/';
 
-const Loading = ({ show }) => {
-  console.log(show);
-  return (
-    <Spinner
-      visible={show}
-      color={colors.brand}
-      textStyle={themes.spinnerText}
-      textContent={LOADING_TEXT}
-      overlayColor={colors.white}
-    />
-  );
-};
+const Loading = ({ show }) => (
+  <Spinner
+    visible={show}
+    color={colors.brand}
+    textStyle={themes.spinnerText}
+    textContent={LOADING_TEXT}
+    overlayColor={colors.white}
+  />
+);
 
 Loading.propTypes = {
   show: PropTypes.bool

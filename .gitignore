@@ -1,5 +1,8 @@
 .idea
 .vscode
+.tmp
+yarn.lock
+
 # OSX
 #
 .DS_Store

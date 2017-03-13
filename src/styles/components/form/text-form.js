@@ -3,8 +3,16 @@
  * @module src/styles/components/form/text-form
  */
 
-const textForm = {
+export const textFormContainer = {
+  flex: 1
+};
+
+export const textForm = {
   fontSize: 20
 };
 
-export default textForm;
+export const validIconTextForm = {
+  top: 10,
+  right: 10,
+  position: 'absolute'
+};
