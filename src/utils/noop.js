@@ -1,10 +1,10 @@
 /**
- * Module with noop function utility.
+ * Module with the noop utility.
  * @module src/utils/noop
  */
 
 /**
- * Simple noop function.
+ * No operational method.
  * @returns {void}
  */
 const noop = () => {};

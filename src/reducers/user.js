@@ -1,14 +1,21 @@
 /**
- * Module with the login reducer.
- * @module src/reducers/login
+ * Module with the user reducer.
+ * @module src/reducers/user
+ * @flow
  */
 // Redux.
 import { createReducer } from 'redux-create-reducer';
 
-// Constants.
+// Types.
+import type { User } from '../utils/app-types';
+
+//
+// Initial State.
+// -----------------------------------------------------------------------------
+// Actions.
 import {
-  SET_USER_DATA,
-  CLEAR_USER_DATA
+  AUTH_USER,
+  LOGOUT_USER
 } from '../constants/actions';
 
 //
@@ -19,8 +26,8 @@ import {
  * Reducer initial state.
  * @type {Object}
  */
-const initialState = {
-  data: {},
+const initialState: User = {
+  token: null,
   isAuth: false
 };
 
@@ -29,16 +36,15 @@ const initialState = {
 // -----------------------------------------------------------------------------
 
 /**
- * Reducer action handlers.
+ * Form rules action handlers.
  * @type {Object}
  */
 const actionHandlers = {
-  [SET_USER_DATA]: (state, { data }) => ({
-    ...state,
-    data,
+  [AUTH_USER]: (state: User, { data }): User => ({
+    ...data,
     isAuth: true
   }),
-  [CLEAR_USER_DATA]: () => ({
+  [LOGOUT_USER]: (): User => ({
     ...initialState
   })
 };

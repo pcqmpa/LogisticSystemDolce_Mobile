@@ -1,76 +1,72 @@
 /**
- * Module with the orders reducer actions.
+ * Module with the orders action creators.
  * @module src/actions/orders
+ * @flow
  */
 // Constants.
 import {
-  SET_ORDERS,
-  UPDATE_ORDER,
-  SET_CURRENT_ORDER,
-
-  RETRIEVE_ORDER_REQUEST,
-  RETRIEVE_ORDER_SUCCESS,
-  RETRIEVE_ORDER_FAILED
+  ADD_PICTURE_TO_ORDER,
+  CLEAR_ORDERS,
+  INIT_ORDERS,
+  REQUEST_ORDERS,
+  SUBMIT_ORDER
 } from '../constants/actions';
 
+// Types.
+import type {
+  Action,
+  Order,
+  OrdersAction,
+  OrderPictureAction,
+  SubmitOrderAction
+} from '../utils/app-types';
+
 /**
- * Action to set the current orders list.
- * @param {Array} orders -> The orders list.
- * @returns {Object} -> The action object.
+ * Action to add a specific picture to an order.
+ * @param  {String} pictureType -> the type of the picture.
+ * @param  {String} picture -> The location of the picture.
+ * @return {Object} -> The action.
  */
-export const setOrders = orders => ({
-  type: SET_ORDERS,
+export const addPictureToOrder =
+  (orderId: string, pictureType: string, picture: string): OrderPictureAction => ({
+    type: ADD_PICTURE_TO_ORDER,
+    orderId,
+    picture,
+    pictureType
+  });
+
+/**
+ * Action to initialize the orders list.
+ * @param  {Array} orders -> The list of orders.
+ * @return {Object} -> The action.
+ */
+export const initOrders = (orders: Order[]): OrdersAction => ({
+  type: INIT_ORDERS,
   orders
 });
 
 /**
- * Actions to update a specific order.
- * @param {String} orderId -> The order id.
- * @param {Object} payload -> The props to update from the order.
- * @returns {Object} -> The action object.
+ * Action to clear the current orders.
+ * @return {Object} -> The action.
  */
-export const udpateOrder = (orderId, payload) => ({
-  type: UPDATE_ORDER,
-  orderId,
-  payload
+export const clearOrders = (): Action => ({
+  type: CLEAR_ORDERS
 });
 
 /**
- * Action to set a selected order.
- * @param {String} orderId -> The order selected.
- * @returns {Object} -> The action object.
+ * Action to requests the orders to the server.
+ * @return {Object} -> The action.
  */
-export const setCurrentOrder = orderId => ({
-  type: SET_CURRENT_ORDER,
-  orderId
+export const requestOrders = (): Action => ({
+  type: REQUEST_ORDERS
 });
 
 /**
- * Action to make a retrieve request of an order.
- * @param {String} orderId -> The order to retrieve.
- * @returns {Object} -> The action object.
- */
-export const requestRetrieveOrder = orderId => ({
-  type: RETRIEVE_ORDER_REQUEST,
-  orderId
-});
-
-/**
- * Action to notify a retrieve succeded.
+ * Action to submit an order to the server.
  * @param {Number} numOrder -> The number of the order.
- * @returns {Object} -> The action object.
+ * @return {Object} -> The action.
  */
-export const retrieveSuccess = numOrder => ({
-  type: RETRIEVE_ORDER_SUCCESS,
-  numOrder
-});
-
-/**
- * Action to notify a retrieve failed.
- * @param {Number} numOrder -> The number of the order.
- * @returns {Object} -> The action object.
- */
-export const retrieveFailed = numOrder => ({
-  type: RETRIEVE_ORDER_FAILED,
+export const submitOrder = (numOrder: number): SubmitOrderAction => ({
+  type: SUBMIT_ORDER,
   numOrder
 });

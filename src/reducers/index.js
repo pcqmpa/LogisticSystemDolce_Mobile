@@ -1,24 +1,26 @@
 /**
  * Module with the app root reducer.
- * @module src/reducers/
+ * @module src/shared/reducers/
  */
-// Redux.
+// React - Redux.
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 
-// Reducer.
-import navigation from './navigation';
-import formRules from './form-rules';
+// Reducers.
 import common from './common';
-import login from './login';
-import user from './user';
+import formRules from './form-rules';
+import loginForm from './login-form';
 import orders from './orders';
+import picturePreview from './picture-preview';
+import user from './user';
 
-// Route Reducer.
+// Root Reducer.
 export default combineReducers({
-  navigation,
-  formRules,
   common,
-  login,
-  user,
-  orders
+  formRules,
+  loginForm,
+  orders,
+  picturePreview,
+  router: routerReducer,
+  user
 });

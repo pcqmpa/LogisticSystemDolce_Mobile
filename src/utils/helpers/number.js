@@ -1,14 +1,15 @@
 /**
- * Module with Number specific helpers.
- * @module src/utils/helpers/number
+ * Module with number helpers.
+ * @module src/utils/helpers/string
+ * @flow
  */
 
 /**
  * Checks if the element is of type Number.
  * @param {Any} element -> The element to validate.
- * @returns {Bool} -> If the element passed the validation.
+ * @returns {Boolean} -> If the element passed the test.
  */
-const isNumber = element => (
+const isNumber = (element: any): boolean => (
   element.constructor === Number
 );
 

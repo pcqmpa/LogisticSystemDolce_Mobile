@@ -1,27 +1,35 @@
 /**
- * Module with the user redux actions.
+ * Module with user actions.
  * @module src/actions/user
+ * @flow
  */
 // Constants.
 import {
-  SET_USER_DATA,
-  CLEAR_USER_DATA
+  AUTH_USER,
+  LOGOUT_USER
 } from '../constants/actions';
 
+// Types.
+import type {
+  Action,
+  User,
+  UserAction
+} from '../utils/app-types';
+
 /**
- * Action to set the user data.
+ * Action to initialize the user data.
  * @param {Object} data -> The user data.
  * @returns {Object} -> The action object.
  */
-export const setUserData = user => ({
-  type: SET_USER_DATA,
-  user
+export const authUser = (data: User): UserAction => ({
+  type: AUTH_USER,
+  data
 });
 
 /**
- * Action to clear the current user data.
+ * Action to clear the user data when logout.
  * @returns {Object} -> The action object.
  */
-export const clearUserData = () => ({
-  type: CLEAR_USER_DATA
+export const logoutUser = (): Action => ({
+  type: LOGOUT_USER
 });

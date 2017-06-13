@@ -1,41 +1,65 @@
 /**
- * Module with the common data reducer.
- * @module src/reducers/common
+ * Module with the common reducer.
+ * @module src/reducers/login-form
+ * @flow
  */
 // Redux.
 import { createReducer } from 'redux-create-reducer';
 
-// Constants.
+// Actions.
 import {
-  TOGGLE_LOADING,
-
-  SHOW_TOAST,
+  CLEAR_CURRENT_SCREEN_DATA,
+  HIDE_LOADING,
   HIDE_TOAST,
-
-  UPDATE_APP_SYNCED
+  SET_ORDER,
+  SET_SCREEN_DEFAULT_STATE,
+  SET_SCREEN_LOADED,
+  SHOW_LOADING,
+  SHOW_TOAST
 } from '../constants/actions';
+
+// Types.
+import type {
+  CommonState,
+  LoadinAction,
+  LoadingState,
+  OrderDetailsAction,
+  ToastAction,
+  ToastState
+} from '../utils/app-types';
 
 //
 // Initial State.
 // -----------------------------------------------------------------------------
 
 /**
- * The Toast component initial state.
+ * Toast initial state.
  * @type {Object}
  */
-const toastInitialState = {
+const toast: ToastState = {
   show: false,
+  type: null,
   message: ''
+};
+
+/**
+ * Loading view initial state.
+ * @type {Object}
+ */
+const loading: LoadingState = {
+  show: false,
+  label: 'Cargando...'
 };
 
 /**
  * Reducer initial state.
  * @type {Object}
  */
-const initialState = {
-  loading: false,
-  toast: toastInitialState,
-  synced: false
+const initialState: CommonState = {
+  loading,
+  order: '',
+  screenLoaded: false,
+  toast
 };
 
 //
@@ -43,28 +67,48 @@ const initialState = {
 // -----------------------------------------------------------------------------
 
 /**
- * Reducer action handlers.
+ * Form rules action handlers.
  * @type {Object}
  */
 const actionHandlers = {
-  [TOGGLE_LOADING]: state => ({
+  [SHOW_TOAST]:
+    (state: CommonState, { message, toastType: type }: ToastAction): CommonState => ({
+      ...state,
+      toast: {
+        show: true,
+        type,
+        message
+      }
+    }),
+  [HIDE_TOAST]: (state: CommonState): CommonState => ({
     ...state,
-    loading: !state.loading
+    toast: { ...toast }
   }),
-  [SHOW_TOAST]: (state, { message }) => ({
+  [SHOW_LOADING]: (state: CommonState, { label }: LoadinAction): CommonState => ({
     ...state,
-    toast: {
+    loading: {
       show: true,
-      message
+      label
     }
   }),
-  [HIDE_TOAST]: state => ({
+  [HIDE_LOADING]: (state: CommonState): CommonState => ({
     ...state,
-    toast: toastInitialState
+    loading: { ...loading }
   }),
-  [UPDATE_APP_SYNCED]: (state, { synced }) => ({
+  [SET_ORDER]: (state: CommonState, { orderId }: OrderDetailsAction) => ({
     ...state,
-    synced
+    order: orderId
+  }),
+  [SET_SCREEN_LOADED]: (state: CommonState): CommonState => ({
+    ...state,
+    screenLoaded: true
+  }),
+  [SET_SCREEN_DEFAULT_STATE]: (state: CommonState): CommonState => ({
+    ...state,
+    screenLoaded: false
+  }),
+  [CLEAR_CURRENT_SCREEN_DATA]: (): CommonState => ({
+    ...initialState
   })
 };
 

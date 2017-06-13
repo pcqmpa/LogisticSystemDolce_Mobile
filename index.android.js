@@ -1,41 +1,47 @@
 /**
- * Logistic System Dolce App
+ * Sample React Native App
  * https://github.com/facebook/react-native
  * @flow
  */
+// Node.
+import { createMemoryHistory } from 'history';
+
 // React - Redux.
 import React from 'react';
+import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'react-router-redux';
 
-// React Native.
-import {
-  AppRegistry
-} from 'react-native';
+// Types.
+import type { ReduxStore } from './src/utils/app-types';
 
-// Reducers.
-import reducer from './src/reducers/';
-
-// Epics.
+// App.
+import reducers from './src/reducers/';
 import rootEpic from './src/epics/';
 
 // Components.
-import { AppNavigator } from './src/containers/';
-
-// Actions.
-import { initStore } from './src/actions/common';
+import Routes from './src/Routes';
 
 // Utils.
-import { configureStore } from './src/utils/';
+import configureStore from './src/utils/configure-store';
 
-// Initialize the App Store.
-const store = configureStore(reducer, rootEpic);
-store.dispatch(initStore());
+//
+// Initialize App
+// -----------------------------------------------------------------------------
 
+const history = createMemoryHistory();
+const store: ReduxStore = configureStore(reducers, rootEpic, history);
+
+//
+// Render App
+// -----------------------------------------------------------------------------
 
 const App = () => (
   <Provider store={store}>
-    <AppNavigator />
+    <ConnectedRouter history={history}>
+      <Routes />
+    </ConnectedRouter>
   </Provider>
 );
 
-AppRegistry.registerComponent('LogisticSystemDolce', () => App);
+AppRegistry.registerComponent('LogisticDolce', () => (App));

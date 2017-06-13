@@ -1,6 +1,7 @@
 /**
  * Module with some object helpers.
  * @module src/utils/helpers/object
+ * @flow
  */
 
 /**
@@ -8,7 +9,7 @@
  * @param {Any} element -> The element to validate.
  * @returns {Bool} -> If the element is an object.
  */
-const isObject = element => (
+const isObject = (element: any): boolean => (
   element.constructor === Object
 );
 

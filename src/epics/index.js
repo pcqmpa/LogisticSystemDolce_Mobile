@@ -6,13 +6,16 @@
 import { combineEpics } from 'redux-observable';
 
 // Epics.
+import authentication from './authentication';
+import initScreen from './init-screen';
+import logout from './logout';
 import toast from './toast';
-import login from './login';
-
 
 const rootEpic = combineEpics(
-  toast,
-  login
+  authentication,
+  initScreen,
+  logout,
+  toast
 );
 
 export default rootEpic;

@@ -1,22 +1,19 @@
 /**
- * Module with the app container components.
+ * Module with the app containers.
  * @module src/containers/
  */
-// Navigation.
-export { default as AppNavigator } from './navigation/AppNavigator';
-export { default as Navigator } from './navigation/Navigator';
-export { default as SceneContainer } from './navigation/SceneContainer';
+export { default as Main } from './Main/Main';
 
-// Layout.
-export { default as Loading } from './layout/Loading';
-export { default as ToastContainer } from './layout/ToastContainer';
+export { default as Login } from './Login/Login';
 
-// Login.
-export { default as Login } from './login/Login';
+export { default as Orders } from './Orders/Orders';
 
-// Orders.
-export { default as Orders } from './orders/Orders';
-export { default as Order } from './orders/Order';
+export { default as OrderDetails } from './OrderDetails/OrderDetails';
 
-// Picture Preview.
-export { default as PicturePreview } from './picture-preview/PicturePreview';
+export { default as PicturePreview } from './PicturePreview/PicturePreview';
+
+export { default as HeaderContainer } from './HeaderContainer/HeaderContainer';
+
+export { default as ToastContainer } from './ToastContainer/ToastContainer';
+
+export { default as Loading } from './Loading/Loading';

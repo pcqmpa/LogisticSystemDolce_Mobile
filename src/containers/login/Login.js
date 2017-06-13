@@ -1,166 +1,113 @@
 /**
- * Module with the login container component.
- * @module src/containers/login/Login
+ * Module with the Login screen component.
+ * @module src/containers/Login/Login
+ * @flow
  */
-// React - Redux.
-import React, { Component, PropTypes } from 'react';
+// React.
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Text, View } from 'react-native';
 
-// React Native.
-import {
-  View
-} from 'react-native';
+// Types.
+import type {
+  AppState,
+  LoginProps,
+  ReduxDispatch
+} from '../../utils/app-types';
 
 // Components.
 import {
   Button,
+  Divider,
   TextForm
 } from '../../components/';
 
 // Actions.
 import {
-  requestLogin,
-  updateUsernameInput,
-  updatePasswordInput
-} from '../../actions/login';
-import { updateRules } from '../../actions/form-rules';
-import { showToast } from '../../actions/common';
-
-// Lib.
-import validator from '../../lib/validator';
-
-// Utils.
-import { noop } from '../../utils/';
+  updateLoginForm
+} from '../../actions/login-form';
 
 // Constants.
-import { ARGS_ABSENCE } from '../../constants/messages';
 import {
-  USERNAME_INPUT,
-  PASSWORD_INPUT,
-
-  LOGIN_RULES
+  LOGIN_FORM,
+  PASSWORD_FIELD,
+  PASSWORD_PLACEHOLDER,
+  USERNAME_FIELD,
+  USERNAME_PLACEHOLDER
 } from '../../constants/strings';
 
 // Styles.
-import { loginStyles } from '../../styles/containers/';
+import loginStyles from './styles';
 
 class Login extends Component {
-  static propTypes = {
-    username: PropTypes.string,
-    password: PropTypes.string,
-    showToast: PropTypes.func,
-    requestLogin: PropTypes.func,
-    updateUsernameInput: PropTypes.func,
-    updatePasswordInput: PropTypes.func,
+  props: LoginProps;
 
-    formRules: PropTypes.shape({
-      username: PropTypes.object,
-      password: PropTypes.object
-    }),
-    updateRules: PropTypes.func
+  handleChangeField = (field: string) => (value: string) => {
+    this.props.updateLoginForm(field, value);
   };
 
-  static defaultProps = {
-    username: '',
-    password: '',
-    showToast: noop,
-    requestLogin: noop,
-    updateUsernameInput: noop,
-    updatePasswordInput: noop,
-
-    formRules: {},
-    updateRules: noop
-  };
-
-  /**
-   * Triggers the update of the username input.
-   * @param {String} value -> The updated value of the input.
-   */
-  handleUsernameUpdates = (value) => {
-    this.props.updateUsernameInput(value);
-  };
-
-  /**
-   * Triggers the update of the password input.
-   * @param {String} value -> The updated value of the input.
-   */
-  handlePasswordUpdates = (value) => {
-    this.props.updatePasswordInput(value);
-  };
-
-  handleLoginSubmit = () => {
+  handleSubmit = () => {
     const {
-      username,
+      formRules,
       password,
-      formRules
+      username
     } = this.props;
-    const user = { username, password };
+    const form = {
+      password,
+      username
+    };
 
-    const formValidation = validator.run(formRules, user);
-
-    this.props.updateRules(
-      LOGIN_RULES,
-      formValidation.resume
-    );
-
-    if (formValidation.valid) {
-      this.props.requestLogin(user);
-    } else {
-      this.props.showToast(ARGS_ABSENCE);
-    }
-  };
+    this.props.validator.run(formRules, form, LOGIN_FORM);
+  }
 
   render() {
     const {
-      username,
       password,
-      formRules
+      username
     } = this.props;
 
     return (
       <View style={loginStyles.container}>
-        <View style={loginStyles.containerItems}>
-          <TextForm
-            value={username}
-            valid={formRules.username.valid}
-            placeholder={USERNAME_INPUT}
-            onChangeText={this.handleUsernameUpdates}
-          />
-        </View>
-        <View style={loginStyles.containerItems}>
-          <TextForm
-            value={password}
-            valid={formRules.password.valid}
-            placeholder={PASSWORD_INPUT}
-            onChangeText={this.handlePasswordUpdates}
-            secureTextEntry
-          />
-        </View>
-        <View
-          style={[loginStyles.containerItems, loginStyles.buttonContainer]}
-        >
-          <Button onPress={this.handleLoginSubmit}>
-            Ingresar
-          </Button>
+        <View style={loginStyles.form}>
+          <Text style={loginStyles.heading}>
+            Logística DOLCE
+          </Text>
+          <Divider />
+          <View style={loginStyles.field}>
+            <TextForm
+              onChangeText={this.handleChangeField(USERNAME_FIELD)}
+              placeholder={USERNAME_PLACEHOLDER}
+              value={username}
+            />
+          </View>
+          <View style={loginStyles.field}>
+            <TextForm
+              onChangeText={this.handleChangeField(PASSWORD_FIELD)}
+              placeholder={PASSWORD_PLACEHOLDER}
+              secureTextEntry
+              value={password}
+            />
+          </View>
+          <View style={loginStyles.field}>
+            <Button onPress={this.handleSubmit}>
+              Ingresar
+            </Button>
+          </View>
         </View>
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  ...state.login,
+const mapStateToProps = (state: AppState) => ({
+  ...state.loginForm,
   formRules: state.formRules.loginForm
 });
 
-const mapDispatchToProps = dispatch => (
+const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
-    requestLogin,
-    updateUsernameInput,
-    updatePasswordInput,
-    updateRules,
-    showToast
+    updateLoginForm
   }, dispatch)
 );
 

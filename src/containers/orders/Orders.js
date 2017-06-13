@@ -1,61 +1,94 @@
 /**
- * Module with the orders container component.
- * @module src/containers/orders/Orders
+ * Module with the Orders screen container.
+ * @module src/containers/Orders/Orders
+ * @flow
  */
-// React - Redux.
-import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+// React.
+import React from 'react';
+import { Dimensions, ScrollView, Text, View } from 'react-native';
+import { Link } from 'react-router-native';
 
-// React Native.
+// Types.
+import type { Match } from 'react-router';
+
+// Components.
 import {
-  View,
-  Text,
-
-  TouchableOpacity
-} from 'react-native';
-
-// Actions.
-import { push } from '../../actions/navigation';
-
-// Utils.
-import { noop } from '../../utils/';
+  Button,
+  Card,
+  Column,
+  DataItem,
+  Divider,
+  Grid,
+  TextForm,
+  Toast
+} from '../../components/';
 
 // Constants.
-import { ORDER } from '../../constants/scenes';
+import { ORDER_DETAILS } from '../../constants/screens';
 
-class Orders extends Component {
-  static propTypes = {
-    pushScene: PropTypes.func.isRequired
-  };
+import image from '../../images/test';
 
-  static defaultProps = {
-    pushScene: noop
-  };
+const dim = Dimensions.get('window');
 
-  handleChangeToOrders = () => {
-    this.props.pushScene(ORDER);
-  }
-
-  render() {
-    return (
-      <View>
-        <Text>Orders</Text>
-        <TouchableOpacity onPress={this.handleChangeToOrders}>
-          <Text>Go to order</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
-
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    pushScene: push
-  }, dispatch)
+const Orders = ({ match }: { match: Match }) => (
+  <ScrollView style={{ height: (dim.height - 60) }}>
+    <Text>Screen: {match.path}</Text>
+    <Link to={ORDER_DETAILS}>
+      <Text>Order Details</Text>
+    </Link>
+    <View>
+      <TextForm placeholder="placeholder" />
+    </View>
+    <View>
+      <Button>
+        Button
+      </Button>
+    </View>
+    <View>
+      <Card />
+      <Divider />
+      <Card />
+    </View>
+    <View style={{ width: dim.width, height: 40 }}>
+      <Grid>
+        <Column styles={{ flex: 40 }}>
+          <Text>1</Text>
+        </Column>
+        <Column styles={{ flex: 60 }}>
+          <Text>2</Text>
+        </Column>
+      </Grid>
+    </View>
+    <View>
+      <DataItem
+        keyText="Key"
+        valueText="Value"
+      />
+      <Divider />
+      <DataItem
+        keyText="Key"
+        valueText="Value"
+      />
+    </View>
+    <View>
+      <Divider />
+      <DataItem
+        keyText="Image"
+        image={image}
+      />
+      <Divider />
+      <DataItem
+        keyText="Image"
+        image={image}
+      />
+    </View>
+    <View>
+      <Toast
+        message="This is my long message to display"
+        type="red"
+      />
+    </View>
+  </ScrollView>
 );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Orders);
+export default Orders;
