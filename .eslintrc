@@ -9,7 +9,6 @@
     "plugin:react-native/all",
     "plugin:flowtype/recommended"
   ],
-  "installedESLint": true,
   "plugins": [
     "react",
     "react-native",

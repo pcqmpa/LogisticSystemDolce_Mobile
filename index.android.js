@@ -20,7 +20,7 @@ import reducers from './src/reducers/';
 import rootEpic from './src/epics/';
 
 // Components.
-import Routes from './src/Routes';
+import Screens from './src/Screens';
 
 // Utils.
 import configureStore from './src/utils/configure-store';
@@ -39,7 +39,7 @@ const store: ReduxStore = configureStore(reducers, rootEpic, history);
 const App = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Routes />
+      <Screens />
     </ConnectedRouter>
   </Provider>
 );

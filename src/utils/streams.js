@@ -14,14 +14,16 @@ import { GET } from '../constants/types';
 import type { AjaxRequest } from './app-types';
 
 const ajaxRequest =
-  ({ url, method = GET, options = {} }: AjaxRequest): Observable<*> => (
-    Observable.fromPromise(
+  ({ url, method = GET, options = {} }: AjaxRequest): Observable<*> => {
+    console.log(options);
+    const request = Observable.fromPromise(
       fetch(url, {
         method,
         ...options
       })
       .then(response => (response.json()))
-    )
-  );
+    );
+    return request;
+  };
 
 export default { ajaxRequest };

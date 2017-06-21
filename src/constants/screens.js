@@ -3,9 +3,9 @@
  * @module src/constants/screens
  */
 
-export const LOGIN = '/login';
+export const LOGIN = '/';
 
-export const ORDERS = '/';
+export const ORDERS = '/orders';
 
 export const ORDER_DETAILS = '/orderDetails/:orderId';
 

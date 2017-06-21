@@ -7,7 +7,7 @@ export const SESSION_EXPIRED = 'No hay sesión activa.';
 
 export const SESSION_ACTIVE = 'Hay una sesión activa.';
 
-export const AUTHENTICATION_ERROR = 'Email or password unrecognized.';
+export const AUTHENTICATION_ERROR = 'El usuario o contraseña son incorrectos.';
 
 export const AUTHENTICATION_SUCCESS = 'Welcome!!';
 

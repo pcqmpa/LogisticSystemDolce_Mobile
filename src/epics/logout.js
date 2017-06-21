@@ -14,6 +14,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/switchMap';
 
 // Observables.
 import { hideLoadingAction } from './common';
@@ -39,9 +40,9 @@ import {
 
 const logoutEpic = (action$: Observable<*>): Observable<*> => (
   action$.ofType(LOGOUT_USER)
-    .mergeMap(() => (
+    .switchMap(() => (
       storage.removeUserData()
-        .mergeMap(() => (storage.removeOrders()))
+        .concatMap(() => (storage.removeOrders()))
         .concatMap(() => (
           Observable.concat(
             Observable.of(replace(LOGIN))

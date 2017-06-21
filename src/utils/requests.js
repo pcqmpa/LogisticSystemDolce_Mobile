@@ -5,6 +5,7 @@
  */
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/dom/ajax';
 
 // Utils.
 import streams from './streams';
@@ -25,10 +26,14 @@ import type { LoginState } from './app-types';
  * @param {Object} loginForm -> The login form data.
  * @returns {Observable} -> With the auth request.
  */
-export const authenticationRequest =
-  (loginForm: LoginState): Observable<*> => (
-    streams.ajaxRequest(callFetchUser(), {
-      method: POST,
-      body: JSON.stringify(loginForm)
-    })
-  );
+export const authenticationRequest = (loginForm: LoginState): Observable<*> => {
+    // streams.ajaxRequest({
+    //   url: callFetchUser(),
+    //   method: POST,
+    //   options: {
+    //     body: JSON.stringify(loginForm)
+    //   }
+    // })
+  const request = Observable.ajax.post(callFetchUser(), loginForm);
+  return request;
+};

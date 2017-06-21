@@ -18,8 +18,10 @@ import 'rxjs/add/operator/startWith';
 
 // Types.
 import type {
+  AjaxResponse,
   AuthResponse,
-  ReduxStore
+  ReduxStore,
+  User
 } from '../utils/app-types';
 
 // Requests.
@@ -55,15 +57,16 @@ import {
 import { ORDERS } from '../constants/screens';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
-const authenticationSucceed = ({ user, orders, token }: AuthResponse): Observable<any> => {
+const authenticationSucceed = ({ response }: AjaxResponse): Observable<any> => {
+  const { user, orders, token }: AuthResponse = response;
   const mappedOrders = transmuter.toInProgressOrders(orders);
-  const userData = {
+  const userData: User = {
     ...user,
     token
   };
 
   return storage.saveUserData(userData)
-    .mergeMap(() => (storage.saveCurrentOrders(mappedOrders)))
+    .concatMap(() => (storage.saveOrders(mappedOrders)))
     .concatMap(() => (
       Observable.concat(
         Observable.of(
@@ -82,19 +85,21 @@ const authenticationSucceed = ({ user, orders, token }: AuthResponse): Observabl
     ));
 };
 
-const authenticationFailed = (): Observable<*> => (
-  Observable.concat(
+const authenticationFailed = (): Observable<*> => {
+  const failureHandler = Observable.concat(
     Observable.of(clearLoginForm()),
     hideLoadingAction(),
     Observable.of(showToast(AUTHENTICATION_ERROR, ERROR))
       .delay(TOAST_DISPLAY_DELAY),
-  )
-);
+  );
+  return failureHandler;
+};
 
 const authenticationEpic = (action$: Observable<*>, store: ReduxStore) => (
   action$.ofType(REQUEST_LOGIN)
     .mergeMap(() => {
       const { loginForm } = store.getState();
+
       return authenticationRequest(loginForm)
         .concatMap(authenticationSucceed)
         .catch(authenticationFailed)

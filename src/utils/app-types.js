@@ -18,6 +18,8 @@ import {
 //
 // Global.
 // -----------------------------------------------------------------------------
+export type Noop = () => void;
+
 export type ComputedProps = {
   [string]: string
 };
@@ -31,6 +33,15 @@ export type AjaxRequest = {
   url: string,
   method?: string,
   options?: AjaxOptions
+};
+
+export type AjaxResponse = {
+  originalEvent: any,
+  request: any,
+  response: any,
+  responseType: string,
+  status: number,
+  xhr: XMLHttpRequest
 };
 
 export type User = {
@@ -222,6 +233,11 @@ export type Action = {
   type: string
 };
 
+export type HistoryAction = {
+  type: string,
+  path?: string
+};
+
 export type LoginAction = {
   type: string,
   field: string,
@@ -287,10 +303,15 @@ export type OrderDetailsAction = {
 // Actions Creators.
 // -----------------------------------------------------------------------------
 
+// Router.
+// ====================================
+export type RouterAction = (path: string | void) => HistoryAction;
+
 // Common.
 // ====================================
 export type ActionCreator = () => Action;
 export type ShowToast = (message: string, toastType: string) => ToastAction;
+export type SetOrder = (orderNama: )
 
 // Form rules.
 // ====================================
@@ -379,6 +400,13 @@ export type TextFormProps = {
   value?: string
 };
 
+// Card.
+// ====================================
+export type CardProps = {
+  onPress(orderId: string | void): Noop,
+  order: Order
+};
+
 //
 // Containers.
 // -----------------------------------------------------------------------------
@@ -387,6 +415,7 @@ export type TextFormProps = {
 // ====================================
 export type HeaderContainerProps = {
   currentPath: string,
+  logoutUser: ActionCreator,
   order: string,
   screenLoaded: boolean
 };
@@ -411,7 +440,16 @@ export type LoadingProps = {
 export type LoginProps = {
   formRules: LoginFormRule,
   password: string,
+  requestLogin: ActionCreator,
   username: string,
   updateLoginForm: UpdateLoginForm,
   validator: Validator
+};
+
+// Orders.
+// ====================================
+export type OrdersProps = {
+  orders: Order[],
+  push: RouterAction,
+  setOrder
 };

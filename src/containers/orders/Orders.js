@@ -4,91 +4,90 @@
  * @flow
  */
 // React.
-import React from 'react';
-import { Dimensions, ScrollView, Text, View } from 'react-native';
-import { Link } from 'react-router-native';
+import React, { Component } from 'react';
+import { ListView } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import type {  } from 'react-router-redux';
 
 // Types.
-import type { Match } from 'react-router';
+import type {
+  AppState,
+  ReduxDispatch,
+  Order,
+  OrdersProps
+} from '../../utils/app-types';
 
 // Components.
-import {
-  Button,
-  Card,
-  Column,
-  DataItem,
-  Divider,
-  Grid,
-  TextForm,
-  Toast
-} from '../../components/';
+import { Card, Divider } from '../../components/';
+
+// Actions.
+import { setOrder } from '../../actions/common';
 
 // Constants.
-import { ORDER_DETAILS } from '../../constants/screens';
+import { ORDER_DETAILS_PATH } from '../../constants/screens';
+import {
+  HEADER_HEIGHT,
+  WINDOW_HEIGHT
+} from '../../constants/values';
 
-import image from '../../images/test';
+class Orders extends Component {
+  props: OrdersProps;
+  dataSource: ListView.DataSource;
 
-const dim = Dimensions.get('window');
+  constructor(props: OrdersProps, context: any) {
+    super(props, context);
 
-const Orders = ({ match }: { match: Match }) => (
-  <ScrollView style={{ height: (dim.height - 60) }}>
-    <Text>Screen: {match.path}</Text>
-    <Link to={ORDER_DETAILS}>
-      <Text>Order Details</Text>
-    </Link>
-    <View>
-      <TextForm placeholder="placeholder" />
-    </View>
-    <View>
-      <Button>
-        Button
-      </Button>
-    </View>
-    <View>
-      <Card />
-      <Divider />
-      <Card />
-    </View>
-    <View style={{ width: dim.width, height: 40 }}>
-      <Grid>
-        <Column styles={{ flex: 40 }}>
-          <Text>1</Text>
-        </Column>
-        <Column styles={{ flex: 60 }}>
-          <Text>2</Text>
-        </Column>
-      </Grid>
-    </View>
-    <View>
-      <DataItem
-        keyText="Key"
-        valueText="Value"
+    this.dataSource = new ListView.DataSource({
+      rowHasChanged: (r1: Order, r2: Order): boolean => (r1.id !== r2.id)
+    });
+  }
+
+  handleCardPress = (orderId: string) => () => {
+    console.log(orderId);
+  }
+
+  renderRow = (order: Order): ReactElement<Card> => {
+    return (
+      <Card
+        onPress={this.handleCardPress}
+        order={order}
       />
-      <Divider />
-      <DataItem
-        keyText="Key"
-        valueText="Value"
+    );
+  }
+
+  renderSeparator(): ReactElement<Divider> {
+    return (<Divider />);
+  }
+
+  render() {
+    const { orders } = this.props;
+
+    return (
+      <ListView
+        dataSource={this.dataSource.cloneWithRows(orders)}
+        enableEmptySections
+        renderRow={this.renderRow}
+        renderSeparator={this.renderSeparator}
+        style={{ height: (WINDOW_HEIGHT - HEADER_HEIGHT) }}
       />
-    </View>
-    <View>
-      <Divider />
-      <DataItem
-        keyText="Image"
-        image={image}
-      />
-      <Divider />
-      <DataItem
-        keyText="Image"
-        image={image}
-      />
-    </View>
-    <View>
-      <Toast
-        message="This is my long message to display"
-        type="red"
-      />
-    </View>
-  </ScrollView>
+    );
+  }
+}
+
+const mapStateToProps = ({ orders }: AppState) => ({
+  orders
+});
+
+const mapDispatchToProps = (dispatch: ReduxDispatch) => (
+  bindActionCreators({
+    push,
+    setOrder
+  }, dispatch)
 );
 
-export default Orders;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Orders);

@@ -6,10 +6,14 @@
  */
 // React - Redux.
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 // Components.
 import { Header } from '../../components/';
+
+// Actions.
+import { logoutUser } from '../../actions/user';
 
 // Constants.
 import {
@@ -27,7 +31,8 @@ import {
 import type {
   AppState,
   ComputedProps,
-  HeaderContainerProps
+  HeaderContainerProps,
+  ReduxDispatch
 } from '../../utils/app-types';
 
 //
@@ -42,8 +47,7 @@ class HeaderContainer extends Component {
   };
 
   handleLogoutPress = () => {
-    // TODO: Add actual functionality.
-    console.log('LOGOUT');
+    this.props.logoutUser();
   };
 
   handleRefreshPress = () => {
@@ -113,6 +117,13 @@ const mapStateToProps = ({ common, router }: AppState) => ({
   screenLoaded: common.screenLoaded
 });
 
+const mapDispatchToProps = (dispatch: ReduxDispatch) => (
+  bindActionCreators({
+    logoutUser
+  }, dispatch)
+);
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(HeaderContainer);

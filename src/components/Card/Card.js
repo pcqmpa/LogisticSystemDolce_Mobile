@@ -14,22 +14,24 @@ import {
 // Components.
 import { Check } from '../';
 
+// Utils.
+import noop from '../../utils/noop';
+
 // Styles.
 import styles from './styles';
 
 // Types.
-import type { Order } from '../../utils/app-types';
-
-declare type Props = {
-  onPress(): void,
-  order: Order
-};
+import type {
+  CardProps,
+  Noop,
+  Order
+} from '../../utils/app-types';
 
 //
 // Component.
 // -----------------------------------------------------------------------------
-const Card = ({ onPress, order }: Props) => (
-  <TouchableOpacity onPress={onPress}>
+const Card = ({ onPress, order }: CardProps) => (
+  <TouchableOpacity onPress={onPress(order.id)}>
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={styles.mainField}>
@@ -60,6 +62,7 @@ const Card = ({ onPress, order }: Props) => (
 );
 
 Card.defaultProps = {
+  onPress: noop,
   order: {}
 };
 

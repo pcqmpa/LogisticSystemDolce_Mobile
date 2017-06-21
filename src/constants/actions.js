@@ -22,8 +22,9 @@ export const SHOW_LOADING = 'SHOW_LOADING';
 export const SHOW_TOAST = 'SHOW_TOAST';
 
 // Login.
-export const UPDATE_LOGIN_FORM = 'UPDATE_LOGIN_FORM';
 export const CLEAR_LOGIN_FORM = 'CLEAR_LOGIN_FORM';
+export const REQUEST_LOGIN = 'REQUEST_LOGIN';
+export const UPDATE_LOGIN_FORM = 'UPDATE_LOGIN_FORM';
 
 // Orders.
 export const ADD_PICTURE_TO_ORDER = 'ADD_PICTURE_TO_ORDER';

@@ -31,12 +31,12 @@ const Routes = () => (
     <Switch>
       <Route
         exact
-        path={screens.ORDERS}
-        component={configScreen(Orders)}
-      />
-      <Route
         path={screens.LOGIN}
         component={configScreen(Login)}
+      />
+      <Route
+        path={screens.ORDERS}
+        component={configScreen(Orders)}
       />
       <Route
         path={screens.ORDER_DETAILS}

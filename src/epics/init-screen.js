@@ -5,7 +5,7 @@
  * @flow
  */
 // React - Redux.
-// import { replace } from 'react-router-redux';
+import { replace } from 'react-router-redux';
 
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
@@ -14,7 +14,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/startWith';
 
 // Types.
@@ -22,6 +22,7 @@ import type {
   AppState,
   AuthenticateResult,
   NotifyErrorOptions,
+  Order,
   ReduxStore,
   User
 } from '../utils/app-types';
@@ -36,6 +37,8 @@ import {
   showLoading,
   showToast
 } from '../actions/common';
+import { initOrders } from '../actions/orders';
+import { authUser } from '../actions/user';
 
 // Libs.
 import debug from '../libs/debugger';
@@ -78,14 +81,22 @@ const initScreens = (store: ReduxStore): Observable<*> => {
         return notifyError$(STORAGE, AUTH, errorOptions);
       }
 
-      return Observable.concat(
-        Observable.of(setScreenLoaded()),
-        hideLoadingAction()
-      ).startWith(showLoading());
+      return storage.getOrders()
+        .concatMap((orders: Order[]): Observable<*> => (
+          Observable.concat(
+            Observable.of(
+              authUser(userData),
+              initOrders(orders)
+            ),
+            Observable.of(setScreenLoaded()),
+            hideLoadingAction()
+          )
+        ))
+        .startWith(showLoading());
     })
     .catch((err: Error) => (
       Observable.of(showToast(
-        debug.logInternalError(err, 'Error on init screens: line: 62'),
+        debug.logInternalError(err, 'Error on init screens: line: 88'),
         ERROR
       ))
     ));
@@ -95,11 +106,10 @@ const initLoginPage = (user: User) => (
   initAuthentication(user)
     .mergeMap(({ userData }: AuthenticateResult): Observable<*> => {
       if (!userData.error) {
-        const errorOptions: NotifyErrorOptions = {
-          location: screens.LOGIN
-        };
-        return notifyError$(STORAGE, AUTH, errorOptions)
-          .startWith(showLoading());
+        return Observable.concat(
+          Observable.of(replace(screens.ORDERS)),
+          hideLoadingAction()
+        );
       }
 
       return Observable.concat(
@@ -107,9 +117,10 @@ const initLoginPage = (user: User) => (
         hideLoadingAction()
       );
     })
+    .startWith(showLoading())
     .catch((err: Error): Observable<*> => (
       Observable.of(showToast(
-        debug.logInternalError(err, 'Error on init login: line: 74'),
+        debug.logInternalError(err, 'Error on init login: line: 112'),
         ERROR
       ))
     ))
@@ -122,7 +133,7 @@ const initLoginPage = (user: User) => (
 const initScreenEpic =
   (action$: Observable<*>, store: ReduxStore): Observable<*> => (
     action$.ofType(INIT_CURRENT_SCREEN)
-      .mergeMap(() => {
+      .switchMap(() => {
         const { router, user } = store.getState();
 
         if (router.location.pathname === screens.LOGIN) {

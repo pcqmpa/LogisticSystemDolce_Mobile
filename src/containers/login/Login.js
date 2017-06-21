@@ -25,6 +25,7 @@ import {
 
 // Actions.
 import {
+  requestLogin,
   updateLoginForm
 } from '../../actions/login-form';
 
@@ -58,13 +59,18 @@ class Login extends Component {
       username
     };
 
-    this.props.validator.run(formRules, form, LOGIN_FORM);
+    const valid = this.props.validator.run(formRules, form, LOGIN_FORM);
+
+    if (valid) {
+      this.props.requestLogin();
+    }
   }
 
   render() {
     const {
       password,
-      username
+      username,
+      formRules
     } = this.props;
 
     return (
@@ -78,6 +84,7 @@ class Login extends Component {
             <TextForm
               onChangeText={this.handleChangeField(USERNAME_FIELD)}
               placeholder={USERNAME_PLACEHOLDER}
+              valid={formRules.username.valid}
               value={username}
             />
           </View>
@@ -86,6 +93,7 @@ class Login extends Component {
               onChangeText={this.handleChangeField(PASSWORD_FIELD)}
               placeholder={PASSWORD_PLACEHOLDER}
               secureTextEntry
+              valid={formRules.password.valid}
               value={password}
             />
           </View>
@@ -107,6 +115,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
+    requestLogin,
     updateLoginForm
   }, dispatch)
 );

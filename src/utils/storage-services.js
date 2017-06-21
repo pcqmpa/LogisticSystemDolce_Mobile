@@ -37,11 +37,11 @@ import {
  * @param {Object} user -> The user data.
  * @returns {Observable} -> The promise that resolves the store process.
  */
-const saveUserData = (user: User): Observable<*> => (
+const saveUserData = (user: User): Observable<Promise<*>> => (
   Observable.fromPromise(
     storage.save({
       key: USER_KEY,
-      rawData: { ...user },
+      data: { ...user },
       expires: USER_DATA_EXPIRATION
     })
   )
@@ -51,13 +51,13 @@ const saveUserData = (user: User): Observable<*> => (
  * Get the stored user data.
  * @returns {Observable} -> The promise resolving the data.
  */
-const getUserData = (): Observable<*> => (
+const getUserData = (): Observable<Promise<*>> => (
   Observable.fromPromise(
     storage.load({
       key: USER_KEY,
       autoSync: false
     })
-  ).catch((err: StorageError): Observable<*> => (
+  ).catch((err: StorageError): Observable<Promise<*>> => (
     Observable.of({ error: err.name })
   ))
 );
@@ -66,7 +66,7 @@ const getUserData = (): Observable<*> => (
  * Removes the stored user data.
  * @returns {Observable} -> The promise resolving the removal process.
  */
-const removeUserData = (): Observable<*> => (
+const removeUserData = (): Observable<Promise<*>> => (
   Observable.fromPromise(
     storage.remove({
       key: USER_KEY
@@ -83,11 +83,11 @@ const removeUserData = (): Observable<*> => (
  * @param {Array} orders -> The orders returned from the server.
  * @returns {Observable} -> The promise that resolves the store process.
  */
-const saveOrders = (orders: Order[]): Observable<*> => (
+const saveOrders = (orders: Order[]): Observable<Promise<*>> => (
   Observable.fromPromise(
     storage.save({
       key: ORDERS_KEY,
-      rawData: [...orders],
+      data: [...orders],
       expires: CURRENT_ORDERS_EXPIRATION
     })
   )
@@ -97,13 +97,13 @@ const saveOrders = (orders: Order[]): Observable<*> => (
  * Retrieves the stored orders.
  * @returns {Observable} -> The promise resolving the data.
  */
-const getOrders = (): Observable<*> => (
+const getOrders = (): Observable<Promise<*>> => (
   Observable.fromPromise(
     storage.load({
       key: ORDERS_KEY,
       autoSync: false
     })
-  ).catch((err: StorageError): Observable<*> => (
+  ).catch((err: StorageError): Observable<Promise<*>> => (
     Observable.of({ error: err.name })
   ))
 );
@@ -112,7 +112,7 @@ const getOrders = (): Observable<*> => (
  * Removes the stored orders.
  * @returns {Observable} -> The promise resolving the removal process.
  */
-const removeOrders = (): Observable<*> => (
+const removeOrders = (): Observable<Promise<*>> => (
   Observable.fromPromise(
     storage.remove({
       key: ORDERS_KEY
