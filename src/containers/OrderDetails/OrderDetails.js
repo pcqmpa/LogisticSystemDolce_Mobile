@@ -4,23 +4,160 @@
  * @flow
  */
 // React.
-import React from 'react';
-import { Text, View } from 'react-native';
-import { Link } from 'react-router-native';
+import React, { Component } from 'react';
+import {
+  ScrollView,
+  Text,
+  View
+} from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// Utils.
-import type { Match } from '../../utils/app-types';
+// Types.
+import type {
+  OrderDetailsProps,
+  PictureType,
+  ReduxDispatch
+} from '../../utils/app-types';
+
+// Components.
+import {
+  Button,
+  DataImage,
+  DataItem,
+  Divider
+} from '../../components/';
+
+// Actions.
+import {
+  setPictureToPreview,
+  setPictureType
+} from '../../actions/picture-preview';
 
 // Constants.
+import { GREY } from '../../constants/colors';
+import { PACKAGE_VARIANT_CLOSED } from '../../constants/icons';
 import { PICTURE_PREVIEW } from '../../constants/screens';
+import { CENTER } from '../../constants/strings';
+import {
+  CODE,
+  PACKAGE
+} from '../../constants/types';
+import {
+  HEADER_HEIGHT,
+  ORDER_DETAILS,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH
+} from '../../constants/values';
 
-const OrderDetails = ({ match }: { match: Match }) => (
-  <View>
-    <Text>Screen: {match.path}</Text>
-    <Link to={PICTURE_PREVIEW}>
-      <Text>Picture</Text>
-    </Link>
-  </View>
+// Styles.
+import styles from './styles';
+
+class OrderDetails extends Component {
+  props: OrderDetailsProps;
+
+  handlePictureItemPress = (type: PictureType, picture?: string | null) => () => {
+    console.log('TYPE: ', type);
+    console.log('PICTURE: ', picture);
+    if (!picture) {
+      this.props.setPictureType(type);
+      return;
+    }
+
+    this.props.setPictureToPreview(picture, type);
+  };
+
+  handleSubmitOrderPress = () => {
+    console.log('SUBMIT');
+  };
+
+  validPictures = (): boolean => {
+    const { order } = this.props;
+    return !order.pictures.code || !order.pictures.package;
+  };
+
+  render() {
+    const { order } = this.props;
+
+    return (
+      <ScrollView style={styles.container}>
+        <View style={styles.iconContainer}>
+          <Icon
+            color={GREY}
+            name={PACKAGE_VARIANT_CLOSED}
+            size={ORDER_DETAILS.ICON_SIZE}
+          />
+        </View>
+        <View>
+          <DataItem
+            keyText="Zona"
+            valueText={order.StrZona}
+          />
+          <Divider />
+          <DataItem
+            keyText="Tipo Empaque"
+            valueText={order.StrTipoEmpaque}
+          />
+          <Divider />
+          <DataItem
+            keyText="Departamento"
+            valueText={order.StrDepartamento}
+          />
+          <Divider />
+          <DataItem
+            keyText="Ciudad"
+            valueText={order.StrCiudad}
+          />
+          <Divider />
+          <DataItem
+            keyText="Barrio"
+            valueText={order.StrBarrio}
+          />
+          <Divider />
+          <DataItem
+            keyText="Dirección"
+            valueText={order.StrDireccion}
+          />
+          <Divider />
+          <DataItem
+            keyText="Asesora"
+            valueText={order.StrNombreAsesora}
+          />
+          <Divider />
+          <DataImage
+            keyText="Foto Código"
+            onPress={this.handlePictureItemPress(CODE, order.pictures.code)}
+            picture={order.pictures.code}
+          />
+          <Divider />
+          <DataImage
+            keyText="Foto Pedido"
+            onPress={this.handlePictureItemPress(PACKAGE, order.pictures.package)}
+            picture={order.pictures.package}
+          />
+        </View>
+        <View style={styles.submitContainer}>
+          <Button
+            disabled={this.validPictures()}
+            onPress={this.handleSubmitOrderPress}
+          >
+            Entregado
+          </Button>
+        </View>
+      </ScrollView>
+    );
+  }
+}
+
+const mapDispatchToProps = (dispatch: ReduxDispatch) => (
+  bindActionCreators({
+    setPictureToPreview,
+    setPictureType
+  }, dispatch)
 );
 
-export default OrderDetails;
+export default connect(
+  null,
+  mapDispatchToProps
+)(OrderDetails);

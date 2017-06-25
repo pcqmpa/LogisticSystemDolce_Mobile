@@ -9,7 +9,6 @@ import { ListView } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import type {  } from 'react-router-redux';
 
 // Types.
 import type {
@@ -45,7 +44,7 @@ class Orders extends Component {
   }
 
   handleCardPress = (orderId: string) => () => {
-    console.log(orderId);
+    this.props.push(`${ORDER_DETAILS_PATH}/${orderId}`);
   }
 
   renderRow = (order: Order): ReactElement<Card> => {
@@ -82,8 +81,7 @@ const mapStateToProps = ({ orders }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
-    push,
-    setOrder
+    push
   }, dispatch)
 );
 

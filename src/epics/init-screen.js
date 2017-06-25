@@ -73,7 +73,7 @@ const initScreens = (store: ReduxStore): Observable<*> => {
   }: AppState = store.getState();
 
   return initAuthentication(user)
-    .concatMap(({ userData }: AuthenticateResult): Observable<*> => {
+    .concatMap(({ userData, wasOnStore }: AuthenticateResult): Observable<*> => {
       if (userData.error) {
         const errorOptions: NotifyErrorOptions = {
           location: router.location.pathname
@@ -81,7 +81,7 @@ const initScreens = (store: ReduxStore): Observable<*> => {
         return notifyError$(STORAGE, AUTH, errorOptions);
       }
 
-      return storage.getOrders()
+      const initializer = storage.getOrders()
         .concatMap((orders: Order[]): Observable<*> => (
           Observable.concat(
             Observable.of(
@@ -91,8 +91,14 @@ const initScreens = (store: ReduxStore): Observable<*> => {
             Observable.of(setScreenLoaded()),
             hideLoadingAction()
           )
-        ))
-        .startWith(showLoading());
+        ));
+
+      if (wasOnStore) {
+        return initializer
+          .startWith(showLoading());
+      }
+
+      return initializer;
     })
     .catch((err: Error) => (
       Observable.of(showToast(

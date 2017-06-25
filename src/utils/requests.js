@@ -12,28 +12,35 @@ import streams from './streams';
 
 // Enpoints.
 import {
-  callFetchUser
+  callFetchUser,
+  callGetOrdersToDeliver
 } from './endpoints';
 
 // Constants.
-import { POST } from '../constants/types';
+import { GET } from '../constants/types';
 
 // Types.
 import type { LoginState } from './app-types';
 
 /**
  * Creates an Observable with the auth request.
- * @param {Object} loginForm -> The login form data.
- * @returns {Observable} -> With the auth request.
+ * @param loginForm -> The login form data.
+ * @returns The auth request.
  */
 export const authenticationRequest = (loginForm: LoginState): Observable<*> => {
-    // streams.ajaxRequest({
-    //   url: callFetchUser(),
-    //   method: POST,
-    //   options: {
-    //     body: JSON.stringify(loginForm)
-    //   }
-    // })
   const request = Observable.ajax.post(callFetchUser(), loginForm);
+  return request;
+};
+
+/**
+ * Creates an Observable with the get orders to deliver request.
+ * @param username -> The username.
+ * @returns Get orders to deliver request.
+ */
+export const getOrdersToDeliverRequest = (username: string = ''): Observable<*> => {
+  const request = streams.ajaxRequest({
+    url: callGetOrdersToDeliver(username),
+    method: GET
+  });
   return request;
 };

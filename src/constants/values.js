@@ -33,6 +33,8 @@ export const TEXT_FORM_RIGHT = 10;
 export const TEXT_FORM_TOP = 15;
 
 // Button.
+export const BUTTON_ACTIVE_OPACITY = 1;
+export const BUTTON_DISABLE_OPACITY = 0.7;
 export const BUTTON_ELEVATION = 2;
 export const BUTTON_PADDING = 14;
 
@@ -50,10 +52,13 @@ export const CARD_SECONDARY_FIELD_WIDTH = 100;
 
 // DataItem.
 export const DATAITEM_CONTAINER_HEIGHT = 60;
-export const DATAITEM_IMAGE_SIZE = 50;
 export const DATAITEM_KEY_CONTAINER_SIZE = 40;
 export const DATAITEM_PADDING = 9;
 export const DATAITEM_VALUE_CONTAINER_SIZE = 60;
+
+// DataImage,
+export const DATAIMAGE_IMAGE_SIZE = 50;
+export const DATAIMAGE_ICON_SIZE = 40;
 
 // Toast.
 export const TOAST_BOTTOM = 70;
@@ -77,7 +82,18 @@ export const CURRENT_ORDERS_EXPIRATION = 1000 * 3600 * 24 * 10;
 export const REDIRECT_DELAY = 400;
 export const TOAST_DISPLAY_DELAY = 200;
 export const TOAST_HIDE_DELAY = 1400;
+export const LOADING_HIDE_DELAY = 400;
 
 // Login.
 export const LOGIN_FORM_SIZE = 30;
 export const LOGIN_FORM_FIELD_PADDING = 10;
+
+// OrderDetails.
+export const ORDER_DETAILS = {
+  ICON_CONTAINER_HEIGHT: 200,
+  ICON_SIZE: 150,
+  SUBMIT_CONTAINER_PADDING_BOTTOM: 100,
+  SUBMIT_CONTAINER_PADDING_LEFT: 5,
+  SUBMIT_CONTAINER_PADDING_RIGHT: 5,
+  SUBMIT_CONTAINER_PADDING_TOP: 20
+};

@@ -57,7 +57,7 @@ const loading: LoadingState = {
  */
 const initialState: CommonState = {
   loading,
-  order: '',
+  order: 0,
   screenLoaded: false,
   toast
 };
@@ -95,9 +95,9 @@ const actionHandlers = {
     ...state,
     loading: { ...loading }
   }),
-  [SET_ORDER]: (state: CommonState, { orderId }: OrderDetailsAction) => ({
+  [SET_ORDER]: (state: CommonState, { order }: OrderDetailsAction) => ({
     ...state,
-    order: orderId
+    order
   }),
   [SET_SCREEN_LOADED]: (state: CommonState): CommonState => ({
     ...state,

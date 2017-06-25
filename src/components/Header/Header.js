@@ -15,7 +15,11 @@ import {
 import HeaderIcon from './HeaderIcon';
 
 // Constants.
-import { LOGOUT, REFRESH } from '../../constants/icons';
+import {
+  ARROW_LEFT_THICK,
+  LOGOUT,
+  REFRESH
+} from '../../constants/icons';
 
 // Styles.
 import styles from './styles';
@@ -27,6 +31,7 @@ import type { HeaderProps } from '../../utils/app-types';
 // Component.
 // -----------------------------------------------------------------------------
 const Header = ({
+  backButton,
   children,
   hide,
   logoutIcon,
@@ -41,9 +46,15 @@ const Header = ({
       <Grid>
         <Column styles={styles.iconColumn}>
           <HeaderIcon
-            icon={LOGOUT}
-            onPress={logoutIcon.onPress}
-            show={logoutIcon.show}
+            icon={REFRESH}
+            onPress={refreshIcon.onPress}
+            show={refreshIcon.show}
+            styles={styles.icon}
+          />
+          <HeaderIcon
+            icon={ARROW_LEFT_THICK}
+            onPress={backButton.onPress}
+            show={backButton.show}
             styles={styles.icon}
           />
         </Column>
@@ -54,9 +65,9 @@ const Header = ({
         </Column>
         <Column styles={styles.iconColumn}>
           <HeaderIcon
-            icon={REFRESH}
-            onPress={refreshIcon.onPress}
-            show={refreshIcon.show}
+            icon={LOGOUT}
+            onPress={logoutIcon.onPress}
+            show={logoutIcon.show}
             styles={styles.icon}
           />
         </Column>

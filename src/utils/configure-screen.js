@@ -12,9 +12,11 @@ import { connect } from 'react-redux';
 // Types.
 import type {
   AppState,
+  ConfigScreenData,
   ConfigScreenOptions,
   ConfigScreenProps,
   ConfigScreenState,
+  Order,
   ReduxDispatch,
   Resume,
   Validator
@@ -26,6 +28,7 @@ import validator from '../libs/validator';
 // Actions.
 import {
   initCurrentScreen,
+  setOrder,
   setScreenDefaultState,
   showToast
 } from '../actions/common';
@@ -34,7 +37,7 @@ import { updateRules } from '../actions/form-rules';
 // Constants.
 import { ERROR } from '../constants/colors';
 import { VALIDATION_ERROR } from '../constants/messages';
-import { LOGIN } from '../constants/screens';
+import { LOGIN, ORDER_DETAILS } from '../constants/screens';
 
 /**
  * Utilty to do some pre-configuration on top
@@ -47,6 +50,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
     state: ConfigScreenState;
     props: ConfigScreenProps;
     validator: Validator;
+    initData: ConfigScreenData;
 
     static defaultProps = {
       user: {
@@ -60,6 +64,8 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
       this.state = {
         fadeScreen: new Animated.Value(0)
       };
+
+      this.initData = {};
 
       this.validator = validator.init(
         (resume: Resume, form: string) => {
@@ -86,26 +92,44 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
       }).start();
     }
 
+    componentWillMount() {
+      // Initialize the screen data.
+      this.initData = this.initScreen();
+    }
+
+    initScreen() {
+      const {
+        match,
+        orders,
+        user
+      } = this.props;
+
+      if (match.path === ORDER_DETAILS) {
+        const { orderId } = match.params;
+        const selectedOrder: Order = orders.find((order: Order): boolean => (
+          order.id === orderId
+        )) || { pictures: {} };
+
+        this.props.setOrder(selectedOrder.NumPedido);
+
+        return { order: selectedOrder };
+      }
+
+      return {};
+    }
+
     renderScreen() {
-      const { match, user, screenLoaded } = this.props;
+      const { screenLoaded } = this.props;
 
       if (!screenLoaded) {
         return null;
-      }
-
-      if ((!user.isAuth) && match.path !== LOGIN) {
-        return (
-          <WrappedContainer
-            validator={this.validator}
-            {...this.props}
-          />
-        );
       }
 
       return (
         <WrappedContainer
           validator={this.validator}
           {...this.props}
+          {...this.initData}
         />
       );
     }
@@ -119,7 +143,8 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
     }
   }
 
-  const mapStateToProps = ({ common, user }: AppState) => ({
+  const mapStateToProps = ({ common, orders, user }: AppState) => ({
+    orders,
     screenLoaded: common.screenLoaded,
     user
   });
@@ -127,6 +152,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
   const mapDispatchToProps = (dispatch: ReduxDispatch) => (
     bindActionCreators({
       initCurrentScreen,
+      setOrder,
       setScreenDefaultState,
       showToast,
       updateRules

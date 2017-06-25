@@ -44,6 +44,13 @@ export type AjaxResponse = {
   xhr: XMLHttpRequest
 };
 
+export type FetchResponse = {
+  headers: { map: any },
+  data: any,
+  status: number,
+  url: string
+};
+
 export type User = {
   error?: string,
   id?: string,
@@ -71,6 +78,7 @@ export type StyleOptions = {
   alignContent?: string,
   color?: string,
   direction?: string,
+  disabled?: boolean,
   justifyContent?: string,
   size?: number
 };
@@ -91,17 +99,19 @@ export type GridProps = {
 };
 
 export type OrderPictures = {
-  code?: string,
-  package?: string
+  code?: string | null,
+  package?: string | null
 };
 
 export type Order = {
-  delivered: boolean,
+  Entregado?: boolean,
   error?: string,
   id?: string,
+  Id?: number,
   IdTransportista?: number,
   NumPedido?: number,
-  pictures?: OrderPictures,
+  pictures: OrderPictures,
+  retrieved?: boolean,
   StrBarrio?: string,
   StrCapana?: string,
   StrCiudad?: string,
@@ -294,9 +304,14 @@ export type PictureAction = {
   pictureType: PictureType
 };
 
+export type PictureTypeAction = {
+  type: string,
+  pictureType: string
+};
+
 export type OrderDetailsAction = {
   type: string,
-  orderId: string
+  order: number
 };
 
 //
@@ -311,7 +326,7 @@ export type RouterAction = (path: string | void) => HistoryAction;
 // ====================================
 export type ActionCreator = () => Action;
 export type ShowToast = (message: string, toastType: string) => ToastAction;
-export type SetOrder = (orderNama: )
+export type SetOrder = (order?: number) => OrderDetailsAction;
 
 // Form rules.
 // ====================================
@@ -320,6 +335,11 @@ export type UpdateRules = (form: string, data: Resume) => FormRulesAction;
 // Login Form.
 // ====================================
 export type UpdateLoginForm = (field: string, value: string) => LoginAction;
+
+// Picture Preview.
+// ====================================
+export type SetPictureType = (pictureType: PictureType) => PictureTypeAction;
+export type SetPictureToPreview = (picture: string, pictureType: PictureType) => PictureAction;
 
 //
 // Redux.
@@ -351,7 +371,9 @@ export type ConfigScreenState = {
 export type ConfigScreenProps = {
   match: Match,
   initCurrentScreen: ActionCreator,
+  orders: Order[];
   screenLoaded: boolean,
+  setOrder: SetOrder,
   setScreenDefaultState: ActionCreator,
   showToast: ShowToast,
   updateRules: UpdateRules,
@@ -360,6 +382,10 @@ export type ConfigScreenProps = {
 
 export type ConfigScreenOptions = {
   isForm?: boolean
+};
+
+export type ConfigScreenData = {
+  order?: Order
 };
 
 // Toast.
@@ -379,6 +405,7 @@ export type HeaderIconProps = {
 };
 
 export type HeaderProps = {
+  backButton: HeaderIconProps,
   children: ReactElement<*>,
   hide: boolean,
   logoutIcon: HeaderIconProps,
@@ -407,6 +434,33 @@ export type CardProps = {
   order: Order
 };
 
+// DataItem.
+// ====================================
+export type DataItemProps = {
+  keyText: string,
+  valueText: string
+};
+
+// DataImage.
+// ====================================
+export type DataImageProps = {
+  hasPicture: boolean,
+  keyText: string,
+  onPress: Noop,
+  picture?: string
+};
+
+// Button.
+// ====================================
+export type ButtonProps = {
+  children: any,
+  containerStyles: number,
+  disabled: boolean,
+  onPress(): void,
+  size: number,
+  textStyles: number
+};
+
 //
 // Containers.
 // -----------------------------------------------------------------------------
@@ -415,8 +469,10 @@ export type CardProps = {
 // ====================================
 export type HeaderContainerProps = {
   currentPath: string,
+  goBack: ActionCreator,
   logoutUser: ActionCreator,
   order: string,
+  requestOrders: ActionCreator,
   screenLoaded: boolean
 };
 
@@ -450,6 +506,13 @@ export type LoginProps = {
 // ====================================
 export type OrdersProps = {
   orders: Order[],
-  push: RouterAction,
-  setOrder
+  push: RouterAction
+};
+
+// Order Details.
+// ====================================
+export type OrderDetailsProps = {
+  order: Order,
+  setPictureToPreview: SetPictureToPreview,
+  setPictureType: SetPictureType
 };

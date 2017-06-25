@@ -6,14 +6,16 @@
 // Constants.
 import {
   CLEAR_PICTURE_PREVIEW,
-  SET_PICTURE_TO_PREVIEW
+  SET_PICTURE_TO_PREVIEW,
+  SET_PICTURE_TYPE
 } from '../constants/actions';
 
 // Types.
 import type {
   Action,
   PictureAction,
-  PictureType
+  PictureType,
+  PictureTypeAction
 } from '../utils/app-types';
 
 /**
@@ -27,6 +29,17 @@ export const setPictureToPreview =
     picture,
     pictureType
   });
+
+/**
+ * Action to set a picture type so that the picture preview
+ * can set the picture to the order after taken the first picture.
+ * @param {String} pictureType -> The type of the picture
+ * @returns {Object} -> The action.
+ */
+export const setPictureType = (pictureType: PictureType): PictureTypeAction => ({
+  type: SET_PICTURE_TYPE,
+  pictureType
+})
 
 /**
  * Action to clear the picture on preview.

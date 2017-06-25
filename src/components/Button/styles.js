@@ -11,6 +11,8 @@ import { BRAND, WHITE } from '../../constants/colors';
 import { CENTER, ROW } from '../../constants/strings';
 import {
   BASE_BODER,
+  BUTTON_ACTIVE_OPACITY,
+  BUTTON_DISABLE_OPACITY,
   BUTTON_ELEVATION,
   BUTTON_PADDING,
   REGULAR_TEXT
@@ -32,6 +34,7 @@ const styles = (options: StyleOptions) => (
       borderRadius: 4,
       flexDirection: ROW,
       justifyContent: CENTER,
+      opacity: (options.disabled) ? BUTTON_DISABLE_OPACITY : BUTTON_ACTIVE_OPACITY,
       padding: BUTTON_PADDING
     },
     text: {

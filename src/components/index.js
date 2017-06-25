@@ -18,6 +18,8 @@ export { default as Check } from './Check/Check';
 
 export { default as DataItem } from './DataItem/DataItem';
 
+export { default as DataImage } from './DataImage/DataImage';
+
 export { default as Toast } from './Toast/Toast';
 
 export { default as Header } from './Header/Header';

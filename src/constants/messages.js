@@ -17,5 +17,8 @@ export const LOGOUT_SUCCESS = 'Lo esperamos nuevamente';
 
 export const VALIDATION_ERROR = 'Uno de los campos es invalido o esta vacío.';
 
+// Loading Labels.
+export const LOADING_ORDERS = 'Actualizando Pedidos...'
+
 // Debug messages.
 export const BAD_ERROR_SOURCE = 'The source of the validation is incorrect.';

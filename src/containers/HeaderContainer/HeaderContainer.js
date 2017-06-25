@@ -8,24 +8,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-// Components.
-import { Header } from '../../components/';
-
-// Actions.
-import { logoutUser } from '../../actions/user';
-
-// Constants.
-import {
-  ORDERS,
-  LOGIN,
-  ORDER_DETAILS,
-  PICTURE_PREVIEW
-} from '../../constants/screens';
-import {
-  ORDERS_TITLE,
-  PICTURE_PREVIEW_TITLE
-} from '../../constants/strings';
+import { goBack } from 'react-router-redux';
 
 // Types.
 import type {
@@ -34,6 +17,25 @@ import type {
   HeaderContainerProps,
   ReduxDispatch
 } from '../../utils/app-types';
+
+// Components.
+import { Header } from '../../components/';
+
+// Actions.
+import { requestOrders } from '../../actions/orders';
+import { logoutUser } from '../../actions/user';
+
+// Constants.
+import {
+  ORDERS,
+  LOGIN,
+  ORDER_DETAILS_PATH,
+  PICTURE_PREVIEW
+} from '../../constants/screens';
+import {
+  ORDERS_TITLE,
+  PICTURE_PREVIEW_TITLE
+} from '../../constants/strings';
 
 //
 // Component.
@@ -46,20 +48,30 @@ class HeaderContainer extends Component {
     [PICTURE_PREVIEW]: PICTURE_PREVIEW_TITLE
   };
 
+  handleBackButtonPress = () => {
+    this.props.goBack();
+  };
+
   handleLogoutPress = () => {
     this.props.logoutUser();
   };
 
   handleRefreshPress = () => {
-    // TODO: Add actual functionality.
-    console.log('REFRESH');
+    this.props.requestOrders();
   };
 
   getCurrentContent(props: HeaderContainerProps) {
     const { currentPath, order } = props;
 
-    const title = (currentPath !== ORDER_DETAILS)
-      ? this.titles[currentPath] : order;
+    const title = (!currentPath.includes(ORDER_DETAILS_PATH))
+      ? this.titles[currentPath] : `#${order}`;
+
+    // Configure Back Button.
+    const showBackButton = currentPath.includes(ORDER_DETAILS_PATH);
+    const backButton = {
+      onPress: this.handleBackButtonPress,
+      show: showBackButton
+    };
 
     // Configure Logout Icon.
     const showLogout = currentPath !== LOGIN;
@@ -78,6 +90,7 @@ class HeaderContainer extends Component {
     const hideHeader = currentPath === LOGIN;
 
     return {
+      backButton,
       hideHeader,
       logoutIcon,
       refreshIcon,
@@ -93,6 +106,7 @@ class HeaderContainer extends Component {
     }
 
     const {
+      backButton,
       hideHeader,
       logoutIcon,
       refreshIcon,
@@ -101,6 +115,7 @@ class HeaderContainer extends Component {
 
     return (
       <Header
+        backButton={backButton}
         hide={hideHeader}
         logoutIcon={logoutIcon}
         refreshIcon={refreshIcon}
@@ -119,7 +134,9 @@ const mapStateToProps = ({ common, router }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
-    logoutUser
+    goBack,
+    logoutUser,
+    requestOrders
   }, dispatch)
 );
 

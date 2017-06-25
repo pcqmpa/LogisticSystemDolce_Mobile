@@ -7,21 +7,14 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
+// Types.
+import type { ButtonProps } from '../../utils/app-types';
+
 // Utils.
 import { array } from '../../utils/helpers/';
 
 // Styles.
 import buttonStyles from './styles';
-
-// Types.
-declare type Props = {
-  children: any,
-  containerStyles: number,
-  disabled: boolean,
-  onPress(): void,
-  size: number,
-  textStyles: number
-};
 
 //
 // Component.
@@ -33,8 +26,8 @@ const Button = ({
   onPress,
   size,
   textStyles
-}: Props) => {
-  const calculatedStyles = buttonStyles({ size });
+}: ButtonProps) => {
+  const calculatedStyles = buttonStyles({ disabled, size });
   const shrinkedContainerStyles = array.shrink([
     calculatedStyles.container,
     containerStyles

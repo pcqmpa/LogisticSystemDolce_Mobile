@@ -23,7 +23,6 @@ import styles from './styles';
 // Types.
 import type {
   CardProps,
-  Noop,
   Order
 } from '../../utils/app-types';
 
@@ -49,7 +48,7 @@ const Card = ({ onPress, order }: CardProps) => (
         </View>
         <View style={styles.secondaryField}>
           <Check
-            checked={order.delivered}
+            checked={order.Entregado}
             containerStyles={styles.check}
           />
         </View>

@@ -10,9 +10,6 @@ import shortId from 'shortid';
 // Types.
 import type { Order } from '../utils/app-types';
 
-// Constants.
-import { CODE, PACKAGE } from '../constants/types';
-
 /**
  * Transmutes the order list to add required props.
  * @param {Array} orders -> The orders.
@@ -20,13 +17,14 @@ import { CODE, PACKAGE } from '../constants/types';
  */
 const toInProgressOrders = (orders: Order[]): Order[] => (
   orders
-    .map(order => ({
+    .map((order: Order) => ({
       id: shortId.generate(),
       ...order,
+      retrieved: false,
       synced: false,
       pictures: {
-        [CODE]: null,
-        [PACKAGE]: null
+        code: null,
+        package: null
       }
     }))
 );

@@ -9,12 +9,14 @@ import { combineEpics } from 'redux-observable';
 import authentication from './authentication';
 import initScreen from './init-screen';
 import logout from './logout';
+import orders from './orders';
 import toast from './toast';
 
 const rootEpic = combineEpics(
   authentication,
   initScreen,
   logout,
+  orders,
   toast
 );
 

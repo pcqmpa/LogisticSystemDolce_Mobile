@@ -6,23 +6,34 @@
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/concatMap';
 
 // Constants.
 import { GET } from '../constants/types';
 
 // Types.
-import type { AjaxRequest } from './app-types';
+import type {
+  AjaxRequest,
+  FetchResponse
+} from './app-types';
 
 const ajaxRequest =
   ({ url, method = GET, options = {} }: AjaxRequest): Observable<*> => {
-    console.log(options);
     const request = Observable.fromPromise(
       fetch(url, {
         method,
         ...options
       })
-      .then(response => (response.json()))
-    );
+    ).concatMap((response: FetchResponse) => {
+      const mappedResponse = Observable.fromPromise(response.json())
+        .map((data: any): FetchResponse => ({
+          data,
+          headers: response.headers,
+          status: response.status,
+          url: response.url
+        }));
+      return mappedResponse;
+    });
     return request;
   };
 
