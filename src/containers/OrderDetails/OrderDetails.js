@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Types.
@@ -38,7 +39,10 @@ import {
 // Constants.
 import { GREY } from '../../constants/colors';
 import { PACKAGE_VARIANT_CLOSED } from '../../constants/icons';
-import { PICTURE_PREVIEW } from '../../constants/screens';
+import {
+  CAMERA_VIEW,
+  PICTURE_PREVIEW
+} from '../../constants/screens';
 import { CENTER } from '../../constants/strings';
 import {
   CODE,
@@ -62,6 +66,7 @@ class OrderDetails extends Component {
     console.log('PICTURE: ', picture);
     if (!picture) {
       this.props.setPictureType(type);
+      this.props.push(CAMERA_VIEW);
       return;
     }
 
@@ -152,6 +157,7 @@ class OrderDetails extends Component {
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
+    push,
     setPictureToPreview,
     setPictureType
   }, dispatch)

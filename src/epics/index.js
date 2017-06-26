@@ -10,6 +10,7 @@ import authentication from './authentication';
 import initScreen from './init-screen';
 import logout from './logout';
 import orders from './orders';
+import picture from './picture';
 import toast from './toast';
 
 const rootEpic = combineEpics(
@@ -17,6 +18,7 @@ const rootEpic = combineEpics(
   initScreen,
   logout,
   orders,
+  picture,
   toast
 );
 

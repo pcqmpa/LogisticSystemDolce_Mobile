@@ -17,3 +17,5 @@ export { default as HeaderContainer } from './HeaderContainer/HeaderContainer';
 export { default as ToastContainer } from './ToastContainer/ToastContainer';
 
 export { default as Loading } from './Loading/Loading';
+
+export { default as CameraView } from './CameraView/CameraView';

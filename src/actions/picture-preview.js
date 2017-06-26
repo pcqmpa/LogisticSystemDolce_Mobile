@@ -7,15 +7,20 @@
 import {
   CLEAR_PICTURE_PREVIEW,
   SET_PICTURE_TO_PREVIEW,
-  SET_PICTURE_TYPE
+  SET_PICTURE_TYPE,
+  SET_PICTURE_URI,
+  SHOT_PICTURE
 } from '../constants/actions';
 
 // Types.
 import type {
   Action,
+  CameraElement,
   PictureAction,
   PictureType,
-  PictureTypeAction
+  PictureTypeAction,
+  PictureUriAction,
+  ShotPictureAction
 } from '../utils/app-types';
 
 /**
@@ -40,6 +45,28 @@ export const setPictureType = (pictureType: PictureType): PictureTypeAction => (
   type: SET_PICTURE_TYPE,
   pictureType
 })
+
+/**
+ * Action to set a picture uri the first time a particular
+ * picture is taked to display it to the user on the
+ * preview screen.
+ * @param {String} pictureUri -> The uri of the picture.
+ * @returns {Object} -> The action.
+ */
+export const setPictureUri = (pictureUri: string): PictureUriAction => ({
+  type: SET_PICTURE_URI,
+  pictureUri
+});
+
+/**
+ * Action to take asynchronously a picture and set it to the store.
+ * @param {Object} cameraElement -> The camera reference.
+ * @returns {Object} -> The action.
+ */
+export const shotPicture = (cameraElement: CameraElement): ShotPictureAction => ({
+  type: SHOT_PICTURE,
+  cameraElement
+});
 
 /**
  * Action to clear the picture on preview.

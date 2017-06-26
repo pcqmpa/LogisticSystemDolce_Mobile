@@ -4,6 +4,9 @@
     "es6": true
   },
   "parser": "babel-eslint",
+  "ecmaFeatures": {
+    "jsx": true
+  },
   "extends": [
     "airbnb",
     "plugin:react-native/all",

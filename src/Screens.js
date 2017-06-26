@@ -11,6 +11,7 @@ import * as screens from './constants/screens';
 
 // Components.
 import {
+  CameraView,
   Login,
   Main,
   PicturePreview,
@@ -45,6 +46,10 @@ const Routes = () => (
       <Route
         path={screens.PICTURE_PREVIEW}
         component={configScreen(PicturePreview)}
+      />
+      <Route
+        path={screens.CAMERA_VIEW}
+        component={CameraView}
       />
     </Switch>
   </Main>

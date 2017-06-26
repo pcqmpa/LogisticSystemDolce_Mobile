@@ -17,6 +17,8 @@ export const LOGOUT_SUCCESS = 'Lo esperamos nuevamente';
 
 export const VALIDATION_ERROR = 'Uno de los campos es invalido o esta vacío.';
 
+export const PICTURE_SHOT_ERROR = 'Surgió un error en el sistema mientras se tomaba la foto';
+
 // Loading Labels.
 export const LOADING_ORDERS = 'Actualizando Pedidos...'
 

@@ -6,6 +6,8 @@ export { default as TextForm } from './TextForm/TextForm';
 
 export { default as Button } from './Button/Button';
 
+export { default as ButtonIcon } from './ButtonIcon/ButtonIcon';
+
 export { default as Grid } from './Grid/Grid';
 
 export { default as Row } from './Row/Row';

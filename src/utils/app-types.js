@@ -168,7 +168,7 @@ export type ToastState = {
 
 export type CommonState = {
   loading: LoadingState,
-  order: string | null,
+  order: number | null,
   screenLoaded: boolean,
   toast: ToastState
 };
@@ -306,7 +306,17 @@ export type PictureAction = {
 
 export type PictureTypeAction = {
   type: string,
-  pictureType: string
+  pictureType: PictureType
+};
+
+export type PictureUriAction = {
+  type: string,
+  pictureUri: string
+};
+
+export type ShotPictureAction = {
+  type: string,
+  cameraElement: CameraElement
 };
 
 export type OrderDetailsAction = {
@@ -338,8 +348,10 @@ export type UpdateLoginForm = (field: string, value: string) => LoginAction;
 
 // Picture Preview.
 // ====================================
-export type SetPictureType = (pictureType: PictureType) => PictureTypeAction;
 export type SetPictureToPreview = (picture: string, pictureType: PictureType) => PictureAction;
+export type SetPictureType = (pictureType: PictureType) => PictureTypeAction;
+export type SetPictureUri = (pictureUri: string) => PictureUriAction;
+export type ShotPicture = (cameraElement: CameraElement) => ShotPictureAction;
 
 //
 // Redux.
@@ -450,6 +462,15 @@ export type DataImageProps = {
   picture?: string
 };
 
+// ButtonIcon.
+// ====================================
+export type ButtonIconProps = {
+  icon: string,
+  iconStyle: number,
+  onPress: Noop,
+  style: number
+};
+
 // Button.
 // ====================================
 export type ButtonProps = {
@@ -458,7 +479,19 @@ export type ButtonProps = {
   disabled: boolean,
   onPress(): void,
   size: number,
-  textStyles: number
+  textStyles: number,
+  theme?: string
+};
+
+// Camera.
+// ====================================
+export type CameraElement = {
+  capture(options?: any): Promise<*>
+};
+
+export type PictureShot = {
+  mediaUri: string,
+  path: string
 };
 
 //
@@ -513,6 +546,14 @@ export type OrdersProps = {
 // ====================================
 export type OrderDetailsProps = {
   order: Order,
+  push: RouterAction,
   setPictureToPreview: SetPictureToPreview,
   setPictureType: SetPictureType
+};
+
+// Camera View.
+// ====================================
+export type CameraViewProps = {
+  goBack: Noop,
+  shotPicture: ShotPicture
 };

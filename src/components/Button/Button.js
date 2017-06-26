@@ -25,9 +25,10 @@ const Button = ({
   disabled,
   onPress,
   size,
-  textStyles
+  textStyles,
+  theme
 }: ButtonProps) => {
-  const calculatedStyles = buttonStyles({ disabled, size });
+  const calculatedStyles = buttonStyles({ color: theme, disabled, size });
   const shrinkedContainerStyles = array.shrink([
     calculatedStyles.container,
     containerStyles

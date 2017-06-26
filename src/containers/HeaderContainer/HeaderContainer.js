@@ -26,12 +26,7 @@ import { requestOrders } from '../../actions/orders';
 import { logoutUser } from '../../actions/user';
 
 // Constants.
-import {
-  ORDERS,
-  LOGIN,
-  ORDER_DETAILS_PATH,
-  PICTURE_PREVIEW
-} from '../../constants/screens';
+import * as screens from '../../constants/screens';
 import {
   ORDERS_TITLE,
   PICTURE_PREVIEW_TITLE
@@ -44,8 +39,8 @@ class HeaderContainer extends Component {
   props: HeaderContainerProps;
 
   titles: ComputedProps = {
-    [ORDERS]: ORDERS_TITLE,
-    [PICTURE_PREVIEW]: PICTURE_PREVIEW_TITLE
+    [screens.ORDERS]: ORDERS_TITLE,
+    [screens.PICTURE_PREVIEW]: PICTURE_PREVIEW_TITLE
   };
 
   handleBackButtonPress = () => {
@@ -63,31 +58,31 @@ class HeaderContainer extends Component {
   getCurrentContent(props: HeaderContainerProps) {
     const { currentPath, order } = props;
 
-    const title = (!currentPath.includes(ORDER_DETAILS_PATH))
+    const title = (!currentPath.includes(screens.ORDER_DETAILS_PATH))
       ? this.titles[currentPath] : `#${order}`;
 
     // Configure Back Button.
-    const showBackButton = currentPath.includes(ORDER_DETAILS_PATH);
+    const showBackButton = currentPath.includes(screens.ORDER_DETAILS_PATH);
     const backButton = {
       onPress: this.handleBackButtonPress,
       show: showBackButton
     };
 
     // Configure Logout Icon.
-    const showLogout = currentPath !== LOGIN;
+    const showLogout = currentPath !== screens.LOGIN;
     const logoutIcon = {
       onPress: this.handleLogoutPress,
       show: showLogout
     };
 
     // Configure Refresh Icon.
-    const showRefresh = currentPath === ORDERS;
+    const showRefresh = currentPath === screens.ORDERS;
     const refreshIcon = {
       onPress: this.handleRefreshPress,
       show: showRefresh
     };
 
-    const hideHeader = currentPath === LOGIN;
+    const hideHeader = currentPath === screens.LOGIN || currentPath === screens.CAMERA_VIEW;
 
     return {
       backButton,
