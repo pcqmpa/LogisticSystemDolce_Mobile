@@ -4,23 +4,35 @@
  * @flow
  */
 // React.
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { Image, View } from 'react-native';
 import { Link } from 'react-router-native';
 
-// Utils.
-import type { Match } from '../../utils/app-types';
+// Components.
+import { Button } from '../../components/';
+
+// Sources.
+import test from '../../images/test';
 
 // Constants.
 import { LOGIN } from '../../constants/screens';
+import {
+  WINDOW_WIDTH
+} from '../../constants/values';
 
-const PicturePreview = ({ match }: { match: Match }) => (
-  <View>
-    <Text>Screen: {match.path}</Text>
-    <Link to={LOGIN}>
-      <Text>Login</Text>
-    </Link>
-  </View>
-);
+class PicturePreview extends Component {
+  render() {
+    return (
+      <View style={{
+        height: 200,
+        width: WINDOW_WIDTH
+      }}>
+        <Image
+          source={test}
+        />
+      </View>
+    );
+  }
+}
 
 export default PicturePreview;

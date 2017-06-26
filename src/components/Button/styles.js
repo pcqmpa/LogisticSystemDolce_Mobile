@@ -30,7 +30,7 @@ const styles = (options: StyleOptions) => (
     },
     button: {
       alignItems: CENTER,
-      backgroundColor: BRAND,
+      backgroundColor: options.color || BRAND,
       borderRadius: 4,
       flexDirection: ROW,
       justifyContent: CENTER,

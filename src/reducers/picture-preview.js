@@ -10,14 +10,16 @@ import { createReducer } from 'redux-create-reducer';
 import {
   CLEAR_PICTURE_PREVIEW,
   SET_PICTURE_TO_PREVIEW,
-  SET_PICTURE_TYPE
+  SET_PICTURE_TYPE,
+  SET_PICTURE_URI
 } from '../constants/actions';
 
 // Types.
 import type {
   PictureAction,
   PictureState,
-  PictureTypeAction
+  PictureTypeAction,
+  PictureUriAction
 } from '../utils/app-types';
 
 //
@@ -52,6 +54,11 @@ const actionHandlers = {
     (state: PictureState, { pictureType }: PictureTypeAction): PictureState => ({
       ...state,
       pictureType
+    }),
+  [SET_PICTURE_URI]:
+    (state: PictureState, { pictureUri }: PictureUriAction): PictureState => ({
+      ...state,
+      picture: pictureUri
     }),
   [CLEAR_PICTURE_PREVIEW]: (): PictureState => (initialState)
 };

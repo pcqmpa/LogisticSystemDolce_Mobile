@@ -54,7 +54,7 @@ class Orders extends Component {
         order={order}
       />
     );
-  }
+  };
 
   renderSeparator(): ReactElement<Divider> {
     return (<Divider />);
