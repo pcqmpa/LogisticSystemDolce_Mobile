@@ -16,6 +16,9 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
+// Types.
+import type { LogoutAction } from '../utils/app-types';
+
 // Observables.
 import { hideLoadingAction } from './common';
 
@@ -40,15 +43,15 @@ import {
 
 const logoutEpic = (action$: Observable<*>): Observable<*> => (
   action$.ofType(LOGOUT_USER)
-    .switchMap(() => (
-      storage.removeUserData()
+    .switchMap((action: LogoutAction) => {
+      return storage.removeUserData()
         .concatMap(() => (storage.removeOrders()))
         .concatMap(() => (
           Observable.concat(
             Observable.of(replace(LOGIN))
               .delay(REDIRECT_DELAY),
             hideLoadingAction(),
-            Observable.of(showToast(LOGOUT_SUCCESS))
+            Observable.of(showToast(action.message))
               .delay(TOAST_DISPLAY_DELAY)
           )
         ))
@@ -56,8 +59,8 @@ const logoutEpic = (action$: Observable<*>): Observable<*> => (
           Observable.of(showToast(SYSTEM_ERROR, ERROR))
             .delay(TOAST_DISPLAY_DELAY)
         ))
-        .startWith(showLoading())
-    ))
+        .startWith(showLoading());
+    })
 );
 
 export default logoutEpic;

@@ -1,6 +1,7 @@
 /**
  * Module with the app endpoint services.
  * @module src/utils/endpoints
+ * @flow
  */
 // Constants.
 import { API_SERVICE_URL } from '../constants/config';
@@ -24,5 +25,18 @@ export const callFetchUser = () =>
 export const callGetOrdersToDeliver = (username: string) =>
   (`${API_SERVICE_URL}/api/callGetOrdersToDeliver?username=${username}`);
 
-export default { callFetchUser };
+/**
+ * Service to submit a order.
+ * @returns {String} -> With the URL request.
+ */
+export const callDeliverOrder = () =>
+  (`${API_SERVICE_URL}/api/callDeliverOrder`);
 
+/**
+ * Servoce to save a picture on the server.
+ * @returns {String} -> With the URL request.
+ */
+export const callSavePicture = () =>
+  (`${API_SERVICE_URL}/api/savePicture`);
+
+export default { callFetchUser };

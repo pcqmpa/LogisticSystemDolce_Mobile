@@ -48,7 +48,7 @@ const Card = ({ onPress, order }: CardProps) => (
         </View>
         <View style={styles.secondaryField}>
           <Check
-            checked={order.Entregado}
+            checked={order.retrieved}
             containerStyles={styles.check}
           />
         </View>

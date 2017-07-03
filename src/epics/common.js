@@ -9,26 +9,17 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/observable/of';
 
 // Actions.
-import {
-  showToast,
-  hideLoading
-} from '../actions/common';
+import { hideLoading } from '../actions/common';
 import { logoutUser } from '../actions/user';
-
-// Constants.
-import { SESSION_EXPIRED } from '../constants/messages';
-import { ERROR } from '../constants/types';
 
 export const hideLoadingAction = (): Observable<*> => (
   Observable.of(hideLoading())
     .delay(1500)
 );
 
-export const sessionExpired = (): Observable<*> => (
+export const sessionExpired = (message: string): Observable<*> => (
   Observable.concat(
-    Observable.of(logoutUser()),
-    hideLoadingAction(),
-    Observable.of(showToast(SESSION_EXPIRED, ERROR))
-      .delay(200)
+    Observable.of(logoutUser(message)),
+    hideLoadingAction()
   )
 );

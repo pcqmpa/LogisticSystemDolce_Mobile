@@ -6,6 +6,7 @@
 // React.
 import React, { Component } from 'react';
 import {
+  NativeModules,
   ScrollView,
   Text,
   View
@@ -17,6 +18,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Types.
 import type {
+  AppState,
+  Order,
   OrderDetailsProps,
   PictureType,
   ReduxDispatch
@@ -31,6 +34,7 @@ import {
 } from '../../components/';
 
 // Actions.
+import { deliverOrder } from '../../actions/orders';
 import {
   setPictureToPreview,
   setPictureType
@@ -43,17 +47,11 @@ import {
   CAMERA_VIEW,
   PICTURE_PREVIEW
 } from '../../constants/screens';
-import { CENTER } from '../../constants/strings';
 import {
   CODE,
   PACKAGE
 } from '../../constants/types';
-import {
-  HEADER_HEIGHT,
-  ORDER_DETAILS,
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH
-} from '../../constants/values';
+import { ORDER_DETAILS } from '../../constants/values';
 
 // Styles.
 import styles from './styles';
@@ -62,24 +60,28 @@ class OrderDetails extends Component {
   props: OrderDetailsProps;
 
   handlePictureItemPress = (type: PictureType, picture?: string | null) => () => {
-    console.log('TYPE: ', type);
-    console.log('PICTURE: ', picture);
     if (!picture) {
       this.props.setPictureType(type);
       this.props.push(CAMERA_VIEW);
       return;
     }
 
+    this.props.push(PICTURE_PREVIEW);
     this.props.setPictureToPreview(picture, type);
   };
 
   handleSubmitOrderPress = () => {
-    console.log('SUBMIT');
+    this.props.deliverOrder(this.props.order);
   };
 
-  validPictures = (): boolean => {
+  cannotBeSubmitted = (): boolean => {
     const { order } = this.props;
-    return !order.pictures.code || !order.pictures.package;
+    return (
+      !order.pictures.code ||
+      !order.pictures.package ||
+      order.retrieved ||
+      !!order.Entregado
+    );
   };
 
   render() {
@@ -144,10 +146,10 @@ class OrderDetails extends Component {
         </View>
         <View style={styles.submitContainer}>
           <Button
-            disabled={this.validPictures()}
+            disabled={this.cannotBeSubmitted()}
             onPress={this.handleSubmitOrderPress}
           >
-            Entregado
+            {(order.retrieved) ? 'Entregado' : 'Entregar'}
           </Button>
         </View>
       </ScrollView>
@@ -155,8 +157,13 @@ class OrderDetails extends Component {
   }
 }
 
+const mapStateToProps = ({ common, orders }: AppState) => ({
+  order: orders.find((order: Order) => (order.NumPedido === common.order))
+});
+
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
+    deliverOrder,
     push,
     setPictureToPreview,
     setPictureType
@@ -164,6 +171,6 @@ const mapDispatchToProps = (dispatch: ReduxDispatch) => (
 );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(OrderDetails);

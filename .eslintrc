@@ -4,32 +4,36 @@
     "es6": true
   },
   "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "jsx": true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "extends": [
     "airbnb",
-    "plugin:react-native/all",
     "plugin:flowtype/recommended"
   ],
   "plugins": [
     "react",
-    "react-native",
     "import",
     "class-property",
     "flowtype"
   ],
   "globals": {
-    "fetch": true
+    "fetch": true,
+    "FormData": true
   },
   "rules": {
-    "indent": ["error", 2],
-    "no-debugger": "warn",
+    "arrow-body-style":"off",
     "comma-dangle": ["error", "never"],
+    "indent": ["error", 2],
+    "jsx-a11y/href-no-hash": "off",
+    "jsx-a11y/img-has-alt": "off",
     "linebreak-style": ["error", "unix"],
+    "no-debugger": "warn",
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
     "react/require-default-props": "off",
-    "jsx-a11y/img-has-alt": "off",
-    "react/sort-comp": "off"
+    "react/sort-comp": "off",
+    "sort-keys": ["error", "asc", {"caseSensitive": true, "natural": false}]
   }
 }

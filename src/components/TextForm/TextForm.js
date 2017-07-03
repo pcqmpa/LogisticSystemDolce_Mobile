@@ -42,7 +42,7 @@ const TextForm = ({
   styles,
   valid,
   value
-}: TextFormProps) => {
+  }: TextFormProps) => {
   const fieldColor = (valid) ? GREY : ERROR;
   const selectionColor = (valid) ? BRAND : ERROR;
   const computedStyles = formStyles({ color: fieldColor });

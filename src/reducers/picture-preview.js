@@ -9,9 +9,12 @@ import { createReducer } from 'redux-create-reducer';
 // Actions.
 import {
   CLEAR_PICTURE_PREVIEW,
+  CLEAR_PICTURE_URI,
+  CLEAR_RETAKE_PICTURE,
   SET_PICTURE_TO_PREVIEW,
   SET_PICTURE_TYPE,
-  SET_PICTURE_URI
+  SET_PICTURE_URI,
+  SET_RETAKE_PICTURE
 } from '../constants/actions';
 
 // Types.
@@ -31,8 +34,10 @@ import type {
  * @type {Object}
  */
 const initialState: PictureState = {
+  firstPreview: false,
   picture: '',
-  pictureType: ''
+  pictureType: '',
+  retakePicture: false
 };
 
 //
@@ -47,6 +52,7 @@ const actionHandlers = {
   [SET_PICTURE_TO_PREVIEW]:
     (state: PictureState, { picture, pictureType }: PictureAction): PictureState => ({
       ...state,
+      firstPreview: false,
       picture,
       pictureType
     }),
@@ -58,8 +64,21 @@ const actionHandlers = {
   [SET_PICTURE_URI]:
     (state: PictureState, { pictureUri }: PictureUriAction): PictureState => ({
       ...state,
+      firstPreview: true,
       picture: pictureUri
     }),
+  [SET_RETAKE_PICTURE]: (state: PictureState): PictureState => ({
+    ...state,
+    retakePicture: true
+  }),
+  [CLEAR_PICTURE_URI]: (state: PictureState): PictureState => ({
+    ...state,
+    picture: ''
+  }),
+  [CLEAR_RETAKE_PICTURE]: (state: PictureState): PictureState => ({
+    ...state,
+    retakePicture: false
+  }),
   [CLEAR_PICTURE_PREVIEW]: (): PictureState => (initialState)
 };
 

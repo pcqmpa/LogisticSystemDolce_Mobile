@@ -8,12 +8,14 @@ import { createReducer } from 'redux-create-reducer';
 
 // Actions.
 import {
+  ADD_PICTURE_TO_ORDER,
   CLEAR_CURRENT_SCREEN_DATA,
   HIDE_LOADING,
   HIDE_TOAST,
   SET_ORDER,
   SET_SCREEN_DEFAULT_STATE,
   SET_SCREEN_LOADED,
+  SET_STORE_UPDATED,
   SHOW_LOADING,
   SHOW_TOAST
 } from '../constants/actions';
@@ -59,6 +61,7 @@ const initialState: CommonState = {
   loading,
   order: 0,
   screenLoaded: false,
+  storeUpdated: false,
   toast
 };
 
@@ -71,6 +74,10 @@ const initialState: CommonState = {
  * @type {Object}
  */
 const actionHandlers = {
+  [ADD_PICTURE_TO_ORDER]: (state: CommonState): CommonState => ({
+    ...state,
+    storeUpdated: false
+  }),
   [SHOW_TOAST]:
     (state: CommonState, { message, toastType: type }: ToastAction): CommonState => ({
       ...state,
@@ -102,6 +109,10 @@ const actionHandlers = {
   [SET_SCREEN_LOADED]: (state: CommonState): CommonState => ({
     ...state,
     screenLoaded: true
+  }),
+  [SET_STORE_UPDATED]: (state: CommonState): CommonState => ({
+    ...state,
+    storeUpdated: true,
   }),
   [SET_SCREEN_DEFAULT_STATE]: (state: CommonState): CommonState => ({
     ...state,
