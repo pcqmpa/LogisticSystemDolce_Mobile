@@ -3,19 +3,24 @@
  * @module src/utils/streams
  * @flow
  */
+// React.
+import { NativeModules } from 'react-native';
+
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/bindNodeCallback';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/concatMap';
-
-// Constants.
-import { GET } from '../constants/types';
 
 // Types.
 import type {
   AjaxRequest,
-  FetchResponse
+  FetchResponse,
+  ImageToBase64
 } from './app-types';
+
+// Constants.
+import { GET } from '../constants/types';
 
 const ajaxRequest =
   ({ url, method = GET, options = {} }: AjaxRequest): Observable<*> => {
@@ -24,7 +29,7 @@ const ajaxRequest =
         method,
         ...options
       })
-    ).concatMap((response: FetchResponse) => {
+    ).concatMap((response: Response) => {
       const mappedResponse = Observable.fromPromise(response.json())
         .map((data: any): FetchResponse => ({
           data,
@@ -37,4 +42,10 @@ const ajaxRequest =
     return request;
   };
 
-export default { ajaxRequest };
+const imageToBase64: ImageToBase64 = Observable
+  .bindNodeCallback(NativeModules.RNImageToBase64.getBase64String);
+
+export default {
+  ajaxRequest,
+  imageToBase64
+};

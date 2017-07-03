@@ -81,24 +81,22 @@ const initScreens = (store: ReduxStore): Observable<*> => {
         return notifyError$(STORAGE, AUTH, errorOptions);
       }
 
-      const initializer = storage.getOrders()
-        .concatMap((orders: Order[]): Observable<*> => (
-          Observable.concat(
-            Observable.of(
-              authUser(userData),
-              initOrders(orders)
-            ),
-            Observable.of(setScreenLoaded()),
-            hideLoadingAction()
-          )
-        ));
-
       if (wasOnStore) {
-        return initializer
+        return storage.getOrders()
+          .concatMap((orders: Order[]): Observable<*> => (
+            Observable.concat(
+              Observable.of(
+                authUser(userData),
+                initOrders(orders)
+              ),
+              Observable.of(setScreenLoaded()),
+              hideLoadingAction()
+            )
+          ))
           .startWith(showLoading());
       }
 
-      return initializer;
+      return Observable.of(setScreenLoaded());
     })
     .catch((err: Error) => (
       Observable.of(showToast(

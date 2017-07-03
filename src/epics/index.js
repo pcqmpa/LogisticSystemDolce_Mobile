@@ -11,7 +11,10 @@ import initScreen from './init-screen';
 import logout from './logout';
 import orders from './orders';
 import picture from './picture';
+import orderDelivery from './order-delivery';
+import pictureStorage from './picture-storage';
 import toast from './toast';
+import updateStore from './update-store';
 
 const rootEpic = combineEpics(
   authentication,
@@ -19,7 +22,10 @@ const rootEpic = combineEpics(
   logout,
   orders,
   picture,
-  toast
+  orderDelivery,
+  pictureStorage,
+  toast,
+  updateStore
 );
 
 export default rootEpic;

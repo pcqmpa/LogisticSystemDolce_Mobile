@@ -5,7 +5,7 @@
  */
 // React.
 import Camera from 'react-native-camera';
-import { replace } from 'react-router-redux';
+import { goBack, replace } from 'react-router-redux';
 
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
@@ -30,35 +30,47 @@ import { hideLoadingAction } from './common';
 
 // Actions.
 import { showLoading, showToast } from '../actions/common';
-import { setPictureUri } from '../actions/picture-preview';
+import {
+  clearRetakePicture,
+  setPictureUri
+} from '../actions/picture-preview';
 
 // Constants.
 import { SHOT_PICTURE } from '../constants/actions';
 import { ERROR } from '../constants/colors';
-import { PICTURE_SHOT_ERROR } from '../constants/messages';
+import {
+  LOADING_PICTURE,
+  PICTURE_SHOT_ERROR
+} from '../constants/messages';
 import { PICTURE_PREVIEW } from '../constants/screens';
 import { SHOT_PICTURE_DELAY } from '../constants/values';
 
-const pictureEpic = (action$: Observable<*>): Observable<*> => {
+const pictureEpic$ = (action$: Observable<*>): Observable<*> => {
   return action$.ofType(SHOT_PICTURE)
     .switchMap((action: ShotPictureAction) => {
-      const { cameraElement } = action;
+      const { cameraElement, retake } = action;
       const options = {
-        target: Camera.constants.CaptureTarget.temp
+        orientation: Camera.constants.Orientation.portrait,
+        target: Camera.constants.CaptureTarget.disk
       };
       return Observable.fromPromise(cameraElement.capture(options))
         .concatMap((data: PictureShot) => {
+          const routerAction = (!retake)
+            ? Observable.of(replace(PICTURE_PREVIEW))
+            : Observable.of(goBack());
+
           return Observable.concat(
             Observable.of(
               setPictureUri(data.path),
-              replace(PICTURE_PREVIEW)
+              clearRetakePicture()
             ),
+            routerAction,
             hideLoadingAction()
           ).delay(SHOT_PICTURE_DELAY);
         })
         .catch(() => (Observable.of(showToast(PICTURE_SHOT_ERROR, ERROR))))
-        .startWith(showLoading());
-    })
+        .startWith(showLoading(LOADING_PICTURE));
+    });
 };
 
-export default pictureEpic;
+export default pictureEpic$;

@@ -7,18 +7,22 @@
 import {
   ADD_PICTURE_TO_ORDER,
   CLEAR_ORDERS,
+  DELIVER_ORDER,
+  DELIVER_ORDER_PARTIALLY,
+  DELIVER_ORDER_SUCCESS,
   INIT_ORDERS,
-  REQUEST_ORDERS,
-  SUBMIT_ORDER
+  REQUEST_ORDERS
 } from '../constants/actions';
 
 // Types.
 import type {
   Action,
+  DeliverOrderAction,
+  DeliverOrderPatiallyAction,
+  DeliverOrderSuccededAction,
   Order,
   OrdersAction,
-  OrderPictureAction,
-  SubmitOrderAction
+  OrderPictureAction
 } from '../utils/app-types';
 
 /**
@@ -28,9 +32,9 @@ import type {
  * @return {Object} -> The action.
  */
 export const addPictureToOrder =
-  (orderId: string, pictureType: string, picture: string): OrderPictureAction => ({
+  (numOrder: number | null = 0, pictureType: string, picture: string): OrderPictureAction => ({
     type: ADD_PICTURE_TO_ORDER,
-    orderId,
+    numOrder,
     picture,
     pictureType
   });
@@ -63,10 +67,32 @@ export const requestOrders = (): Action => ({
 
 /**
  * Action to submit an order to the server.
- * @param {Number} numOrder -> The number of the order.
+ * @param {Object} order -> The order to be delivered.
  * @return {Object} -> The action.
  */
-export const submitOrder = (numOrder: number): SubmitOrderAction => ({
-  type: SUBMIT_ORDER,
+export const deliverOrder = (order: Order): DeliverOrderAction => ({
+  type: DELIVER_ORDER,
+  order
+});
+
+/**
+ * Action to change the state of an order to delivered.
+ * @param {Number} numOrder -> The number of the order.
+ * @returns {Object} -> The action.
+ */
+export const deliverOrderSucceded = (numOrder: number = 0): DeliverOrderSuccededAction => ({
+  type: DELIVER_ORDER_SUCCESS,
   numOrder
 });
+
+/**
+ * Action to change the state of an order to partially delivered.
+ * Means that the order needs to be synchronized.
+ * @param {Number} numOrder -> The number of the order.
+ * @returns {Object} -> The action.
+ */
+export const deliverOrderPartially =
+  (numOrder: number = 0): DeliverOrderPatiallyAction => ({
+    type: DELIVER_ORDER_PARTIALLY,
+    numOrder
+  });

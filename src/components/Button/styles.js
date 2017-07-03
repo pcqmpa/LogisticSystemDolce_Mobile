@@ -23,11 +23,6 @@ import type { StyleOptions } from '../../utils/app-types';
 
 const styles = (options: StyleOptions) => (
   StyleSheet.create({
-    container: {
-      elevation: BUTTON_ELEVATION,
-      marginLeft: BASE_BODER,
-      marginRight: BASE_BODER
-    },
     button: {
       alignItems: CENTER,
       backgroundColor: options.color || BRAND,
@@ -36,6 +31,11 @@ const styles = (options: StyleOptions) => (
       justifyContent: CENTER,
       opacity: (options.disabled) ? BUTTON_DISABLE_OPACITY : BUTTON_ACTIVE_OPACITY,
       padding: BUTTON_PADDING
+    },
+    container: {
+      elevation: BUTTON_ELEVATION,
+      marginLeft: BASE_BODER,
+      marginRight: BASE_BODER
     },
     text: {
       color: WHITE,

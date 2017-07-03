@@ -6,6 +6,9 @@
 // React.
 import { StyleSheet } from 'react-native';
 
+// Types.
+import type { StyleOptions } from '../../utils/app-types';
+
 // Constants.
 import {
   BRAND,
@@ -14,6 +17,8 @@ import {
 } from '../../constants/colors';
 import { CENTER } from '../../constants/strings';
 import {
+  BUTTON_ACTIVE_OPACITY,
+  BUTTON_DISABLE_OPACITY,
   DATAITEM_CONTAINER_HEIGHT,
   DATAIMAGE_IMAGE_SIZE,
   DATAITEM_KEY_CONTAINER_SIZE,
@@ -23,39 +28,44 @@ import {
   WINDOW_WIDTH
 } from '../../constants/values';
 
-const styles = StyleSheet.create({
-  container: {
-    height: DATAITEM_CONTAINER_HEIGHT,
-    width: WINDOW_WIDTH
-  },
-  text: {
-    fontSize: REGULAR_TEXT
-  },
-  keyContainer: {
-    backgroundColor: BRAND,
-    flex: DATAITEM_KEY_CONTAINER_SIZE,
-    justifyContent: CENTER,
-    paddingLeft: DATAITEM_PADDING
-  },
-  keyText: {
-    color: WHITE
-  },
-  valueContainer: {
-    backgroundColor: GREY_LIGHT,
-    flex: DATAITEM_VALUE_CONTAINER_SIZE,
-    justifyContent: CENTER,
-    paddingLeft: DATAITEM_PADDING
-  },
-  image: {
-    height: DATAIMAGE_IMAGE_SIZE,
-    width: DATAIMAGE_IMAGE_SIZE
-  },
-  icon: {
-    alignItems: CENTER,
-    justifyContent: CENTER,
-    height: DATAIMAGE_IMAGE_SIZE,
-    width: DATAIMAGE_IMAGE_SIZE
-  }
-});
+const styles = (options: StyleOptions) => (
+  StyleSheet.create({
+    container: {
+      height: DATAITEM_CONTAINER_HEIGHT,
+      width: WINDOW_WIDTH
+    },
+    icon: {
+      alignItems: CENTER,
+      height: DATAIMAGE_IMAGE_SIZE,
+      justifyContent: CENTER,
+      width: DATAIMAGE_IMAGE_SIZE
+    },
+    image: {
+      height: DATAIMAGE_IMAGE_SIZE,
+      width: DATAIMAGE_IMAGE_SIZE
+    },
+    keyContainer: {
+      backgroundColor: BRAND,
+      flex: DATAITEM_KEY_CONTAINER_SIZE,
+      justifyContent: CENTER,
+      paddingLeft: DATAITEM_PADDING
+    },
+    keyText: {
+      color: WHITE
+    },
+    text: {
+      fontSize: REGULAR_TEXT
+    },
+    touchable: {
+      opacity: (options.disabled) ? BUTTON_DISABLE_OPACITY : BUTTON_ACTIVE_OPACITY
+    },
+    valueContainer: {
+      backgroundColor: GREY_LIGHT,
+      flex: DATAITEM_VALUE_CONTAINER_SIZE,
+      justifyContent: CENTER,
+      paddingLeft: DATAITEM_PADDING
+    }
+  })
+);
 
 export default styles;

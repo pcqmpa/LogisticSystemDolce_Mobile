@@ -45,8 +45,11 @@ export const REQUIRED = 'required';
 export const OPTIONAL = 'optional';
 
 // Pictures.
-export const CODE = 'CODE';
-export const PACKAGE = 'PACKAGE';
+export const CODE = 'code';
+export const PACKAGE = 'package';
 
 // Animations.
 export const FADE = 'fade';
+
+// Image.
+export const IMAGE_STRETCH = 'stretch';

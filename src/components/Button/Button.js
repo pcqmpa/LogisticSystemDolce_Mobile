@@ -27,7 +27,7 @@ const Button = ({
   size,
   textStyles,
   theme
-}: ButtonProps) => {
+  }: ButtonProps) => {
   const calculatedStyles = buttonStyles({ color: theme, disabled, size });
   const shrinkedContainerStyles = array.shrink([
     calculatedStyles.container,

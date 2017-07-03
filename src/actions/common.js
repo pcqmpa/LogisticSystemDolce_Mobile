@@ -12,8 +12,10 @@ import {
   SET_ORDER,
   SET_SCREEN_DEFAULT_STATE,
   SET_SCREEN_LOADED,
+  SET_STORE_UPDATED,
   SHOW_LOADING,
-  SHOW_TOAST
+  SHOW_TOAST,
+  UPDATE_STORE
 } from '../constants/actions';
 import { BRAND_DARK } from '../constants/colors';
 
@@ -98,10 +100,26 @@ export const setScreenDefaultState = (): Action => ({
 
 /**
  * Action to set the order to display on the details screen.
- * @param {String} orderId -> The if of the order.
+ * @param {String} order -> The number of the order.
  * @returns {Object} -> The action object.
  */
 export const setOrder = (order: number = 0): OrderDetailsAction => ({
   type: SET_ORDER,
   order
+});
+
+/**
+ * Action to set the app storage state to up to date.
+ * @returns {Object} -> The action.
+ */
+export const setStoreUpdated = (): Action => ({
+  type: SET_STORE_UPDATED
+});
+
+/**
+ * Action to trigger the update of the app storage.
+ * @returns {Object} -> The action.
+ */
+export const updateStore = (): Action => ({
+  type: UPDATE_STORE
 });

@@ -57,7 +57,7 @@ const getUserData = (): Observable<Promise<*>> => (
       key: USER_KEY,
       autoSync: false
     })
-  ).catch((err: StorageError): Observable<Promise<*>> => (
+  ).catch((err: StorageError): Observable<*> => (
     Observable.of({ error: err.name })
   ))
 );
@@ -103,7 +103,7 @@ const getOrders = (): Observable<Promise<*>> => (
       key: ORDERS_KEY,
       autoSync: false
     })
-  ).catch((err: StorageError): Observable<Promise<*>> => (
+  ).catch((err: StorageError): Observable<*> => (
     Observable.of({ error: err.name })
   ))
 );

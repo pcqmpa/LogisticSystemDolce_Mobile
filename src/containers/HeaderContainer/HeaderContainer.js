@@ -23,9 +23,11 @@ import { Header } from '../../components/';
 
 // Actions.
 import { requestOrders } from '../../actions/orders';
+import { clearPicturePreview } from '../../actions/picture-preview';
 import { logoutUser } from '../../actions/user';
 
 // Constants.
+import { LOGOUT_SUCCESS } from '../../constants/messages';
 import * as screens from '../../constants/screens';
 import {
   ORDERS_TITLE,
@@ -45,10 +47,14 @@ class HeaderContainer extends Component {
 
   handleBackButtonPress = () => {
     this.props.goBack();
+
+    if (this.props.currentPath.includes(screens.ORDER_DETAILS_PATH)) {
+      this.props.clearPicturePreview();
+    }
   };
 
   handleLogoutPress = () => {
-    this.props.logoutUser();
+    this.props.logoutUser(LOGOUT_SUCCESS);
   };
 
   handleRefreshPress = () => {
@@ -62,7 +68,10 @@ class HeaderContainer extends Component {
       ? this.titles[currentPath] : `#${order}`;
 
     // Configure Back Button.
-    const showBackButton = currentPath.includes(screens.ORDER_DETAILS_PATH);
+    const showBackButton = (
+      currentPath.includes(screens.ORDER_DETAILS_PATH) ||
+      currentPath === screens.PICTURE_PREVIEW
+    );
     const backButton = {
       onPress: this.handleBackButtonPress,
       show: showBackButton
@@ -129,6 +138,7 @@ const mapStateToProps = ({ common, router }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
+    clearPicturePreview,
     goBack,
     logoutUser,
     requestOrders

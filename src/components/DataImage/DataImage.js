@@ -37,28 +37,35 @@ import styles from './styles';
 // Component.
 // -----------------------------------------------------------------------------
 const DataImage = ({
+  disabled,
   keyText,
   onPress,
   picture
 }: DataImageProps) => {
+  const computedStyles = styles({ disabled });
   return (
-    <View style={styles.container}>
+    <View style={computedStyles.container}>
       <Grid direction={COLUMN}>
-        <Column styles={styles.keyContainer}>
-          <Text style={[styles.text, styles.keyText]}>
+        <Column styles={computedStyles.keyContainer}>
+          <Text style={[computedStyles.text, computedStyles.keyText]}>
             {keyText}
           </Text>
         </Column>
-        <Column styles={styles.valueContainer}>
-          <TouchableOpacity onPress={onPress}>
+        <Column styles={computedStyles.valueContainer}>
+          <TouchableOpacity
+            disabled={disabled}
+            onPress={onPress}
+            style={computedStyles.touchable}
+          >
             {
               (picture) ? (
                 <Image
+                  resizeMode="stretch"
                   source={{ uri: picture }}
-                  style={styles.image}
+                  style={computedStyles.image}
                 />
               ) : (
-                <View style={styles.icon}>
+                <View style={computedStyles.icon}>
                   <Icon
                     color={GREY}
                     name={CAMERA}
@@ -75,6 +82,7 @@ const DataImage = ({
 };
 
 DataImage.defaultProps = {
+  disabled: false,
   onPress: noop
 };
 

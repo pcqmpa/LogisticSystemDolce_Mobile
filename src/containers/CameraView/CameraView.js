@@ -13,9 +13,9 @@ import { goBack } from 'react-router-redux';
 
 // Types.
 import type {
+  AppState,
   CameraElement,
   CameraViewProps,
-  PictureShot,
   ReduxDispatch
 } from '../../utils/app-types';
 
@@ -27,18 +27,9 @@ import { shotPicture } from '../../actions/picture-preview';
 
 // Constants.
 import {
-  GREY,
-  WHITE
-} from '../../constants/colors';
-import {
   ARROW_LEFT_THICK,
   CAMERA_IRIS
 } from '../../constants/icons';
-import { ABSOLUTE } from '../../constants/strings';
-import {
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH
-} from '../../constants/values';
 
 // Styles.
 import styles from './styles';
@@ -56,7 +47,7 @@ class CameraView extends Component {
   };
 
   takePicture = () => {
-    this.props.shotPicture(this.cameraElement);
+    this.props.shotPicture(this.cameraElement, this.props.retake);
   }
 
   render() {
@@ -64,6 +55,7 @@ class CameraView extends Component {
       <View style={styles.container}>
         <Camera
           aspect={Camera.constants.Aspect.fill}
+          orientation={Camera.constants.Orientation.portrait}
           ref={this.setCameraReference}
           style={styles.camera}
         >
@@ -85,6 +77,10 @@ class CameraView extends Component {
   }
 }
 
+const mapStateToProps = ({ picturePreview }: AppState) => ({
+  retake: picturePreview.retakePicture
+});
+
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
     goBack,
@@ -93,6 +89,6 @@ const mapDispatchToProps = (dispatch: ReduxDispatch) => (
 );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CameraView);

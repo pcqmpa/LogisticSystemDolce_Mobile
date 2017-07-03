@@ -12,6 +12,7 @@ import {
 // Types.
 import type {
   Action,
+  LogoutAction,
   User,
   UserAction
 } from '../utils/app-types';
@@ -28,8 +29,10 @@ export const authUser = (data: User): UserAction => ({
 
 /**
  * Action to clear the user data when logout.
+ * @param {String} message -> Message to display after logout.
  * @returns {Object} -> The action object.
  */
-export const logoutUser = (): Action => ({
-  type: LOGOUT_USER
+export const logoutUser = (message: string): LogoutAction => ({
+  type: LOGOUT_USER,
+  message
 });

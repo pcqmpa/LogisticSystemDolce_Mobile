@@ -7,6 +7,8 @@
 import type { ContextRouter, Match } from 'react-router';
 import type { Store, Dispatch } from 'redux';
 
+import type { Observable } from 'rxjs';
+
 // Constants.
 import {
   CODE,
@@ -25,14 +27,22 @@ export type ComputedProps = {
 };
 
 export type AjaxOptions = {
-  body?: string,
+  body?: string | FormData,
   headers?: any
 };
 
+export type AjaxHeaders = {
+  'Content-Type'?: string,
+  ismobile: string,
+  token?: string | null
+};
+
 export type AjaxRequest = {
-  url: string,
+  body?: any,
+  headers?: AjaxHeaders,
   method?: string,
-  options?: AjaxOptions
+  options?: AjaxOptions,
+  url: string
 };
 
 export type AjaxResponse = {
@@ -49,6 +59,11 @@ export type FetchResponse = {
   data: any,
   status: number,
   url: string
+};
+
+export type OrderPictures = {
+  code?: string | null,
+  package?: string | null
 };
 
 export type User = {
@@ -68,6 +83,44 @@ export type User = {
   token?: string | null,
   username?: string
 };
+
+export type Order = {
+  Entregado?: boolean,
+  error?: string,
+  id?: string,
+  Id?: number,
+  IdTransportista?: number,
+  NumPedido?: number,
+  pictures: OrderPictures,
+  retrieved?: boolean,
+  StrBarrio?: string,
+  StrCapana?: string,
+  StrCiudad?: string,
+  StrDepartamento?: string,
+  StrDireccion?: string,
+  StrIdentificacion?: string,
+  StrNombreAsesora?: string,
+  StrPoblacion?: string,
+  StrTelefono?: string,
+  StrTipoEmpaque?: string,
+  StrZona?: string,
+  synced?: boolean
+};
+
+export type CameraElement = {
+  capture(options?: any): Promise<*>
+};
+
+export type StorageError = {
+  message: string,
+  name: string
+};
+
+export type NotifyErrorOptions = {
+  location: string
+};
+
+export type ImageToBase64 = (image: string) => Observable<*>;
 
 // Styles.
 // ===================================
@@ -98,48 +151,6 @@ export type GridProps = {
   styles: number
 };
 
-export type OrderPictures = {
-  code?: string | null,
-  package?: string | null
-};
-
-export type Order = {
-  Entregado?: boolean,
-  error?: string,
-  id?: string,
-  Id?: number,
-  IdTransportista?: number,
-  NumPedido?: number,
-  pictures: OrderPictures,
-  retrieved?: boolean,
-  StrBarrio?: string,
-  StrCapana?: string,
-  StrCiudad?: string,
-  StrDepartamento?: string,
-  StrDireccion?: string,
-  StrIdentificacion?: string,
-  StrNombreAsesora?: string,
-  StrPoblacion?: string,
-  StrTelefono?: string,
-  StrTipoEmpaque?: string,
-  StrZona?: string,
-  synced?: boolean
-};
-
-export type StorageError = {
-  message: string,
-  name: string
-};
-
-export type NotifyErrorOptions = {
-  location: string
-};
-
-export type AuthenticateResult = {
-  userData: User,
-  wasOnStore: boolean
-};
-
 //
 // Epics.
 // -----------------------------------------------------------------------------
@@ -148,6 +159,22 @@ export type AuthResponse = {
   orders: Order[],
   token: string
 };
+
+export type AuthenticateResult = {
+  userData: User,
+  wasOnStore: boolean
+};
+
+export type DeliverOrderData = {
+  codePicture?: string | null,
+  numOrder?: number,
+  packagePiture?: string | null
+};
+
+export type DeliveryResponse = {
+  message: string
+};
+
 
 //
 // Reducers.
@@ -170,7 +197,8 @@ export type CommonState = {
   loading: LoadingState,
   order: number | null,
   screenLoaded: boolean,
-  toast: ToastState
+  storeUpdated: boolean,
+  toast: ToastState,
 };
 
 // Login Form.
@@ -220,8 +248,10 @@ export type OrdersState = Order[];
 export type PictureType = CODE | PACKAGE;
 
 export type PictureState = {
+  firstPreview: boolean,
   picture: string,
-  pictureType: PictureType
+  pictureType: PictureType,
+  retakePicture: boolean
 };
 
 // App.
@@ -254,6 +284,11 @@ export type LoginAction = {
   value: string
 };
 
+export type LogoutAction = {
+  type: string,
+  message: string
+};
+
 export type UserAction = {
   type: string,
   data: User
@@ -283,7 +318,7 @@ export type FormRulesAction = {
 
 export type OrderPictureAction = {
   type: string,
-  orderId: string,
+  numOrder: number | null,
   pictureType: string,
   picture: string
 };
@@ -293,7 +328,17 @@ export type OrdersAction = {
   orders: Order[]
 };
 
-export type SubmitOrderAction = {
+export type DeliverOrderAction = {
+  type: string,
+  order: Order
+};
+
+export type DeliverOrderSuccededAction = {
+  type: string,
+  numOrder: number
+};
+
+export type DeliverOrderPatiallyAction = {
   type: string,
   numOrder: number
 };
@@ -316,7 +361,8 @@ export type PictureUriAction = {
 
 export type ShotPictureAction = {
   type: string,
-  cameraElement: CameraElement
+  cameraElement: CameraElement,
+  retake: boolean
 };
 
 export type OrderDetailsAction = {
@@ -338,6 +384,10 @@ export type ActionCreator = () => Action;
 export type ShowToast = (message: string, toastType: string) => ToastAction;
 export type SetOrder = (order?: number) => OrderDetailsAction;
 
+// User.
+// ====================================
+export type LogOut = (message: string) => LogoutAction;
+
 // Form rules.
 // ====================================
 export type UpdateRules = (form: string, data: Resume) => FormRulesAction;
@@ -346,12 +396,16 @@ export type UpdateRules = (form: string, data: Resume) => FormRulesAction;
 // ====================================
 export type UpdateLoginForm = (field: string, value: string) => LoginAction;
 
+// Orders.
+// ====================================
+export type DeliverOrder = (order: Order) => DeliverOrderAction;
+
 // Picture Preview.
 // ====================================
 export type SetPictureToPreview = (picture: string, pictureType: PictureType) => PictureAction;
 export type SetPictureType = (pictureType: PictureType) => PictureTypeAction;
 export type SetPictureUri = (pictureUri: string) => PictureUriAction;
-export type ShotPicture = (cameraElement: CameraElement) => ShotPictureAction;
+export type ShotPicture = (cameraElement: CameraElement, retake: boolean) => ShotPictureAction;
 
 //
 // Redux.
@@ -456,6 +510,7 @@ export type DataItemProps = {
 // DataImage.
 // ====================================
 export type DataImageProps = {
+  disabled: boolean,
   hasPicture: boolean,
   keyText: string,
   onPress: Noop,
@@ -485,10 +540,6 @@ export type ButtonProps = {
 
 // Camera.
 // ====================================
-export type CameraElement = {
-  capture(options?: any): Promise<*>
-};
-
 export type PictureShot = {
   mediaUri: string,
   path: string
@@ -501,9 +552,10 @@ export type PictureShot = {
 // Header Container.
 // ====================================
 export type HeaderContainerProps = {
+  clearPicturePreview: ActionCreator,
   currentPath: string,
   goBack: ActionCreator,
-  logoutUser: ActionCreator,
+  logoutUser: LogOut,
   order: string,
   requestOrders: ActionCreator,
   screenLoaded: boolean
@@ -545,6 +597,7 @@ export type OrdersProps = {
 // Order Details.
 // ====================================
 export type OrderDetailsProps = {
+  deliverOrder: DeliverOrder,
   order: Order,
   push: RouterAction,
   setPictureToPreview: SetPictureToPreview,
@@ -555,5 +608,19 @@ export type OrderDetailsProps = {
 // ====================================
 export type CameraViewProps = {
   goBack: Noop,
+  retake: boolean,
   shotPicture: ShotPicture
+};
+
+// Picture Preview.
+// ====================================
+export type PicturePreviewProps = {
+  clearPicturePreview: ActionCreator,
+  firstPreview: boolean,
+  goBack: RouterAction,
+  picture: string,
+  pictureType: PictureType,
+  push: RouterAction,
+  setRetakePicture: ActionCreator,
+  storePicture: ActionCreator
 };
