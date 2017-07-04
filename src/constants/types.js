@@ -2,6 +2,10 @@
  * Module with different kind of types required in the app.
  * @module src/shared/constants/types
  */
+// Network Types.
+export const NONE_NET = 'NONE';
+export const WIFI_NET = 'WIFI';
+
 // Keyboard Types.
 export const DEFAULT_KEYBOARD = 'default';
 export const DONE_KEYBOARD = 'done';

@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 // Types.
 import type {
   AppState,
+  ConfigScreenData,
   ConfigScreenProps,
   ConfigScreenState,
   Order,
@@ -35,7 +36,7 @@ import { updateRules } from '../actions/form-rules';
 // Constants.
 import { ERROR } from '../constants/colors';
 import { VALIDATION_ERROR } from '../constants/messages';
-import { ORDER_DETAILS } from '../constants/screens';
+import { ORDER_DETAILS, PICTURE_PREVIEW } from '../constants/screens';
 
 /**
  * Utilty to do some pre-configuration on top
@@ -48,6 +49,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
     state: ConfigScreenState;
     props: ConfigScreenProps;
     validator: Validator;
+    initData: ConfigScreenData;
 
     static defaultProps = {
       user: {
@@ -61,6 +63,8 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
       this.state = {
         fadeScreen: new Animated.Value(0)
       };
+
+      this.initData = {};
 
       this.validator = validator.init(
         (resume: Resume, form: string) => {
@@ -89,11 +93,12 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
 
     componentWillMount() {
       // Initialize the screen data.
-      this.initScreen();
+      this.initData = this.initScreen();
     }
 
     initScreen() {
       const {
+        currentOrder,
         match,
         orders
       } = this.props;
@@ -106,6 +111,16 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
 
         this.props.setOrder(selectedOrder.NumPedido);
       }
+
+      if (match.path === PICTURE_PREVIEW) {
+        const selectedOrder: Order = orders.find((order: Order) => (
+          order.NumPedido === currentOrder
+        )) || { pictures: {} };
+
+        return { changeDisabled: selectedOrder.retrieved };
+      }
+
+      return {};
     }
 
     renderScreen() {
@@ -119,6 +134,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
         <WrappedContainer
           validator={this.validator}
           {...this.props}
+          {...this.initData}
         />
       );
     }
@@ -133,6 +149,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
   }
 
   const mapStateToProps = ({ common, orders, user }: AppState) => ({
+    currentOrder: common.order,
     orders,
     screenLoaded: common.screenLoaded,
     user

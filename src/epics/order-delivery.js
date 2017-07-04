@@ -27,7 +27,9 @@ import type {
   DeliverOrderData,
   DeliveryResponse,
   FetchResponse,
-  ReduxStore
+  Order,
+  ReduxStore,
+  User
 } from '../utils/app-types';
 
 // Requests.
@@ -50,7 +52,7 @@ import { logoutUser } from '../actions/user';
 
 // Constants.
 import { DELIVER_ORDER } from '../constants/actions';
-import { ERROR, GREY } from '../constants/colors';
+import { ERROR, GREY_DOVE } from '../constants/colors';
 import {
   SYSTEM_ERROR,
   ORDER_PARTIALLY_DELIVERED
@@ -58,12 +60,30 @@ import {
 import { UNAUTHORIZED } from '../constants/responses';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
+export const deliverOrder$ = (order: Order, user: User): Observable<*> => {
+  const uploadPackagePicture$ = uploadPicture(order.pictures.package, user.token);
+  const uploadCodePicture$ = uploadPicture(order.pictures.code, user.token);
+
+  return uploadPackagePicture$
+    .combineLatest(uploadCodePicture$)
+    .concatMap((payload: [FetchResponse, FetchResponse]): Observable<*> => {
+      const [packageResponse, codeResponse] = payload;
+      const orderData: DeliverOrderData = {
+        numOrder: order.NumPedido,
+        urlCode: codeResponse.data.storedPath,
+        urlPackage: packageResponse.data.storedPath
+      };
+
+      return deliverOrder(orderData, user.token);
+    });
+};
+
 const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observable<*> => {
   return action$.ofType(DELIVER_ORDER)
     .switchMap((action: DeliverOrderAction) => {
       const { order } = action;
       const { user }: AppState = store.getState();
-      return Observable.fromPromise(NetInfo.fetch())
+      return Observable.fromPromise(NetInfo.isConnected.fetch())
         .concatMap((isConnected) => {
           if (!isConnected) {
             return Observable.concat(
@@ -72,39 +92,27 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
                 updateStore()
               ),
               hideLoadingAction(),
-              Observable.of(showToast(ORDER_PARTIALLY_DELIVERED, GREY))
+              Observable.of(showToast(ORDER_PARTIALLY_DELIVERED, GREY_DOVE))
                 .delay(TOAST_DISPLAY_DELAY)
             );
           }
-          const uploadPackagePicture$ = uploadPicture(order.pictures.package, user.token);
-          const uploadCodePicture$ = uploadPicture(order.pictures.code, user.token);
 
-          return uploadPackagePicture$
-            .combineLatest(uploadCodePicture$)
-            .concatMap((payload: [FetchResponse, FetchResponse]) => {
-              const [packageResponse, codeResponse] = payload;
-              const orderData: DeliverOrderData = {
-                numOrder: order.NumPedido,
-                urlCode: codeResponse.data.storedPath,
-                urlPackage: packageResponse.data.storedPath
-              };
+          return deliverOrder$(order, user)
+            .concatMap((orderResponse: any) => {
+              const data: DeliveryResponse = orderResponse.response;
+              if (orderResponse.status === UNAUTHORIZED) {
+                return Observable.of(logoutUser(data.message));
+              }
 
-              return deliverOrder(orderData, user.token)
-                .concatMap((orderResponse: AjaxResponse) => {
-                  const data: DeliveryResponse = orderResponse.response;
-                  if (orderResponse.status === UNAUTHORIZED) {
-                    return Observable.of(logoutUser(data.message));
-                  }
-
-                  return Observable.concat(
-                    Observable.of(
-                      deliverOrderSucceded(order.NumPedido)
-                    ),
-                    hideLoadingAction(),
-                    Observable.of(showToast(data.message))
-                      .delay(TOAST_DISPLAY_DELAY)
-                  );
-                });
+              return Observable.concat(
+                Observable.of(
+                  deliverOrderSucceded(order.NumPedido),
+                  updateStore()
+                ),
+                hideLoadingAction(),
+                Observable.of(showToast(data.message))
+                  .delay(TOAST_DISPLAY_DELAY)
+              );
             })
             .catch((err: AjaxResponse) => {
               const data: DeliveryResponse = err.response;

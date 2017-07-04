@@ -437,6 +437,7 @@ export type ConfigScreenState = {
 export type ConfigScreenProps = {
   match: Match,
   initCurrentScreen: ActionCreator,
+  currentOrder: number,
   orders: Order[];
   screenLoaded: boolean,
   setOrder: SetOrder,
@@ -451,7 +452,8 @@ export type ConfigScreenOptions = {
 };
 
 export type ConfigScreenData = {
-  order?: Order
+  order?: Order,
+  changeDisabled?: boolean
 };
 
 // Toast.
@@ -615,6 +617,7 @@ export type CameraViewProps = {
 // Picture Preview.
 // ====================================
 export type PicturePreviewProps = {
+  changeDisabled: boolean,
   clearPicturePreview: ActionCreator,
   firstPreview: boolean,
   goBack: RouterAction,

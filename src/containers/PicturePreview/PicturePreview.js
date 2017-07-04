@@ -5,7 +5,7 @@
  */
 // React.
 import React, { Component } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { goBack, push } from 'react-router-redux';
@@ -31,12 +31,9 @@ import {
   storePicture
 } from '../../actions/picture-preview';
 
-// Sources.
-import test from '../../images/test';
-
 // Constants.
 import { BRAND_DARK } from '../../constants/colors';
-import { CAMERA_VIEW, LOGIN } from '../../constants/screens';
+import { CAMERA_VIEW } from '../../constants/screens';
 import {
   COLUMN,
   IMAGE_STRETCH
@@ -70,7 +67,11 @@ class PicturePreview extends Component {
   };
 
   render() {
-    const { firstPreview, picture } = this.props;
+    const {
+      changeDisabled,
+      firstPreview,
+      picture
+    } = this.props;
 
     return (
       <View style={styles.container}>
@@ -86,10 +87,11 @@ class PicturePreview extends Component {
             <Column style={styles.buttonColumn}>
               <View style={styles.buttonWrapper}>
                 <Button
+                  disabled={changeDisabled}
                   onPress={this.handleFirstButtonPress}
                   theme={BRAND_DARK}
                 >
-                  {(firstPreview) ?  'Aceptar' : 'Cambiar'}
+                  {(firstPreview) ? 'Aceptar' : 'Cambiar'}
                 </Button>
               </View>
             </Column>
@@ -98,7 +100,7 @@ class PicturePreview extends Component {
                 <Button
                   onPress={this.handleSecondButtonPress}
                 >
-                  {(firstPreview)? 'Cambiar' : 'Volver'}
+                  {(firstPreview) ? 'Cambiar' : 'Volver'}
                 </Button>
               </View>
             </Column>

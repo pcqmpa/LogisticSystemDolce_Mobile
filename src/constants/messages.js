@@ -25,12 +25,16 @@ export const UPDATE_STORAGE_ERROR = 'Un error ocurrió mientras se actualizaban 
 
 export const ORDER_PARTIALLY_DELIVERED = 'No hay conexión a internet. El pedido se sincronizará una vez haya conexión';
 
+export const ORDERS_SYNCED = 'Las pedidos se han sincronizado satisfactoriamente.';
+
 // Loading Labels.
 export const LOADING_ORDERS = 'Actualizando Pedidos...';
 
 export const LOADING_PICTURE = 'Cargando foto...';
 
 export const LOADING_PICTURE_STORAGE = 'Guardando foto...';
+
+export const LOADING_SYNC = 'Sincronizando los pedidos...';
 
 // Debug messages.
 export const BAD_ERROR_SOURCE = 'The source of the validation is incorrect.';

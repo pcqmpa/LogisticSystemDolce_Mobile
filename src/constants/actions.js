@@ -22,6 +22,7 @@ export const SET_STORE_UPDATED = 'SET_STORE_UPDATED';
 export const SHOW_LOADING = 'SHOW_LOADING';
 export const SHOW_TOAST = 'SHOW_TOAST';
 export const UPDATE_STORE = 'UPDATE_STORE';
+export const INIT_NET_WATCHER = 'INIT_NET_WATCHER';
 
 // Login.
 export const CLEAR_LOGIN_FORM = 'CLEAR_LOGIN_FORM';

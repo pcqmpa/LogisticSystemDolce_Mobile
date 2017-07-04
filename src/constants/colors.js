@@ -15,6 +15,8 @@ export const BRAND_LIGHT = '#6088b0';
 
 export const GREY = '#cccccc';
 
+export const GREY_DOVE = '#6b6b6b';
+
 export const GREY_LIGHT = '#ecedec';
 
 export const ERROR = '#c4170b';
