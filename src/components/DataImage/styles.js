@@ -42,6 +42,7 @@ const styles = (options: StyleOptions) => (
     },
     image: {
       height: DATAIMAGE_IMAGE_SIZE,
+      opacity: (options.disabled) ? BUTTON_DISABLE_OPACITY : BUTTON_ACTIVE_OPACITY,
       width: DATAIMAGE_IMAGE_SIZE
     },
     keyContainer: {

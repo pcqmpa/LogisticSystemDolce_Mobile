@@ -9,6 +9,7 @@ import {
   HIDE_LOADING,
   HIDE_TOAST,
   INIT_CURRENT_SCREEN,
+  INIT_NET_WATCHER,
   SET_ORDER,
   SET_SCREEN_DEFAULT_STATE,
   SET_SCREEN_LOADED,
@@ -35,9 +36,9 @@ import type {
  */
 export const showToast =
   (message: string = '', toastType: string = BRAND_DARK): ToastAction => ({
-    type: SHOW_TOAST,
     message,
-    toastType
+    toastType,
+    type: SHOW_TOAST
   });
 
 /**
@@ -54,8 +55,8 @@ export const hideToast = (): Action => ({
  * @returns {Object} -> The action object.
  */
 export const showLoading = (label: string = 'Cargando...'): LoadinAction => ({
-  type: SHOW_LOADING,
-  label
+  label,
+  type: SHOW_LOADING
 });
 
 /**
@@ -104,8 +105,8 @@ export const setScreenDefaultState = (): Action => ({
  * @returns {Object} -> The action object.
  */
 export const setOrder = (order: number = 0): OrderDetailsAction => ({
-  type: SET_ORDER,
-  order
+  order,
+  type: SET_ORDER
 });
 
 /**
@@ -122,4 +123,13 @@ export const setStoreUpdated = (): Action => ({
  */
 export const updateStore = (): Action => ({
   type: UPDATE_STORE
+});
+
+/**
+ * Action to initialize the network watcher that
+ * handles the sync flow.
+ * @returns {Object} -> The action.
+ */
+export const initNetWatcher = (): Action => ({
+  type: INIT_NET_WATCHER
 });

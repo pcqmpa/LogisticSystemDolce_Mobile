@@ -10,6 +10,7 @@ import 'rxjs/add/observable/dom/ajax';
 // Types.
 import type {
   AjaxHeaders,
+  AjaxResponse,
   DeliverOrderData,
   LoginState
 } from './app-types';
@@ -58,7 +59,7 @@ export const getOrdersToDeliverRequest = (username: string = ''): Observable<*> 
  * @returns The deliver request.
  */
 export const deliverOrder =
-  (orderData: DeliverOrderData, token?: string | null): Observable<*> => {
+  (orderData: DeliverOrderData, token?: string | null): Observable<AjaxResponse> => {
     const request = Observable.ajax.post(
       callDeliverOrder(),
       orderData,
