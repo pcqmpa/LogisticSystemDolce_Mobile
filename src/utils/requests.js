@@ -12,7 +12,8 @@ import type {
   AjaxHeaders,
   AjaxResponse,
   DeliverOrderData,
-  LoginState
+  LoginState,
+  PictureDataObject
 } from './app-types';
 
 // Utils.
@@ -27,7 +28,7 @@ import {
 } from './endpoints';
 
 // Constants.
-import { GET, POST } from '../constants/types';
+import { GET } from '../constants/types';
 
 /**
  * Creates an Observable with the auth request.
@@ -70,30 +71,32 @@ export const deliverOrder =
 
 /**
  * Creates a request to upload a picture to the server.
- * @param picture -> The picture base64 string.
+ * @param pictureUri -> The picture location.
  * @param token -> The user session token.
  * @returns The upload request.
  */
 export const uploadPicture =
-  (picture?: string | null, token?: string | null): Observable<*> => {
+  (pictureUri?: string | null, token?: string | null): Observable<*> => {
     const headers: AjaxHeaders = {
       'Content-Type': 'multipart/form-data',
       ismobile: 'true',
       token
     };
 
-    const formData = new FormData();
-    formData.append('picture', JSON.stringify({
-      data: picture
-    }));
+    const picture: PictureDataObject = {
+      name: 'picture.jpg',
+      type: 'image/jpeg',
+      uri: pictureUri
+    };
 
-    const request = streams.ajaxRequest({
-      method: POST,
-      options: {
-        body: formData,
-        headers
-      },
-      url: callSavePicture()
-    });
-    return request;
+    const formData = new FormData();
+    // $FlowFixMe
+    formData.append('picture', picture);
+
+    const request$ = Observable.ajax.post(
+      callSavePicture(),
+      formData,
+      headers
+    );
+    return request$;
   };

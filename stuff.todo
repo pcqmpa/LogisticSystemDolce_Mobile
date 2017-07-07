@@ -1,0 +1,8 @@
+Logistic Dolce:
+  ✘ Update the picture-store to only store the path of the picture. @cancelled (7/1/2017, 10:04:55 PM)
+  ✘ Change the upload picture to upload a blob using fetch-blob. @cancelled (7/1/2017, 10:04:50 PM)
+  ✘ If blob implementation works, remove all base64 stuff. @cancelled (7/1/2017, 10:04:40 PM)
+  ✔ Remove and unlink FetchBlob dependency. @done (7/1/2017, 10:11:06 PM)
+  ✔ Upload both pictures to the server. @done (7/3/2017, 5:32:47 PM)
+  ✔ Submit the order. @done (7/3/2017, 5:32:45 PM)
+  ✔ Change the functionality of the refresh to not override the current orders. @done (7/6/2017, 11:54:47 PM) If they are still avaliable.

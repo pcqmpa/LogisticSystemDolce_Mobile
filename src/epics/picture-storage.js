@@ -14,6 +14,7 @@ import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
@@ -46,58 +47,57 @@ import {
 } from '../constants/messages';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
-const pictureStorageEpic$ =
-  (action$: Observable<*>, store: ReduxStore): Observable<*> => {
-    return action$.ofType(STORE_PICTURE)
-      .switchMap((): Observable<*> => {
-        const { common, picturePreview }: AppState = store.getState();
-        return streams.imageToBase64(picturePreview.picture)
-          .concatMap((image: string): Observable<*> => {
-            const picture = `data:image/jpeg;base64,${image}`;
-            return Observable.concat(
-              Observable.of(
-                addPictureToOrder(
-                  common.order,
-                  picturePreview.pictureType,
-                  picture
-                ),
-                updateStore(),
-                goBack()
-              ),
-              hideLoadingAction(),
-              Observable.of(showToast(PICTURE_STORED))
-                .delay(TOAST_DISPLAY_DELAY)
-            );
-          })
-          .catch(() => (Observable.of(showToast(SYSTEM_ERROR, ERROR))))
-          .startWith(showLoading(LOADING_PICTURE_STORAGE));
-      })
-      .catch((err: string) => (Observable.of(showToast(err, ERROR))));
-  };
-
 // const pictureStorageEpic$ =
 //   (action$: Observable<*>, store: ReduxStore): Observable<*> => {
 //     return action$.ofType(STORE_PICTURE)
 //       .switchMap((): Observable<*> => {
 //         const { common, picturePreview }: AppState = store.getState();
-//         return Observable.concat(
-//           Observable.of(
-//             addPictureToOrder(
-//               common.order,
-//               picturePreview.pictureType,
-//               picturePreview.picture
-//             ),
-//             updateStore(),
-//             goBack()
-//           ),
-//           hideLoadingAction(),
-//           Observable.of(showToast(PICTURE_STORED))
-//             .delay(TOAST_DISPLAY_DELAY)
-//         )
+//         return streams.imageToBase64(picturePreview.picture)
+//           .concatMap((image: string): Observable<*> => {
+//             const picture = `data:image/jpeg;base64,${image}`;
+//             return Observable.concat(
+//               Observable.of(
+//                 addPictureToOrder(
+//                   common.order,
+//                   picturePreview.pictureType,
+//                   picture
+//                 ),
+//                 goBack()
+//               ),
+//               hideLoadingAction(),
+//               Observable.of(showToast(PICTURE_STORED))
+//                 .delay(TOAST_DISPLAY_DELAY)
+//             ).merge(Observable.of(updateStore()));
+//           })
 //           .catch(() => (Observable.of(showToast(SYSTEM_ERROR, ERROR))))
 //           .startWith(showLoading(LOADING_PICTURE_STORAGE));
 //       })
 //       .catch((err: string) => (Observable.of(showToast(err, ERROR))));
 //   };
+
+const pictureStorageEpic$ =
+  (action$: Observable<*>, store: ReduxStore): Observable<*> => {
+    return action$.ofType(STORE_PICTURE)
+      .switchMap((): Observable<*> => {
+        const { common, picturePreview }: AppState = store.getState();
+        return Observable.concat(
+          Observable.of(
+            addPictureToOrder(
+              common.order,
+              picturePreview.pictureType,
+              picturePreview.picture
+            ),
+            goBack()
+          ),
+          Observable.of(updateStore()),
+          hideLoadingAction(),
+          Observable.of(showToast(PICTURE_STORED))
+            .delay(TOAST_DISPLAY_DELAY)
+        )
+          .catch(() => (Observable.of(showToast(SYSTEM_ERROR, ERROR))))
+          .startWith(showLoading(LOADING_PICTURE_STORAGE));
+      })
+      .catch((err: string) => (Observable.of(showToast(err, ERROR))));
+  };
 
 export default pictureStorageEpic$;

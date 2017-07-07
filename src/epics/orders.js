@@ -9,12 +9,14 @@ import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/switchMap';
 
 // Types.
 import type {
   AppState,
   FetchResponse,
+  Order,
   ReduxStore
 } from '../utils/app-types';
 
@@ -24,9 +26,13 @@ import { hideLoadingAction } from './common';
 // Actions.
 import {
   showLoading,
-  showToast
+  showToast,
+  updateStore
 } from '../actions/common';
 import { initOrders } from '../actions/orders';
+
+// Libs.
+import transmuter from '../libs/transmuter';
 
 // Utils.
 import { getOrdersToDeliverRequest } from '../utils/requests';
@@ -40,6 +46,13 @@ import {
 } from '../constants/messages';
 import { LOADING_HIDE_DELAY } from '../constants/values';
 
+const getNumOrders = (orders: Order[]): number[] => {
+  const numbers: number[] = orders.map((order: Order): number => {
+    return order.NumPedido || 0;
+  });
+  return numbers;
+};
+
 /**
  * Epic to handle the refresh of the orders list.
  * @param action$ -> Epic handler.
@@ -47,15 +60,25 @@ import { LOADING_HIDE_DELAY } from '../constants/values';
 const ordersEpic = (action$: Observable<*>, store: ReduxStore): Observable<*> => (
   action$.ofType(REQUEST_ORDERS)
     .switchMap(() => {
-      const { user }: AppState = store.getState();
+      const { orders, user }: AppState = store.getState();
+      const currentOrders = getNumOrders(orders);
       const request = getOrdersToDeliverRequest(user.username)
         .concatMap((response: FetchResponse) => {
           const { data } = response;
+          const updatedOrders = data.data.map((order: Order) => {
+            if (currentOrders.includes(order.NumPedido || 0)) {
+              return orders.find((currentOrder: Order) => (
+                currentOrder.NumPedido === order.NumPedido
+              ));
+            }
+            return transmuter.toInprogressOrder(order);
+          });
+
           return Observable.concat(
-            Observable.of(initOrders(data.data)),
+            Observable.of(initOrders(updatedOrders)),
             hideLoadingAction()
               .delay(LOADING_HIDE_DELAY)
-          );
+          ).merge(Observable.of(updateStore()));
         })
         .catch(() => {
           const displayError$ = Observable.of(showToast(SYSTEM_ERROR, ERROR));

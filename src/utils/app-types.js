@@ -61,6 +61,12 @@ export type FetchResponse = {
   url: string
 };
 
+export type PictureDataObject = {
+  uri?: string | null,
+  type: string,
+  name: string
+};
+
 export type OrderPictures = {
   code?: string | null,
   package?: string | null

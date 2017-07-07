@@ -3,9 +3,6 @@
  * @module src/utils/streams
  * @flow
  */
-// React.
-import { NativeModules } from 'react-native';
-
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/bindNodeCallback';
@@ -15,8 +12,7 @@ import 'rxjs/add/operator/concatMap';
 // Types.
 import type {
   AjaxRequest,
-  FetchResponse,
-  ImageToBase64
+  FetchResponse
 } from './app-types';
 
 // Constants.
@@ -42,10 +38,6 @@ const ajaxRequest =
     return request;
   };
 
-const imageToBase64: ImageToBase64 = Observable
-  .bindNodeCallback(NativeModules.RNImageToBase64.getBase64String);
-
 export default {
-  ajaxRequest,
-  imageToBase64
+  ajaxRequest
 };

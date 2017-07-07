@@ -16,6 +16,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
@@ -26,7 +27,6 @@ import type {
   DeliverOrderAction,
   DeliverOrderData,
   DeliveryResponse,
-  FetchResponse,
   Order,
   ReduxStore,
   User
@@ -54,6 +54,7 @@ import { logoutUser } from '../actions/user';
 import { DELIVER_ORDER } from '../constants/actions';
 import { ERROR, GREY_DOVE } from '../constants/colors';
 import {
+  SESSION_EXPIRED,
   SYSTEM_ERROR,
   ORDER_PARTIALLY_DELIVERED
 } from '../constants/messages';
@@ -66,12 +67,12 @@ export const deliverOrder$ = (order: Order, user: User): Observable<*> => {
 
   return uploadPackagePicture$
     .combineLatest(uploadCodePicture$)
-    .concatMap((payload: [FetchResponse, FetchResponse]): Observable<*> => {
+    .concatMap((payload: [AjaxResponse, AjaxResponse]): Observable<*> => {
       const [packageResponse, codeResponse] = payload;
       const orderData: DeliverOrderData = {
         numOrder: order.NumPedido,
-        urlCode: codeResponse.data.storedPath,
-        urlPackage: packageResponse.data.storedPath
+        urlCode: codeResponse.response.storedPath,
+        urlPackage: packageResponse.response.storedPath
       };
 
       return deliverOrder(orderData, user.token);
@@ -87,10 +88,7 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
         .concatMap((isConnected) => {
           if (!isConnected) {
             return Observable.concat(
-              Observable.of(
-                deliverOrderPartially(action.order.NumPedido),
-                updateStore()
-              ),
+              Observable.of(deliverOrderPartially(action.order.NumPedido)),
               hideLoadingAction(),
               Observable.of(showToast(ORDER_PARTIALLY_DELIVERED, GREY_DOVE))
                 .delay(TOAST_DISPLAY_DELAY)
@@ -112,14 +110,12 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
                 hideLoadingAction(),
                 Observable.of(showToast(data.message))
                   .delay(TOAST_DISPLAY_DELAY)
-              );
+              ).merge(Observable.of(updateStore()));
             })
             .catch((err: AjaxResponse) => {
-              const data: DeliveryResponse = err.response;
-
               switch (err.status) {
               case UNAUTHORIZED:
-                return Observable.of(logoutUser(data.message));
+                return Observable.of(logoutUser(SESSION_EXPIRED));
               default:
                 return Observable.concat(
                   hideLoadingAction(),

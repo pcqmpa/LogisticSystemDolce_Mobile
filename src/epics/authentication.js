@@ -65,12 +65,14 @@ const authenticationSucceed = ({ response }: AjaxResponse): Observable<any> => {
     token
   };
 
+  console.log(userData);
+
   return storage.saveUserData(userData)
     .concatMap(() => (storage.saveOrders(mappedOrders)))
     .concatMap(() => (
       Observable.concat(
         Observable.of(
-          authUser(user),
+          authUser(userData),
           initOrders(mappedOrders),
           clearLoginForm(),
           replace(ORDERS)
