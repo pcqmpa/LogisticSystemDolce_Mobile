@@ -1,6 +1,6 @@
 /**
- * Module with the app Routes component.
- * @module src/Routes
+ * Module with the app Screens component.
+ * @module src/Screens
  */
 // React - Router.
 import React from 'react';
@@ -16,8 +16,10 @@ import {
   Main,
   PicturePreview,
   Orders,
-  OrderDetails
+  OrderDetails,
+  Zones
 } from './containers/';
+import Components from './containers/Orders/Components';
 
 // Utils.
 import configScreen from './utils/configure-screen';
@@ -27,13 +29,17 @@ import configScreen from './utils/configure-screen';
  * It Wraps the app routes to be manage from the client and the server.
  * @returns {ReactElement} -> The react component.
  */
-const Routes = () => (
+const Screens = () => (
   <Main>
     <Switch>
       <Route
         exact
         path={screens.LOGIN}
         component={configScreen(Login)}
+      />
+      <Route
+        path={screens.ZONES}
+        component={configScreen(Zones)}
       />
       <Route
         path={screens.ORDERS}
@@ -51,8 +57,12 @@ const Routes = () => (
         path={screens.CAMERA_VIEW}
         component={CameraView}
       />
+      <Route
+        path={screens.COMPONENT_VALHALLA}
+        component={Components}
+      />
     </Switch>
   </Main>
 );
 
-export default Routes;
+export default Screens;

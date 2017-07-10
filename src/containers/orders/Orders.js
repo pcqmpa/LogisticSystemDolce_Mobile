@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 // Types.
+import type { Match } from 'react-router';
 import type {
   AppState,
   ReduxDispatch,
@@ -20,9 +21,6 @@ import type {
 
 // Components.
 import { Card, Divider } from '../../components/';
-
-// Actions.
-import { setOrder } from '../../actions/common';
 
 // Constants.
 import { ORDER_DETAILS_PATH } from '../../constants/screens';
@@ -56,7 +54,7 @@ class Orders extends Component {
     );
   };
 
-  renderSeparator(): ReactElement<Divider> {
+  renderSeparator = (): ReactElement<Divider> => {
     return (<Divider />);
   }
 
@@ -75,9 +73,14 @@ class Orders extends Component {
   }
 }
 
-const mapStateToProps = ({ orders }: AppState) => ({
-  orders
-});
+const mapStateToProps = ({ orders }: AppState, ownProps: OrdersProps) => {
+  const match: Match = ownProps.match;
+  return {
+    orders: orders.filter((order: Order) => (
+      order.StrZona === match.params.zoneId
+    ))
+  };
+};
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({

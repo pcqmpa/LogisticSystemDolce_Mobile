@@ -19,6 +19,7 @@ import {
   DataItem,
   Divider,
   Grid,
+  ListButton,
   TextForm,
   Toast
 } from '../../components/';
@@ -87,6 +88,10 @@ const Orders = ({ match }: { match: Match }) => (
         message="This is my long message to display"
         type="red"
       />
+    </View>
+    <View style={{ height: 300 }}>
+      <ListButton />
+      <ListButton />
     </View>
   </ScrollView>
 );

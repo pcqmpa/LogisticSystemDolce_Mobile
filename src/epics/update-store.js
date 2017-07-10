@@ -11,7 +11,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/concatMap';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
 
 // Types.
 import type {
@@ -36,14 +36,12 @@ import { UPDATE_STORAGE_ERROR } from '../constants/messages';
 const updateStoreEpic$ =
   (action$: Observable<*>, store: ReduxStore): Observable<*> => {
     return action$.ofType(UPDATE_STORE)
-      .switchMap(() => {
+      .mergeMap(() => {
         const { user, orders }: AppState = store.getState();
         return storage.saveUserData(user)
-          .concatMap(() => {
-            return storage.saveOrders(orders)
-              .map(() => {
-                return setStoreUpdated();
-              });
+          .combineLatest(storage.saveOrders(orders))
+          .map(() => {
+            return setStoreUpdated();
           })
           .catch(() => (Observable.of(showToast(UPDATE_STORAGE_ERROR, ERROR))));
       });

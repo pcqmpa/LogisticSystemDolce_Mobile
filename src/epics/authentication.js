@@ -54,7 +54,7 @@ import {
   AUTHENTICATION_SUCCESS,
   AUTHENTICATION_ERROR
 } from '../constants/messages';
-import { ORDERS } from '../constants/screens';
+import { ZONES } from '../constants/screens';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
 const authenticationSucceed = ({ response }: AjaxResponse): Observable<any> => {
@@ -70,10 +70,10 @@ const authenticationSucceed = ({ response }: AjaxResponse): Observable<any> => {
     .concatMap(() => (
       Observable.concat(
         Observable.of(
-          authUser(user),
+          authUser(userData),
           initOrders(mappedOrders),
           clearLoginForm(),
-          replace(ORDERS)
+          replace(ZONES)
         ),
         hideLoadingAction(),
         Observable.of(showToast(AUTHENTICATION_SUCCESS))

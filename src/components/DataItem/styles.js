@@ -27,9 +27,6 @@ const styles = StyleSheet.create({
     height: DATAITEM_CONTAINER_HEIGHT,
     width: WINDOW_WIDTH
   },
-  text: {
-    fontSize: REGULAR_TEXT
-  },
   keyContainer: {
     backgroundColor: BRAND,
     flex: DATAITEM_KEY_CONTAINER_SIZE,
@@ -38,6 +35,9 @@ const styles = StyleSheet.create({
   },
   keyText: {
     color: WHITE
+  },
+  text: {
+    fontSize: REGULAR_TEXT
   },
   valueContainer: {
     backgroundColor: GREY_LIGHT,

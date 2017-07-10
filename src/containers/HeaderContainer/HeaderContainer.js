@@ -31,7 +31,8 @@ import { LOGOUT_SUCCESS } from '../../constants/messages';
 import * as screens from '../../constants/screens';
 import {
   ORDERS_TITLE,
-  PICTURE_PREVIEW_TITLE
+  PICTURE_PREVIEW_TITLE,
+  ZONES_TITLE
 } from '../../constants/strings';
 
 //
@@ -41,7 +42,8 @@ class HeaderContainer extends Component {
   props: HeaderContainerProps;
 
   titles: ComputedProps = {
-    [screens.ORDERS]: ORDERS_TITLE,
+    [screens.ZONES]: ZONES_TITLE,
+    [screens.ORDERS_PATH]: ORDERS_TITLE,
     [screens.PICTURE_PREVIEW]: PICTURE_PREVIEW_TITLE
   };
 
@@ -63,13 +65,20 @@ class HeaderContainer extends Component {
 
   getCurrentContent(props: HeaderContainerProps) {
     const { currentPath, order } = props;
+    let title: string;
 
-    const title = (!currentPath.includes(screens.ORDER_DETAILS_PATH))
-      ? this.titles[currentPath] : `#${order}`;
+    if (currentPath.includes(screens.ORDER_DETAILS_PATH)) {
+      title = `#${order}`;
+    } else if (currentPath.includes(screens.ORDERS_PATH)) {
+      title = this.titles[screens.ORDERS_PATH];
+    } else {
+      title = this.titles[currentPath];
+    }
 
     // Configure Back Button.
     const showBackButton = (
       currentPath.includes(screens.ORDER_DETAILS_PATH) ||
+      currentPath.includes(screens.ORDERS_PATH) ||
       currentPath === screens.PICTURE_PREVIEW
     );
     const backButton = {
@@ -85,7 +94,7 @@ class HeaderContainer extends Component {
     };
 
     // Configure Refresh Icon.
-    const showRefresh = currentPath === screens.ORDERS;
+    const showRefresh = currentPath === screens.ZONES;
     const refreshIcon = {
       onPress: this.handleRefreshPress,
       show: showRefresh
