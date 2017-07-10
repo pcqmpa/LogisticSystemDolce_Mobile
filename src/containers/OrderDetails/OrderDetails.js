@@ -113,6 +113,11 @@ class OrderDetails extends Component {
           />
           <Divider />
           <DataItem
+            keyText="Población"
+            valueText={order.StrPoblacion}
+          />
+          <Divider />
+          <DataItem
             keyText="Ciudad"
             valueText={order.StrCiudad}
           />
@@ -125,6 +130,11 @@ class OrderDetails extends Component {
           <DataItem
             keyText="Dirección"
             valueText={order.StrDireccion}
+          />
+          <Divider />
+          <DataItem
+            keyText="Telefonos"
+            valueText={order.StrTelefono}
           />
           <Divider />
           <DataItem
