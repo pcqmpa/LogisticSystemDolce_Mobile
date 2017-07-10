@@ -111,7 +111,7 @@ const initLoginPage = (user: User) => (
     .mergeMap(({ userData }: AuthenticateResult): Observable<*> => {
       if (!userData.error) {
         return Observable.concat(
-          Observable.of(replace(screens.ORDERS)),
+          Observable.of(replace(screens.ZONES)),
           hideLoadingAction()
         );
       }

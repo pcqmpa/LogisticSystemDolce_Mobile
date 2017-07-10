@@ -26,6 +26,10 @@ export type ComputedProps = {
   [string]: string
 };
 
+export type CustomMap = {
+  [any]: any
+};
+
 export type AjaxOptions = {
   body?: string | FormData,
   headers?: any
@@ -111,6 +115,11 @@ export type Order = {
   StrTipoEmpaque?: string,
   StrZona?: string,
   synced?: boolean
+};
+
+export type Zone = {
+  orders: number,
+  zoneId: string
 };
 
 export type CameraElement = {
@@ -553,6 +562,14 @@ export type PictureShot = {
   path: string
 };
 
+// ListButton.
+// ====================================
+export type ListButtonProps = {
+  onPress: Noop,
+  text: string,
+  title: string
+};
+
 //
 // Containers.
 // -----------------------------------------------------------------------------
@@ -598,6 +615,7 @@ export type LoginProps = {
 // Orders.
 // ====================================
 export type OrdersProps = {
+  match: Match,
   orders: Order[],
   push: RouterAction
 };
@@ -632,4 +650,11 @@ export type PicturePreviewProps = {
   push: RouterAction,
   setRetakePicture: ActionCreator,
   storePicture: ActionCreator
+};
+
+// Zones.
+// ====================================
+export type ZonesProps = {
+  push: RouterAction,
+  zones: Zone[]
 };

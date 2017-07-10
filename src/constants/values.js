@@ -66,6 +66,15 @@ export const TOAST_HEIGHT = 100;
 export const TOAST_PADDING = 9;
 export const TOAST_WIDTH = 200;
 
+// ListButton.
+export const LISTBUTTON = {
+  ARROW_SIZE: 10,
+  CONTAINER_HEIGHT: 60,
+  CONTAINER_MARGIN: 15,
+  CONTENT_PADDING: 8,
+  CONTENT_SIZE: 90
+};
+
 // Header.
 export const HEADER_COLUMN_SIZE = 70;
 export const HEADER_HEIGHT = 50;

@@ -25,6 +25,7 @@ export const ORDERS_KEY = 'orders';
 export const LOGIN_FORM = 'loginForm';
 
 // Header Titles.
+export const ZONES_TITLE = 'Listado de Zonas';
 export const ORDERS_TITLE = 'Listado de Pedidos';
 export const PICTURE_PREVIEW_TITLE = 'Vista Previa';
 
