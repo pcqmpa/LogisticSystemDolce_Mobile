@@ -11,6 +11,7 @@ import React from 'react';
 import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import { setJSExceptionHandler } from 'react-native-exception-handler';
 
 // Types.
 import type { ReduxStore } from './src/utils/app-types';
@@ -31,6 +32,10 @@ import configureStore from './src/utils/configure-store';
 //
 // Initialize App
 // -----------------------------------------------------------------------------
+
+// setJSExceptionHandler((err) => {
+//   console.log(err); // eslint-disable-line
+// });
 
 const history = createMemoryHistory();
 const store: ReduxStore = configureStore(reducers, rootEpic, history);

@@ -6,6 +6,7 @@
  */
 // React.
 import { NetInfo } from 'react-native';
+import { goBack } from 'react-router-redux';
 
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
@@ -27,16 +28,24 @@ import type {
   DeliverOrderAction,
   DeliverOrderData,
   DeliveryResponse,
+  FetchResponse,
   Order,
   ReduxStore,
   User
 } from '../utils/app-types';
 
 // Requests.
-import { deliverOrder, uploadPicture } from '../utils/requests';
+import {
+  deliverOrder,
+  getOrdersToDeliverRequest,
+  uploadPicture
+} from '../utils/requests';
 
 // Observables.
 import { hideLoadingAction } from './common';
+
+// Libs.
+import transmuter from '../libs/transmuter';
 
 // Actions.
 import {
@@ -46,7 +55,8 @@ import {
 } from '../actions/common';
 import {
   deliverOrderPartially,
-  deliverOrderSucceded
+  deliverOrderSucceded,
+  initOrders
 } from '../actions/orders';
 import { logoutUser } from '../actions/user';
 
@@ -67,12 +77,12 @@ export const deliverOrder$ = (order: Order, user: User): Observable<*> => {
 
   return uploadPackagePicture$
     .combineLatest(uploadCodePicture$)
-    .concatMap((payload: [AjaxResponse, AjaxResponse]): Observable<*> => {
+    .concatMap((payload: [FetchResponse, FetchResponse]): Observable<*> => {
       const [packageResponse, codeResponse] = payload;
       const orderData: DeliverOrderData = {
         numOrder: order.NumPedido,
-        urlCode: codeResponse.response.storedPath,
-        urlPackage: packageResponse.response.storedPath
+        urlCode: codeResponse.data.storedPath,
+        urlPackage: packageResponse.data.storedPath
       };
 
       return deliverOrder(orderData, user.token);
@@ -96,23 +106,33 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
           }
 
           return deliverOrder$(order, user)
-            .concatMap((orderResponse: any) => {
-              const data: DeliveryResponse = orderResponse.response;
+            .concatMap((orderResponse: FetchResponse) => {
+              const data: DeliveryResponse = orderResponse.data;
+
               if (orderResponse.status === UNAUTHORIZED) {
                 return Observable.of(logoutUser(data.message));
               }
 
-              return Observable.concat(
-                Observable.of(
-                  deliverOrderSucceded(order.NumPedido),
-                  updateStore()
-                ),
-                hideLoadingAction(),
-                Observable.of(showToast(data.message))
-                  .delay(TOAST_DISPLAY_DELAY)
-              ).merge(Observable.of(updateStore()));
+              return getOrdersToDeliverRequest(user.username)
+                .concatMap((ordersResponse: FetchResponse) => {
+                  const newOrders: Order[] = transmuter
+                    .toInProgressOrders(ordersResponse.data.data);
+
+                  return Observable.concat(
+                    Observable.of(
+                      goBack(),
+                      initOrders(newOrders),
+                      deliverOrderSucceded(order.NumPedido),
+                      updateStore()
+                    ),
+                    hideLoadingAction(),
+                    Observable.of(showToast(data.message))
+                      .delay(TOAST_DISPLAY_DELAY)
+                  );
+                });
             })
             .catch((err: AjaxResponse) => {
+              console.log(err);
               switch (err.status) {
               case UNAUTHORIZED:
                 return Observable.of(logoutUser(SESSION_EXPIRED));

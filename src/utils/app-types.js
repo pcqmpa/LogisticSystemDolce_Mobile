@@ -45,8 +45,7 @@ export type AjaxRequest = {
   body?: any,
   headers?: AjaxHeaders,
   method?: string,
-  options?: AjaxOptions,
-  url: string
+  url?: string
 };
 
 export type AjaxResponse = {
