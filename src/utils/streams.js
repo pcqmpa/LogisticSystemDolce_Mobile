@@ -19,21 +19,28 @@ import type {
 import { GET } from '../constants/types';
 
 const ajaxRequest =
-  ({ url, method = GET, options = {} }: AjaxRequest): Observable<*> => {
+  ({ url, method = GET, body, headers }: AjaxRequest): Observable<*> => {
+    const params: AjaxRequest = { method };
+
+    if (body) { params.body = body; }
+    if (headers) { params.headers = headers; }
+
     const request = Observable.fromPromise(
-      fetch(url, {
-        method,
-        ...options
-      })
+      fetch(url, params)
     ).concatMap((response: Response) => {
-      const mappedResponse = Observable.fromPromise(response.json())
-        .map((data: any): FetchResponse => ({
-          data,
-          headers: response.headers,
-          status: response.status,
-          url: response.url
-        }));
-      return mappedResponse;
+      if (response.status >= 200 && response.status < 300) {
+        const mappedResponse = Observable.fromPromise(response.json())
+          .map((data: any): FetchResponse => ({
+            data,
+            headers: response.headers,
+            status: response.status,
+            url: response.url
+          }));
+        return mappedResponse;
+      }
+
+      const error = new Error(response);
+      throw error;
     });
     return request;
   };

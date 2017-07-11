@@ -10,8 +10,8 @@ import 'rxjs/add/observable/dom/ajax';
 // Types.
 import type {
   AjaxHeaders,
-  AjaxResponse,
   DeliverOrderData,
+  FetchResponse,
   LoginState,
   PictureDataObject
 } from './app-types';
@@ -28,7 +28,7 @@ import {
 } from './endpoints';
 
 // Constants.
-import { GET } from '../constants/types';
+import { GET, POST } from '../constants/types';
 
 /**
  * Creates an Observable with the auth request.
@@ -36,7 +36,15 @@ import { GET } from '../constants/types';
  * @returns The auth request.
  */
 export const authenticationRequest = (loginForm: LoginState): Observable<*> => {
-  const request = Observable.ajax.post(callFetchUser(), loginForm);
+  // const request = Observable.ajax.post(callFetchUser(), loginForm);
+  const request = streams.ajaxRequest({
+    body: JSON.stringify(loginForm),
+    headers: {
+      'content-type': 'application/json'
+    },
+    method: POST,
+    url: callFetchUser()
+  });
   return request;
 };
 
@@ -60,12 +68,17 @@ export const getOrdersToDeliverRequest = (username: string = ''): Observable<*> 
  * @returns The deliver request.
  */
 export const deliverOrder =
-  (orderData: DeliverOrderData, token?: string | null): Observable<AjaxResponse> => {
-    const request = Observable.ajax.post(
-      callDeliverOrder(),
-      orderData,
-      { ismobile: 'true', token }
-    );
+  (orderData: DeliverOrderData, token?: string | null): Observable<FetchResponse> => {
+    const request = streams.ajaxRequest({
+      body: JSON.stringify(orderData),
+      headers: {
+        'content-type': 'application/json',
+        ismobile: 'true',
+        token
+      },
+      method: POST,
+      url: callDeliverOrder()
+    });
     return request;
   };
 
@@ -93,10 +106,11 @@ export const uploadPicture =
     // $FlowFixMe
     formData.append('picture', picture);
 
-    const request$ = Observable.ajax.post(
-      callSavePicture(),
-      formData,
-      headers
-    );
+    const request$ = streams.ajaxRequest({
+      body: formData,
+      headers,
+      method: POST,
+      url: callSavePicture()
+    });
     return request$;
   };

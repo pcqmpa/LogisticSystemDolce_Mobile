@@ -5,6 +5,10 @@
 // React.
 import { Dimensions } from 'react-native';
 
+// Storage.
+export const USER_DATA_EXPIRATION = 1000 * 3600 * 24 * 30;
+export const CURRENT_ORDERS_EXPIRATION = 1000 * 3600 * 24 * 30;
+
 // Window.
 const dimensions = Dimensions.get('window');
 export const WINDOW_WIDTH = dimensions.width;
@@ -83,10 +87,6 @@ export const HEADER_ICON_COLUMN_SIZE = 15;
 // Divider.
 export const DIVIDER_HEIGHT = 1;
 
-// Storage.
-export const USER_DATA_EXPIRATION = 1000 * 3600 * 24 * 10;
-export const CURRENT_ORDERS_EXPIRATION = 1000 * 3600 * 24 * 10;
-
 // Times.
 export const REDIRECT_DELAY = 400;
 export const TOAST_DISPLAY_DELAY = 200;
@@ -124,9 +124,9 @@ export const CAMERA_VIEW = {
 
 // PicturePreview.
 export const PICTURE_PREVIEW = {
+  BUTTONS_CONTAINER_PADDING: 20,
   BUTTON_COLUMN_SIZE: 50,
   BUTTON_WRAPPER_PADDING: 20,
-  BUTTONS_CONTAINER_PADDING: 20,
   PICTURE_CONTAINER_HEIGHT: WINDOW_HEIGHT - HEADER_HEIGHT - 140,
   PICTURE_CONTAINER_PADDING: 20
 };

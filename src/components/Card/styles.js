@@ -7,7 +7,7 @@
 import { StyleSheet } from 'react-native';
 
 // Constants.
-import { GREY_LIGHT } from '../../constants/colors';
+import { GREY_ALTO } from '../../constants/colors';
 import {
   ABSOLUTE,
   RIGHT,
@@ -26,23 +26,14 @@ import {
 } from '../../constants/values';
 
 const styles = StyleSheet.create({
+  check: {
+    position: ABSOLUTE,
+    right: 0
+  },
   container: {
-    backgroundColor: GREY_LIGHT,
+    backgroundColor: GREY_ALTO,
     height: CARD_CONTAINER_SIZE,
     padding: CARD_CONTAINER_PADDING
-  },
-  row: {
-    flex: FLEX_FIT,
-    flexDirection: ROW,
-    justifyContent: SPACE_BETWEEN
-  },
-  mainField: {
-    height: CARD_MAIN_FIELD_HEIGHT,
-    width: CARD_MAIN_FIELD_WITDH
-  },
-  secondaryField: {
-    height: CARD_SECONDARY_FIELD_HEIGHT,
-    width: CARD_SECONDARY_FIELD_WIDTH
   },
   fieldsText: {
     fontSize: REGULAR_TEXT
@@ -50,9 +41,18 @@ const styles = StyleSheet.create({
   fieldsTextRight: {
     textAlign: RIGHT
   },
-  check: {
-    position: ABSOLUTE,
-    right: 0
+  mainField: {
+    height: CARD_MAIN_FIELD_HEIGHT,
+    width: CARD_MAIN_FIELD_WITDH
+  },
+  row: {
+    flex: FLEX_FIT,
+    flexDirection: ROW,
+    justifyContent: SPACE_BETWEEN
+  },
+  secondaryField: {
+    height: CARD_SECONDARY_FIELD_HEIGHT,
+    width: CARD_SECONDARY_FIELD_WIDTH
   }
 });
 

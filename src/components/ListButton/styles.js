@@ -8,8 +8,8 @@ import { StyleSheet } from 'react-native';
 
 // Constants.
 import {
-  GREY_DOVE,
-  GREY_LIGHT
+  GREY_ALTO,
+  GREY_DOVE
 } from '../../constants/colors';
 import {
   CENTER,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: CENTER
   },
   container: {
-    backgroundColor: GREY_LIGHT,
+    backgroundColor: GREY_ALTO,
     borderRadius: BASE_BODER,
     flexDirection: ROW,
     height: LISTBUTTON.CONTAINER_HEIGHT,

@@ -18,8 +18,8 @@ import 'rxjs/add/operator/startWith';
 
 // Types.
 import type {
-  AjaxResponse,
   AuthResponse,
+  FetchResponse,
   ReduxStore,
   User
 } from '../utils/app-types';
@@ -57,8 +57,8 @@ import {
 import { ZONES } from '../constants/screens';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
-const authenticationSucceed = ({ response }: AjaxResponse): Observable<any> => {
-  const { user, orders, token }: AuthResponse = response;
+const authenticationSucceed = (response: FetchResponse): Observable<any> => {
+  const { user, orders, token }: AuthResponse = response.data;
   const mappedOrders = transmuter.toInProgressOrders(orders);
   const userData: User = {
     ...user,

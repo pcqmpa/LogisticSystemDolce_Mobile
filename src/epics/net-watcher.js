@@ -25,6 +25,7 @@ import 'rxjs/add/operator/switchMap';
 import type {
   AppState,
   DeliveryResponse,
+  FetchResponse,
   Order,
   ReduxStore,
   User
@@ -77,8 +78,8 @@ const syncOrders$ = (orders: Order[], user: User) => {
           .delay(TOAST_DISPLAY_DELAY)
       );
     })
-    .catch((err: any) => {
-      const data: DeliveryResponse = err.response;
+    .catch((err: FetchResponse) => {
+      const data: DeliveryResponse = err.data;
 
       switch (err.status) {
       case UNAUTHORIZED:
