@@ -35,15 +35,15 @@ export type AjaxOptions = {
   headers?: any
 };
 
-export type AjaxHeaders = {
-  'Content-Type'?: string,
-  ismobile: string,
-  token?: string | null
-};
+// export type AjaxHeaders = {
+//   'Content-Type'?: string,
+//   ismobile: string,
+//   token?: string | null
+// };
 
 export type AjaxRequest = {
   body?: any,
-  headers?: AjaxHeaders,
+  headers?: any,
   method?: string,
   url?: string
 };
@@ -99,6 +99,7 @@ export type Order = {
   id?: string,
   Id?: number,
   IdTransportista?: number,
+  NumNumeroPedido?: number,
   NumPedido?: number,
   pictures: OrderPictures,
   retrieved?: boolean,
@@ -581,6 +582,7 @@ export type HeaderContainerProps = {
   goBack: ActionCreator,
   logoutUser: LogOut,
   order: string,
+  orders: Order[],
   requestOrders: ActionCreator,
   screenLoaded: boolean
 };

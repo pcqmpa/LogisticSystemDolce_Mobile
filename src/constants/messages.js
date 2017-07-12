@@ -27,6 +27,8 @@ export const ORDER_PARTIALLY_DELIVERED = 'No hay conexión a internet. El pedido
 
 export const ORDERS_SYNCED = 'Las pedidos se han sincronizado satisfactoriamente.';
 
+export const ORDER_DELIVERED = 'El pedido ha sido entregado satisfactoriamente';
+
 // Loading Labels.
 export const LOADING_ORDERS = 'Actualizando Pedidos...';
 

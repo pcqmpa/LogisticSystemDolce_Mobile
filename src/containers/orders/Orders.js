@@ -67,7 +67,7 @@ class Orders extends Component {
         enableEmptySections
         renderRow={this.renderRow}
         renderSeparator={this.renderSeparator}
-        style={{ height: (WINDOW_HEIGHT - HEADER_HEIGHT) }}
+        style={{ height: (WINDOW_HEIGHT - HEADER_HEIGHT - 20) }}
       />
     );
   }

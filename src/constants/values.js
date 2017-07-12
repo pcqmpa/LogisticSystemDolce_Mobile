@@ -47,6 +47,7 @@ export const CHECK_SIZE = 24;
 export const CHECK_PADDING = 4;
 
 // Card.
+export const CARD_ASSESOR_CONTAINER_WIDTH = 340;
 export const CARD_CONTAINER_PADDING = 9;
 export const CARD_CONTAINER_SIZE = 105;
 export const CARD_MAIN_FIELD_HEIGHT = 25;

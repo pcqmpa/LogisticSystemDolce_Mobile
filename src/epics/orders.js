@@ -80,7 +80,8 @@ const ordersEpic = (action$: Observable<*>, store: ReduxStore): Observable<*> =>
               .delay(LOADING_HIDE_DELAY)
           ).merge(Observable.of(updateStore()));
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err); // eslint-disable-line
           const displayError$ = Observable.of(showToast(SYSTEM_ERROR, ERROR));
           return Observable.concat(
             displayError$,

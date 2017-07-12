@@ -6,9 +6,7 @@
 // React.
 import React, { Component } from 'react';
 import {
-  NativeModules,
   ScrollView,
-  Text,
   View
 } from 'react-native';
 import { bindActionCreators } from 'redux';
@@ -39,6 +37,9 @@ import {
   setPictureToPreview,
   setPictureType
 } from '../../actions/picture-preview';
+
+// Utils.
+import str from '../../utils/helpers/string';
 
 // Constants.
 import { GREY } from '../../constants/colors';
@@ -139,7 +140,12 @@ class OrderDetails extends Component {
           <Divider />
           <DataItem
             keyText="Asesora"
-            valueText={order.StrNombreAsesora}
+            valueText={str.capitalize((order.StrNombreAsesora || '').toLocaleLowerCase())}
+          />
+          <Divider />
+          <DataItem
+            keyText="Identificación"
+            valueText={order.StrIdentificacion}
           />
           <Divider />
           <DataImage

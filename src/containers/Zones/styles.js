@@ -15,7 +15,7 @@ import {
 
 const styles = StyleSheet.create({
   listContainer: {
-    height: (WINDOW_HEIGHT - HEADER_HEIGHT),
+    height: (WINDOW_HEIGHT - HEADER_HEIGHT - 20),
     width: WINDOW_WIDTH
   }
 });

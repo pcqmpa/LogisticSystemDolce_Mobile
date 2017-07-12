@@ -39,8 +39,7 @@ const ajaxRequest =
         return mappedResponse;
       }
 
-      const error = new Error(response);
-      throw error;
+      throw response;
     });
     return request;
   };

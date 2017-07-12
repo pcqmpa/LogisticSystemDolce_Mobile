@@ -29,4 +29,20 @@ const empty = (str: string): boolean => (
  */
 const pad = (number: number): string => (String(`0${number}`).slice(-2));
 
-export default { empty, isString, pad };
+/**
+ * Capitalize a string.
+ * @param {String} str -> String to capitalize.
+ * @returns {String} The string capitalized.
+ */
+const capitalize = (str: string): string => (
+  str.split(' ')
+    .map((word: string): string => {
+      if (word === '') {
+        return word;
+      }
+      return word.toUpperCase()[0] + word.slice(1);
+    })
+    .join(' ')
+);
+
+export default { capitalize, empty, isString, pad };
