@@ -3721,10 +3721,6 @@ react-native-camera@^0.9.4:
   dependencies:
     opencollective "^1.0.3"
 
-react-native-exception-handler@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-exception-handler/-/react-native-exception-handler-1.1.0.tgz#320b7fc9c104e11d66173a2b0daeac97831a1a37"
-
 react-native-loading-spinner-overlay@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-0.5.1.tgz#5484fc8511dd85038bd595746e8a6207aa72c6c1"

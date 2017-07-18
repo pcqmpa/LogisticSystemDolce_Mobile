@@ -12,7 +12,6 @@
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.45",
 		"react-native-camera": "^0.9.4",
-		"react-native-exception-handler": "^1.1.0",
 		"react-native-loading-spinner-overlay": "^0.5.1",
 		"react-native-storage": "^0.2.2",
 		"react-native-vector-icons": "^4.2.0",
