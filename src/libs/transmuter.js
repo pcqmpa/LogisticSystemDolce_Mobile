@@ -14,6 +14,9 @@ import type {
   Zone
 } from '../utils/app-types';
 
+// Constants.
+import { OrderStateEnum } from '../constants/types';
+
 /**
  * Transmutes an order to add required props.
  * @param {Object} order -> The order.
@@ -22,11 +25,12 @@ import type {
 const toInprogressOrder = (order: Order): Order => ({
   id: shortId.generate(),
   ...order,
+  message: '',
   pictures: {
     code: null,
     package: null
   },
-  retrieved: false,
+  state: OrderStateEnum.OPEN,
   synced: false
 });
 

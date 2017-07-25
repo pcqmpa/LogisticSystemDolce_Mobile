@@ -21,3 +21,5 @@ export { default as Loading } from './Loading/Loading';
 export { default as CameraView } from './CameraView/CameraView';
 
 export { default as Zones } from './Zones/Zones';
+
+export { default as NotDelivered } from './NotDelivered/NotDelivered';

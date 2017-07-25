@@ -93,6 +93,15 @@ const Orders = ({ match }: { match: Match }) => (
       <ListButton />
       <ListButton />
     </View>
+    <View style={{ height: 300 }}>
+      <TextForm
+        multiline
+        styles={{
+          height: 120,
+          textAlignVertical: 'top'
+        }}
+      />
+    </View>
   </ScrollView>
 );
 

@@ -34,12 +34,12 @@ export const styles = (options: StyleOptions = {}) => (
       borderColor: ERROR
     },
     field: {
-      borderWidth: TEXT_FORM_BORDER_WIDTH,
       borderColor: options.color || GREY,
       borderRadius: BASE_BODER,
+      borderWidth: TEXT_FORM_BORDER_WIDTH,
+      fontSize: REGULAR_TEXT,
       paddingLeft: TEXT_FORM_PADDING,
-      paddingRight: TEXT_FORM_PADDING,
-      fontSize: REGULAR_TEXT
+      paddingRight: TEXT_FORM_PADDING
     },
     icon: {
       position: ABSOLUTE,

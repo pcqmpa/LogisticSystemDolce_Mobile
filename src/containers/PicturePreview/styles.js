@@ -16,26 +16,26 @@ import {
 } from '../../constants/values';
 
 const styles = StyleSheet.create({
-  container: {
-    height: (WINDOW_HEIGHT - HEADER_HEIGHT),
-    width: WINDOW_WIDTH
-  },
-  pictureContainer: {
-    height: PICTURE_PREVIEW.PICTURE_CONTAINER_HEIGHT,
-    width: WINDOW_WIDTH
-  },
-  picture: {
-    flex: FLEX_FIT
-  },
-  buttonsContainer: {
-    flex: FLEX_FIT,
-    paddingTop: PICTURE_PREVIEW.BUTTONS_CONTAINER_PADDING
-  },
   buttonColumn: {
     flex: PICTURE_PREVIEW.BUTTON_COLUMN_SIZE
   },
   buttonWrapper: {
     padding: PICTURE_PREVIEW.BUTTON_WRAPPER_PADDING
+  },
+  buttonsContainer: {
+    flex: FLEX_FIT,
+    paddingTop: PICTURE_PREVIEW.BUTTONS_CONTAINER_PADDING
+  },
+  container: {
+    height: (WINDOW_HEIGHT - HEADER_HEIGHT),
+    width: WINDOW_WIDTH
+  },
+  picture: {
+    flex: FLEX_FIT
+  },
+  pictureContainer: {
+    height: PICTURE_PREVIEW.PICTURE_CONTAINER_HEIGHT,
+    width: WINDOW_WIDTH
   }
 });
 

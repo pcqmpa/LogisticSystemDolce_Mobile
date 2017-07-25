@@ -15,6 +15,10 @@ export const ORDER_DETAILS = '/orderDetails/:orderId';
 
 export const ORDER_DETAILS_PATH = '/orderDetails';
 
+export const ORDER_NOT_DELIVERED = '/orderNotDelivered/:orderId';
+
+export const ORDER_NOT_DELIVERED_PATH = '/orderNotDelivered';
+
 export const PICTURE_PREVIEW = '/picturePreview';
 
 export const CAMERA_VIEW = '/cameraView';

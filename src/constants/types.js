@@ -1,6 +1,7 @@
 /**
  * Module with different kind of types required in the app.
  * @module src/shared/constants/types
+ * @flow
  */
 // Network Types.
 export const NONE_NET = 'NONE';
@@ -47,13 +48,28 @@ export const MINUTES = 'minutes';
 // Form Rules.
 export const REQUIRED = 'required';
 export const OPTIONAL = 'optional';
+export const RuleEnum = {
+  [OPTIONAL]: OPTIONAL,
+  [REQUIRED]: REQUIRED
+};
 
 // Pictures.
 export const CODE = 'code';
 export const PACKAGE = 'package';
+export const PictureEnum = {
+  [CODE]: CODE,
+  [PACKAGE]: PACKAGE
+};
 
 // Animations.
 export const FADE = 'fade';
 
 // Image.
 export const IMAGE_STRETCH = 'stretch';
+
+// Order states.
+export const OrderStateEnum = {
+  DELIVERED: 'DELIVERED',
+  NOT_DELIVERED: 'NOT_DELIVERED',
+  OPEN: 'OPEN'
+};

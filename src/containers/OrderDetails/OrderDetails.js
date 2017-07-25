@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push, replace } from 'react-router-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Types.
@@ -26,9 +26,11 @@ import type {
 // Components.
 import {
   Button,
+  Column,
   DataImage,
   DataItem,
-  Divider
+  Divider,
+  Grid
 } from '../../components/';
 
 // Actions.
@@ -42,14 +44,16 @@ import {
 import str from '../../utils/helpers/string';
 
 // Constants.
-import { GREY } from '../../constants/colors';
+import { BRAND_DARK, GREY } from '../../constants/colors';
 import { PACKAGE_VARIANT_CLOSED } from '../../constants/icons';
 import {
   CAMERA_VIEW,
+  ORDER_NOT_DELIVERED_PATH,
   PICTURE_PREVIEW
 } from '../../constants/screens';
 import {
   CODE,
+  OrderStateEnum,
   PACKAGE
 } from '../../constants/types';
 import { ORDER_DETAILS } from '../../constants/values';
@@ -59,6 +63,29 @@ import styles from './styles';
 
 class OrderDetails extends Component {
   props: OrderDetailsProps;
+
+  cannotBeSubmitted = (): boolean => {
+    const { order } = this.props;
+    return (
+      !order.pictures.code ||
+      !order.pictures.package ||
+      order.state === OrderStateEnum.DELIVERED ||
+      !!order.Entregado
+    );
+  };
+
+  cannotNotifyNotDelivered = (): boolean => {
+    const { order } = this.props;
+    return (
+      order.state === OrderStateEnum.NOT_DELIVERED ||
+      order.state === OrderStateEnum.DELIVERED
+    );
+  };
+
+  handleNotDeliveredPress = () => {
+    const orderId: string = this.props.order.id || '';
+    this.props.replace(`${ORDER_NOT_DELIVERED_PATH}/${orderId}`);
+  };
 
   handlePictureItemPress = (type: PictureType, picture?: string | null) => () => {
     if (!picture) {
@@ -73,16 +100,6 @@ class OrderDetails extends Component {
 
   handleSubmitOrderPress = () => {
     this.props.deliverOrder(this.props.order);
-  };
-
-  cannotBeSubmitted = (): boolean => {
-    const { order } = this.props;
-    return (
-      !order.pictures.code ||
-      !order.pictures.package ||
-      order.retrieved ||
-      !!order.Entregado
-    );
   };
 
   render() {
@@ -161,12 +178,25 @@ class OrderDetails extends Component {
           />
         </View>
         <View style={styles.submitContainer}>
-          <Button
-            disabled={this.cannotBeSubmitted()}
-            onPress={this.handleSubmitOrderPress}
-          >
-            {(order.retrieved) ? 'Entregado' : 'Entregar'}
-          </Button>
+          <Grid>
+            <Column>
+              <Button
+                disabled={this.cannotBeSubmitted()}
+                onPress={this.handleSubmitOrderPress}
+                theme={BRAND_DARK}
+              >
+                {(order.state === OrderStateEnum.DELIVERED) ? 'Entregado' : 'Entregar'}
+              </Button>
+            </Column>
+            <Column>
+              <Button
+                disabled={this.cannotNotifyNotDelivered()}
+                onPress={this.handleNotDeliveredPress}
+              >
+                No entregado
+              </Button>
+            </Column>
+          </Grid>
         </View>
       </ScrollView>
     );
@@ -181,6 +211,7 @@ const mapDispatchToProps = (dispatch: ReduxDispatch) => (
   bindActionCreators({
     deliverOrder,
     push,
+    replace,
     setPictureToPreview,
     setPictureType
   }, dispatch)

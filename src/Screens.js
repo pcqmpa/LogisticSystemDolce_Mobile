@@ -14,6 +14,7 @@ import {
   CameraView,
   Login,
   Main,
+  NotDelivered,
   PicturePreview,
   Orders,
   OrderDetails,
@@ -48,6 +49,10 @@ const Screens = () => (
       <Route
         path={screens.ORDER_DETAILS}
         component={configScreen(OrderDetails)}
+      />
+      <Route
+        path={screens.ORDER_NOT_DELIVERED}
+        component={configScreen(NotDelivered)}
       />
       <Route
         path={screens.PICTURE_PREVIEW}

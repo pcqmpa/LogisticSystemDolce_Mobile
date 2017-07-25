@@ -68,8 +68,13 @@ class HeaderContainer extends Component {
     const { currentPath, order, orders } = props;
     let title: string;
 
-    if (currentPath.includes(screens.ORDER_DETAILS_PATH)) {
-      const currentOrder: Order = orders.find((cOrder: Order) => (cOrder.NumPedido === order)) || { pictures: {} };
+    if (
+      currentPath.includes(screens.ORDER_DETAILS_PATH) ||
+      currentPath.includes(screens.ORDER_NOT_DELIVERED_PATH)
+    ) {
+      const currentOrder: Order = orders.find((cOrder: Order) => (
+        cOrder.NumPedido === order)
+      ) || { pictures: {} };
       // $FlowFixMe
       title = `#${(currentOrder.NumPedido)} - ${currentOrder.NumNumeroPedido}`;
     } else if (currentPath.includes(screens.ORDERS_PATH)) {
@@ -82,7 +87,8 @@ class HeaderContainer extends Component {
     const showBackButton = (
       currentPath.includes(screens.ORDER_DETAILS_PATH) ||
       currentPath.includes(screens.ORDERS_PATH) ||
-      currentPath === screens.PICTURE_PREVIEW
+      currentPath === screens.PICTURE_PREVIEW ||
+      currentPath.includes(screens.ORDER_NOT_DELIVERED_PATH)
     );
     const backButton = {
       onPress: this.handleBackButtonPress,

@@ -33,6 +33,13 @@ export const callDeliverOrder = () =>
   (`${API_SERVICE_URL}/api/callDeliverOrder`);
 
 /**
+ * Service to submit a not delivered order.
+ * @returns {String} -> With the URL request.
+ */
+export const callNotifyNotDeliveredOrder = () =>
+  (`${API_SERVICE_URL}/api/callNotifyNotDeliveredOrder`);
+
+/**
  * Servoce to save a picture on the server.
  * @returns {String} -> With the URL request.
  */

@@ -34,10 +34,7 @@ import {
 // Constants.
 import { BRAND_DARK } from '../../constants/colors';
 import { CAMERA_VIEW } from '../../constants/screens';
-import {
-  COLUMN,
-  IMAGE_STRETCH
-} from '../../constants/types';
+import { IMAGE_STRETCH } from '../../constants/types';
 
 // Styles.
 import styles from './styles';
@@ -83,7 +80,7 @@ class PicturePreview extends Component {
           />
         </View>
         <View style={styles.buttonsContainer}>
-          <Grid direction={COLUMN}>
+          <Grid>
             <Column style={styles.buttonColumn}>
               <View style={styles.buttonWrapper}>
                 <Button

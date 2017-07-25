@@ -29,6 +29,8 @@ export const ORDERS_SYNCED = 'Las pedidos se han sincronizado satisfactoriamente
 
 export const ORDER_DELIVERED = 'El pedido ha sido entregado satisfactoriamente';
 
+export const ORDER_NOT_DELIVERED_NOTIFIED = 'Se ha notificado que el pedido no fue entregado';
+
 // Loading Labels.
 export const LOADING_ORDERS = 'Actualizando Pedidos...';
 
@@ -37,6 +39,8 @@ export const LOADING_PICTURE = 'Cargando foto...';
 export const LOADING_PICTURE_STORAGE = 'Guardando foto...';
 
 export const LOADING_SYNC = 'Sincronizando los pedidos...';
+
+export const LOADING_SENDING = 'Enviando...';
 
 // Debug messages.
 export const BAD_ERROR_SOURCE = 'The source of the validation is incorrect.';

@@ -9,7 +9,6 @@ import 'rxjs/add/observable/dom/ajax';
 
 // Types.
 import type {
-  AjaxHeaders,
   DeliverOrderData,
   FetchResponse,
   LoginState,
@@ -24,6 +23,7 @@ import {
   callDeliverOrder,
   callFetchUser,
   callGetOrdersToDeliver,
+  callNotifyNotDeliveredOrder,
   callSavePicture
 } from './endpoints';
 
@@ -78,6 +78,28 @@ export const deliverOrder =
       },
       method: POST,
       url: callDeliverOrder()
+    });
+    return request;
+  };
+
+/**
+ * Creates a request to notify when an order could not be delivered.
+ * @param numOrder -> The number of the order.
+ * @param message -> The message of the notification.
+ */
+export const notifyNotDeliveredOrder =
+  (numOrder: number, message: string, token: string): Observable<FetchResponse> => {
+    const body = { message, numOrder };
+    const headers = {
+      'content-type': 'application/json',
+      ismobile: 'true',
+      token
+    };
+    const request = streams.ajaxRequest({
+      body: JSON.stringify(body),
+      headers,
+      method: POST,
+      url: callNotifyNotDeliveredOrder()
     });
     return request;
   };

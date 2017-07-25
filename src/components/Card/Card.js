@@ -11,6 +11,11 @@ import {
   View
 } from 'react-native';
 
+// Types.
+import type {
+  CardProps
+} from '../../utils/app-types';
+
 // Components.
 import { Check } from '../';
 
@@ -18,13 +23,11 @@ import { Check } from '../';
 import str from '../../utils/helpers/string';
 import noop from '../../utils/noop';
 
+// Constants.
+import { OrderStateEnum } from '../../constants/types';
+
 // Styles.
 import styles from './styles';
-
-// Types.
-import type {
-  CardProps
-} from '../../utils/app-types';
 
 //
 // Component.
@@ -48,7 +51,7 @@ const Card = ({ onPress, order }: CardProps) => (
         </View>
         <View style={styles.secondaryField}>
           <Check
-            checked={order.retrieved}
+            checked={order.state === OrderStateEnum.DELIVERED}
             containerStyles={styles.check}
           />
         </View>

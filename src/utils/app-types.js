@@ -11,10 +11,9 @@ import type { Observable } from 'rxjs';
 
 // Constants.
 import {
-  CODE,
-  OPTIONAL,
-  PACKAGE,
-  REQUIRED
+  OrderStateEnum,
+  PictureEnum,
+  RuleEnum
 } from '../constants/types';
 
 //
@@ -93,16 +92,19 @@ export type User = {
   username?: string
 };
 
+export type OrderState = $Keys<typeof OrderStateEnum>;
+
 export type Order = {
   Entregado?: boolean,
   error?: string,
   id?: string,
   Id?: number,
   IdTransportista?: number,
+  message?: string,
   NumNumeroPedido?: number,
   NumPedido?: number,
   pictures: OrderPictures,
-  retrieved?: boolean,
+  state?: OrderState,
   StrBarrio?: string,
   StrCapana?: string,
   StrCiudad?: string,
@@ -225,7 +227,7 @@ export type LoginState = {
 
 // Form Rules.
 // ====================================
-export type RuleType = OPTIONAL | REQUIRED;
+export type RuleType = $Keys<typeof RuleEnum>;
 
 export type Rule = {
   rule?: RuleType,
@@ -260,7 +262,7 @@ export type OrdersState = Order[];
 
 // Picture Preview.
 // ====================================
-export type PictureType = CODE | PACKAGE;
+export type PictureType = $Keys<typeof PictureEnum>;
 
 export type PictureState = {
   firstPreview: boolean,
@@ -385,6 +387,17 @@ export type OrderDetailsAction = {
   order: number
 };
 
+export type OrderAction = {
+  type: string,
+  numOrder: number
+};
+
+export type OrderMessageAction = {
+  type: string,
+  orderId: string,
+  message: string
+};
+
 //
 // Actions Creators.
 // -----------------------------------------------------------------------------
@@ -421,6 +434,11 @@ export type SetPictureToPreview = (picture: string, pictureType: PictureType) =>
 export type SetPictureType = (pictureType: PictureType) => PictureTypeAction;
 export type SetPictureUri = (pictureUri: string) => PictureUriAction;
 export type ShotPicture = (cameraElement: CameraElement, retake: boolean) => ShotPictureAction;
+
+// Not Delivered.
+// ====================================
+export type OrderMessage = (orderId: string, message: string) => OrderMessageAction;
+export type OrderCreator = (numOrder: number) => OrderAction;
 
 //
 // Redux.
@@ -500,6 +518,7 @@ export type HeaderProps = {
 export type TextFormProps = {
   containerStyles?: number,
   keyboardType?: string,
+  multiline?: boolean,
   onChangeText(): void,
   placeholder?: string,
   placeholderTextColor?: string,
@@ -627,6 +646,7 @@ export type OrderDetailsProps = {
   deliverOrder: DeliverOrder,
   order: Order,
   push: RouterAction,
+  replace: RouterAction,
   setPictureToPreview: SetPictureToPreview,
   setPictureType: SetPictureType
 };
@@ -658,4 +678,14 @@ export type PicturePreviewProps = {
 export type ZonesProps = {
   push: RouterAction,
   zones: Zone[]
+};
+
+// Not Delivered.
+// ====================================
+export type NotDeliveredProps = {
+  match: Match,
+  notifyNotDeliveredOrder: OrderCreator,
+  order: Order,
+  replace: RouterAction,
+  updateOrderMessage: OrderMessage
 };
