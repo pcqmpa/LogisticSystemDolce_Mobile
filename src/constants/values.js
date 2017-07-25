@@ -47,6 +47,7 @@ export const CHECK_SIZE = 24;
 export const CHECK_PADDING = 4;
 
 // Card.
+export const CARD_ASSESOR_CONTAINER_WIDTH = 340;
 export const CARD_CONTAINER_PADDING = 9;
 export const CARD_CONTAINER_SIZE = 105;
 export const CARD_MAIN_FIELD_HEIGHT = 25;
@@ -89,7 +90,7 @@ export const DIVIDER_HEIGHT = 1;
 
 // Times.
 export const REDIRECT_DELAY = 400;
-export const TOAST_DISPLAY_DELAY = 200;
+export const TOAST_DISPLAY_DELAY = 100;
 export const TOAST_HIDE_DELAY = 2000;
 export const LOADING_HIDE_DELAY = 400;
 export const SYNC_DELAY = 400;
@@ -129,4 +130,10 @@ export const PICTURE_PREVIEW = {
   BUTTON_WRAPPER_PADDING: 20,
   PICTURE_CONTAINER_HEIGHT: WINDOW_HEIGHT - HEADER_HEIGHT - 140,
   PICTURE_CONTAINER_PADDING: 20
+};
+
+// Zones.
+export const ZONES = {
+  CONTAINER_HEIGHT: (WINDOW_HEIGHT - HEADER_HEIGHT - 20),
+  TEXT_CONTAINER_PADDING: 50
 };

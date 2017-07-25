@@ -10,6 +10,7 @@ import authentication from './authentication';
 import initScreen from './init-screen';
 import logout from './logout';
 import netWatcher from './net-watcher';
+import notDelivered from './not-delivered';
 import orderDelivery from './order-delivery';
 import orders from './orders';
 import picture from './picture';
@@ -22,6 +23,7 @@ const rootEpic = combineEpics(
   initScreen,
   logout,
   netWatcher,
+  notDelivered,
   orderDelivery,
   orders,
   picture,

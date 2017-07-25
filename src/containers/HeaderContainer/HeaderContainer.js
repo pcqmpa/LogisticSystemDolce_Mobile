@@ -15,6 +15,7 @@ import type {
   AppState,
   ComputedProps,
   HeaderContainerProps,
+  Order,
   ReduxDispatch
 } from '../../utils/app-types';
 
@@ -64,11 +65,18 @@ class HeaderContainer extends Component {
   };
 
   getCurrentContent(props: HeaderContainerProps) {
-    const { currentPath, order } = props;
+    const { currentPath, order, orders } = props;
     let title: string;
 
-    if (currentPath.includes(screens.ORDER_DETAILS_PATH)) {
-      title = `#${order}`;
+    if (
+      currentPath.includes(screens.ORDER_DETAILS_PATH) ||
+      currentPath.includes(screens.ORDER_NOT_DELIVERED_PATH)
+    ) {
+      const currentOrder: Order = orders.find((cOrder: Order) => (
+        cOrder.NumPedido === order)
+      ) || { pictures: {} };
+      // $FlowFixMe
+      title = `#${(currentOrder.NumPedido)} - ${currentOrder.NumNumeroPedido}`;
     } else if (currentPath.includes(screens.ORDERS_PATH)) {
       title = this.titles[screens.ORDERS_PATH];
     } else {
@@ -79,7 +87,8 @@ class HeaderContainer extends Component {
     const showBackButton = (
       currentPath.includes(screens.ORDER_DETAILS_PATH) ||
       currentPath.includes(screens.ORDERS_PATH) ||
-      currentPath === screens.PICTURE_PREVIEW
+      currentPath === screens.PICTURE_PREVIEW ||
+      currentPath.includes(screens.ORDER_NOT_DELIVERED_PATH)
     );
     const backButton = {
       onPress: this.handleBackButtonPress,
@@ -139,9 +148,10 @@ class HeaderContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ common, router }: AppState) => ({
+const mapStateToProps = ({ common, orders, router }: AppState) => ({
   currentPath: router.location.pathname,
   order: common.order,
+  orders,
   screenLoaded: common.screenLoaded
 });
 

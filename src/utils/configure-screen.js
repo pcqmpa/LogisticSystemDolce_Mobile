@@ -37,6 +37,7 @@ import { updateRules } from '../actions/form-rules';
 import { ERROR } from '../constants/colors';
 import { VALIDATION_ERROR } from '../constants/messages';
 import { ORDER_DETAILS, PICTURE_PREVIEW } from '../constants/screens';
+import { OrderStateEnum } from '../constants/types';
 
 /**
  * Utilty to do some pre-configuration on top
@@ -117,7 +118,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
           order.NumPedido === currentOrder
         )) || { pictures: {} };
 
-        return { changeDisabled: selectedOrder.retrieved };
+        return { changeDisabled: selectedOrder.state === OrderStateEnum.DELIVERED };
       }
 
       return {};

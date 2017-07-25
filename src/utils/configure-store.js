@@ -26,12 +26,13 @@ const configureStore = (
   const epicMiddleware = createEpicMiddleware(rootEpic);
   const reduxRouterMiddleware = routerMiddleware(history);
   // TODO: Remove before shipping.
-  const composeEnhancers = composeWithDevTools({
-    realtime: true
-  });
-  const enhancer = composeEnhancers(
-    applyMiddleware(epicMiddleware, reduxRouterMiddleware)
-  );
+  // const composeEnhancers = composeWithDevTools({
+  //   realtime: true
+  // });
+  // const enhancer = composeEnhancers(
+  //   applyMiddleware(epicMiddleware, reduxRouterMiddleware)
+  // );
+  const enhancer = applyMiddleware(epicMiddleware, reduxRouterMiddleware);
 
   const store = createStore(reducers, initialState, enhancer);
 

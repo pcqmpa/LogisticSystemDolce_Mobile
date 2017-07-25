@@ -52,7 +52,7 @@ import {
   SYSTEM_ERROR
 } from '../constants/messages';
 import { UNAUTHORIZED } from '../constants/responses';
-import { NONE_NET } from '../constants/types';
+import { OrderStateEnum, NONE_NET } from '../constants/types';
 import {
   SYNC_DELAY,
   TOAST_DISPLAY_DELAY
@@ -105,7 +105,9 @@ const netWatcherEpic$ = (action$: Observable<*>, store: ReduxStore): Observable<
             const { orders, user }: AppState = store.getState();
 
             const unsyncedOrders: Order[] = orders.filter((order: Order) => {
-              return (!order.synced && !order.Entregado && order.retrieved);
+              return (
+                !order.synced && !order.Entregado && order.state === OrderStateEnum.DELIVERED
+              );
             });
             return (unsyncedOrders.length)
               ? syncOrders$(unsyncedOrders, user).delay(SYNC_DELAY)

@@ -9,6 +9,7 @@ import { StyleSheet } from 'react-native';
 // Constants.
 import { CENTER } from '../../constants/strings';
 import {
+  FLEX_FIT,
   HEADER_HEIGHT,
   ORDER_DETAILS,
   WINDOW_HEIGHT,
@@ -22,11 +23,12 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     alignItems: CENTER,
-    justifyContent: CENTER,
     height: ORDER_DETAILS.ICON_CONTAINER_HEIGHT,
+    justifyContent: CENTER,
     width: WINDOW_WIDTH
   },
   submitContainer: {
+    flex: FLEX_FIT,
     paddingBottom: ORDER_DETAILS.SUBMIT_CONTAINER_PADDING_BOTTOM,
     paddingLeft: ORDER_DETAILS.SUBMIT_CONTAINER_PADDING_LEFT,
     paddingRight: ORDER_DETAILS.SUBMIT_CONTAINER_PADDING_RIGHT,

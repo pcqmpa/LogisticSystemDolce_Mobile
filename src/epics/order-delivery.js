@@ -64,9 +64,10 @@ import { logoutUser } from '../actions/user';
 import { DELIVER_ORDER } from '../constants/actions';
 import { ERROR, GREY_DOVE } from '../constants/colors';
 import {
+  ORDER_DELIVERED,
+  ORDER_PARTIALLY_DELIVERED,
   SESSION_EXPIRED,
-  SYSTEM_ERROR,
-  ORDER_PARTIALLY_DELIVERED
+  SYSTEM_ERROR
 } from '../constants/messages';
 import { UNAUTHORIZED } from '../constants/responses';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
@@ -126,13 +127,13 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
                       updateStore()
                     ),
                     hideLoadingAction(),
-                    Observable.of(showToast(data.message))
+                    Observable.of(showToast(ORDER_DELIVERED))
                       .delay(TOAST_DISPLAY_DELAY)
                   );
                 });
             })
             .catch((err: AjaxResponse) => {
-              console.log(err);
+              console.log(err); // eslint-disable-line
               switch (err.status) {
               case UNAUTHORIZED:
                 return Observable.of(logoutUser(SESSION_EXPIRED));

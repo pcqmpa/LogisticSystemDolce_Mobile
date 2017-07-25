@@ -59,7 +59,8 @@ import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
 const authenticationSucceed = (response: FetchResponse): Observable<any> => {
   const { user, orders, token }: AuthResponse = response.data;
-  const mappedOrders = transmuter.toInProgressOrders(orders);
+
+  const mappedOrders = transmuter.toInProgressOrders(orders || []);
   const userData: User = {
     ...user,
     token

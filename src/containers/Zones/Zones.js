@@ -6,7 +6,7 @@
  */
 // React.
 import React, { Component } from 'react';
-import { ListView } from 'react-native';
+import { ListView, Text, View } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
@@ -26,7 +26,8 @@ import { ListButton } from '../../components/';
 import transmuter from '../../libs/transmuter';
 
 // Constants.
-import { ORDERS_PATH } from '../../constants/screens';
+import { ORDERS_PATH, ORDER_NOT_DELIVERED_PATH } from '../../constants/screens';
+import { REGULAR_TEXT } from '../../constants/values';
 
 // Styles.
 import styles from './styles';
@@ -58,9 +59,21 @@ class Zones extends Component {
   };
 
   render() {
+    const { zones } = this.props;
+
+    if (zones.length === 0) {
+      return (
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            No hay pedidos en el momento
+          </Text>
+        </View>
+      );
+    }
+
     return (
       <ListView
-        dataSource={this.dataSource.cloneWithRows(this.props.zones)}
+        dataSource={this.dataSource.cloneWithRows(zones)}
         enableEmptySections
         renderRow={this.renderRow}
         style={styles.listContainer}

@@ -11,7 +11,10 @@ import {
   DELIVER_ORDER_PARTIALLY,
   DELIVER_ORDER_SUCCESS,
   INIT_ORDERS,
-  REQUEST_ORDERS
+  REQUEST_ORDERS,
+  SET_ORDER_TO_NOT_DELIVERED,
+  NOTIFY_NOT_DELIVERED_ORDER,
+  UPDATE_ORDER_MESSAGE
 } from '../constants/actions';
 
 // Types.
@@ -21,7 +24,9 @@ import type {
   DeliverOrderPatiallyAction,
   DeliverOrderSuccededAction,
   Order,
+  OrderAction,
   OrdersAction,
+  OrderMessageAction,
   OrderPictureAction
 } from '../utils/app-types';
 
@@ -33,10 +38,10 @@ import type {
  */
 export const addPictureToOrder =
   (numOrder: number | null = 0, pictureType: string, picture: string): OrderPictureAction => ({
-    type: ADD_PICTURE_TO_ORDER,
     numOrder,
     picture,
-    pictureType
+    pictureType,
+    type: ADD_PICTURE_TO_ORDER
   });
 
 /**
@@ -45,8 +50,8 @@ export const addPictureToOrder =
  * @return {Object} -> The action.
  */
 export const initOrders = (orders: Order[]): OrdersAction => ({
-  type: INIT_ORDERS,
-  orders
+  orders,
+  type: INIT_ORDERS
 });
 
 /**
@@ -71,8 +76,8 @@ export const requestOrders = (): Action => ({
  * @return {Object} -> The action.
  */
 export const deliverOrder = (order: Order): DeliverOrderAction => ({
-  type: DELIVER_ORDER,
-  order
+  order,
+  type: DELIVER_ORDER
 });
 
 /**
@@ -81,8 +86,8 @@ export const deliverOrder = (order: Order): DeliverOrderAction => ({
  * @returns {Object} -> The action.
  */
 export const deliverOrderSucceded = (numOrder: number = 0): DeliverOrderSuccededAction => ({
-  type: DELIVER_ORDER_SUCCESS,
-  numOrder
+  numOrder,
+  type: DELIVER_ORDER_SUCCESS
 });
 
 /**
@@ -91,8 +96,40 @@ export const deliverOrderSucceded = (numOrder: number = 0): DeliverOrderSucceded
  * @param {Number} numOrder -> The number of the order.
  * @returns {Object} -> The action.
  */
-export const deliverOrderPartially =
-  (numOrder: number = 0): DeliverOrderPatiallyAction => ({
-    type: DELIVER_ORDER_PARTIALLY,
-    numOrder
-  });
+export const deliverOrderPartially = (numOrder: number = 0): DeliverOrderPatiallyAction => ({
+  numOrder,
+  type: DELIVER_ORDER_PARTIALLY
+});
+
+/**
+ * Action to update the not delivered order's message.
+ * @param {String} orderId -> The id of the order.
+ * @param {String} message -> The order message.
+ * @returns {Object} -> The action.
+ */
+export const updateOrderMessage = (orderId: string, message: string = ''): OrderMessageAction => ({
+  message,
+  orderId,
+  type: UPDATE_ORDER_MESSAGE
+});
+
+/**
+ * Action to notify an order as not delivered.
+ * @param {Number} numOrder -> The order number.
+ * @returns {Object} -> The action.
+ */
+export const notifyNotDeliveredOrder = (numOrder: number = 0): OrderAction => ({
+  numOrder,
+  type: NOTIFY_NOT_DELIVERED_ORDER
+});
+
+/**
+ * Action to set an order as not delivered, but it's still
+ * available for delivery.
+ * @param {Number} numOrder -> The order number.
+ * @returns {Object} -> The action.
+ */
+export const setOrderToNotDelivered = (numOrder: number = 0): OrderAction => ({
+  numOrder,
+  type: SET_ORDER_TO_NOT_DELIVERED
+});

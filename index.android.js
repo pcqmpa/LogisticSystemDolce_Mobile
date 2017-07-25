@@ -11,7 +11,6 @@ import React from 'react';
 import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import { setJSExceptionHandler } from 'react-native-exception-handler';
 
 // Types.
 import type { ReduxStore } from './src/utils/app-types';

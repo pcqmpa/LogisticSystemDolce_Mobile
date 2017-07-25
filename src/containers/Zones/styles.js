@@ -7,16 +7,24 @@
 import { StyleSheet } from 'react-native';
 
 // Constants.
+import { CENTER } from '../../constants/strings';
 import {
-  HEADER_HEIGHT,
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH
+  REGULAR_TEXT,
+  WINDOW_WIDTH,
+  ZONES
 } from '../../constants/values';
 
 const styles = StyleSheet.create({
   listContainer: {
-    height: (WINDOW_HEIGHT - HEADER_HEIGHT),
+    height: ZONES.CONTAINER_HEIGHT,
     width: WINDOW_WIDTH
+  },
+  text: {
+    fontSize: REGULAR_TEXT,
+    textAlign: CENTER
+  },
+  textContainer: {
+    paddingTop: ZONES.TEXT_CONTAINER_PADDING
   }
 });
 

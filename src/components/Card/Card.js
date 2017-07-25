@@ -11,20 +11,23 @@ import {
   View
 } from 'react-native';
 
+// Types.
+import type {
+  CardProps
+} from '../../utils/app-types';
+
 // Components.
 import { Check } from '../';
 
 // Utils.
+import str from '../../utils/helpers/string';
 import noop from '../../utils/noop';
+
+// Constants.
+import { OrderStateEnum } from '../../constants/types';
 
 // Styles.
 import styles from './styles';
-
-// Types.
-import type {
-  CardProps,
-  Order
-} from '../../utils/app-types';
 
 //
 // Component.
@@ -34,7 +37,7 @@ const Card = ({ onPress, order }: CardProps) => (
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={styles.mainField}>
-          <Text style={styles.fieldsText}>#{order.NumPedido}</Text>
+          <Text style={styles.fieldsText}>#{order.NumPedido} - {order.NumNumeroPedido}</Text>
         </View>
         <View style={styles.secondaryField}>
           <Text style={[styles.fieldsText, styles.fieldsTextRight]}>
@@ -48,13 +51,18 @@ const Card = ({ onPress, order }: CardProps) => (
         </View>
         <View style={styles.secondaryField}>
           <Check
-            checked={order.retrieved}
+            checked={order.state === OrderStateEnum.DELIVERED}
             containerStyles={styles.check}
           />
         </View>
       </View>
-      <View style={styles.mainField}>
-        <Text style={styles.fieldsText}>Asesora: {order.StrNombreAsesora}</Text>
+      <View style={[styles.mainField, styles.assesorNameContainer]}>
+        <Text style={styles.fieldsText}>
+          Asesora:{' '}
+          <Text style={[styles.fieldsText, styles.assesorName]}>
+            {str.capitalize((order.StrNombreAsesora || '').toLocaleLowerCase())}
+          </Text>
+        </Text>
       </View>
     </View>
   </TouchableOpacity>

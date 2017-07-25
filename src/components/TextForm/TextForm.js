@@ -34,9 +34,10 @@ import type { TextFormProps } from '../../utils/app-types';
 const TextForm = ({
   containerStyles,
   keyboardType,
+  multiline,
+  onChangeText,
   placeholder,
   placeholderTextColor,
-  onChangeText,
   returnKeyType,
   secureTextEntry,
   styles,
@@ -55,6 +56,7 @@ const TextForm = ({
     <View style={shrinkedStyles.container}>
       <TextInput
         keyboardType={keyboardType}
+        multiline={multiline}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
@@ -72,6 +74,7 @@ const TextForm = ({
 
 TextForm.defaultProps = {
   keyboardType: DEFAULT_KEYBOARD,
+  multiline: false,
   onChangeText: noop,
   placeholder: '',
   placeholderTextColor: GREY,
