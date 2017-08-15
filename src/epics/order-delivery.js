@@ -72,12 +72,16 @@ import {
 import { UNAUTHORIZED } from '../constants/responses';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
-export const deliverOrder$ = (order: Order, user: User): Observable<*> => {
+export const uploadPictures$ = (order: Order, user: User): Observable<*> => {
   const uploadPackagePicture$ = uploadPicture(order.pictures.package, user.token);
   const uploadCodePicture$ = uploadPicture(order.pictures.code, user.token);
 
   return uploadPackagePicture$
-    .combineLatest(uploadCodePicture$)
+    .combineLatest(uploadCodePicture$);
+};
+
+export const deliverOrder$ = (order: Order, user: User): Observable<*> => {
+  return uploadPictures$(order, user)
     .concatMap((payload: [FetchResponse, FetchResponse]): Observable<*> => {
       const [packageResponse, codeResponse] = payload;
       const orderData: DeliverOrderData = {

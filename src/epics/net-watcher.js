@@ -24,6 +24,7 @@ import 'rxjs/add/operator/switchMap';
 // Types.
 import type {
   AppState,
+  DeliverOrderData,
   DeliveryResponse,
   FetchResponse,
   Order,
@@ -33,7 +34,7 @@ import type {
 
 // Observables.
 import { hideLoadingAction } from './common';
-import { deliverOrder$ } from './order-delivery';
+import { uploadPictures$ } from './order-delivery';
 
 // Actions.
 import {
@@ -51,7 +52,7 @@ import {
   ORDERS_SYNCED,
   SYSTEM_ERROR
 } from '../constants/messages';
-import { UNAUTHORIZED } from '../constants/responses';
+import * as responses from '../constants/responses';
 import { OrderStateEnum, NONE_NET } from '../constants/types';
 import {
   SYNC_DELAY,
@@ -60,15 +61,35 @@ import {
 
 const syncOrders$ = (orders: Order[], user: User) => {
   return Observable.from(orders)
-    .mergeMap((order: Order) => {
-      return deliverOrder$(order, user);
-    })
-    .reduce((response: any, orderResponse: any) => {
-      if (orderResponse.status === UNAUTHORIZED) {
-        throw orderResponse;
-      }
+    .mergeMap((order: Order): Observable<*> => {
+      return uploadPictures$(order, user)
+        .map((payload: [FetchResponse, FetchResponse]): DeliverOrderData => {
+          const [packageResponse, codeResponse] = payload;
 
-      return orderResponse;
+          if (
+            packageResponse.status === responses.UNAUTHORIZED ||
+            packageResponse.status === responses.ERROR
+          ) {
+            throw packageResponse;
+          }
+
+          const orderData: DeliverOrderData = {
+            numOrder: order.NumPedido,
+            urlCode: codeResponse.data.storedPath,
+            urlPackage: packageResponse.data.storedPath
+          };
+
+          return orderData;
+        });
+    })
+    .reduce((ordersToDeliver: DeliverOrderData[], orderToDeliver: DeliverOrderData): DeliverOrderData[] => {
+      return [
+        ...ordersToDeliver,
+        orderToDeliver
+      ];
+    }, [])
+    .concatMap((ordersToDeliver: DeliverOrderData[]): Observable<*> => {
+      return Observable.of(ordersToDeliver);
     })
     .concatMap(() => {
       return Observable.concat(
