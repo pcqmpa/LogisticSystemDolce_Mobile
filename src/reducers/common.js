@@ -17,13 +17,15 @@ import {
   SET_SCREEN_LOADED,
   SET_STORE_UPDATED,
   SHOW_LOADING,
-  SHOW_TOAST
+  SHOW_TOAST,
+  UPDATE_LOADING_LABEL
 } from '../constants/actions';
 
 // Types.
 import type {
   CommonState,
   LoadinAction,
+  LoadingLabelAction,
   LoadingState,
   OrderDetailsAction,
   ToastAction,
@@ -78,15 +80,14 @@ const actionHandlers = {
     ...state,
     storeUpdated: false
   }),
-  [SHOW_TOAST]:
-    (state: CommonState, { message, toastType: type }: ToastAction): CommonState => ({
-      ...state,
-      toast: {
-        show: true,
-        type,
-        message
-      }
-    }),
+  [SHOW_TOAST]: (state: CommonState, { message, toastType: type }: ToastAction): CommonState => ({
+    ...state,
+    toast: {
+      show: true,
+      type,
+      message
+    }
+  }),
   [HIDE_TOAST]: (state: CommonState): CommonState => ({
     ...state,
     toast: { ...toast }
@@ -112,7 +113,7 @@ const actionHandlers = {
   }),
   [SET_STORE_UPDATED]: (state: CommonState): CommonState => ({
     ...state,
-    storeUpdated: true,
+    storeUpdated: true
   }),
   [SET_SCREEN_DEFAULT_STATE]: (state: CommonState): CommonState => ({
     ...state,
@@ -120,6 +121,13 @@ const actionHandlers = {
   }),
   [CLEAR_CURRENT_SCREEN_DATA]: (): CommonState => ({
     ...initialState
+  }),
+  [UPDATE_LOADING_LABEL]: (state: CommonState, action: LoadingLabelAction): CommonState => ({
+    ...state,
+    loading: {
+      ...state.loading,
+      label: action.label
+    }
   })
 };
 

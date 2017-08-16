@@ -54,7 +54,8 @@ import {
 import {
   CODE,
   OrderStateEnum,
-  PACKAGE
+  PACKAGE,
+  REWARDS
 } from '../../constants/types';
 import { ORDER_DETAILS } from '../../constants/values';
 
@@ -63,6 +64,10 @@ import styles from './styles';
 
 class OrderDetails extends Component {
   props: OrderDetailsProps;
+
+  componentDidMount() {
+    console.log(this.props);
+  }
 
   cannotBeSubmitted = (): boolean => {
     const { order } = this.props;
@@ -165,6 +170,18 @@ class OrderDetails extends Component {
             valueText={order.StrIdentificacion}
           />
           <Divider />
+          <DataItem
+            hide={order.StrTipoEmpaque !== REWARDS}
+            keyText="Descripción Premios"
+            valueText={(order.StrDescripcionPremio || '').toLowerCase()}
+          />
+          <Divider hide={order.StrTipoEmpaque !== REWARDS} />
+          <DataItem
+            hide={order.StrTipoEmpaque !== REWARDS}
+            keyText="Cantidad de Premios"
+            valueText={order.IntCantidadPremio}
+          />
+          <Divider hide={order.StrTipoEmpaque !== REWARDS} />
           <DataImage
             keyText="Foto Código"
             onPress={this.handlePictureItemPress(CODE, order.pictures.code)}
@@ -203,8 +220,8 @@ class OrderDetails extends Component {
   }
 }
 
-const mapStateToProps = ({ common, orders }: AppState) => ({
-  order: orders.find((order: Order) => (order.NumPedido === common.order))
+const mapStateToProps = ({ orders }: AppState, ownProps: OrderDetailsProps) => ({
+  order: orders.find((order: Order) => (order.id === ownProps.match.params.orderId))
 });
 
 const mapDispatchToProps = (dispatch: ReduxDispatch) => (

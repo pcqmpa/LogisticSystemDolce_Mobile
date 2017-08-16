@@ -7,14 +7,27 @@
 import React from 'react';
 import { View } from 'react-native';
 
+// Types.
+import type { DividerProps } from '../../utils/app-types';
+
 // Styles.
 import styles from './styles';
 
 //
 // Component.
 // -----------------------------------------------------------------------------
-const Divider = () => (
-  <View style={styles.divider} />
-);
+const Divider = (props: DividerProps) => {
+  if (props.hide) {
+    return null;
+  }
+
+  return (
+    <View style={styles.divider} />
+  );
+};
+
+Divider.defaultProps = {
+  hide: false
+};
 
 export default Divider;

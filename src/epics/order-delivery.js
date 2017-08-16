@@ -73,8 +73,8 @@ import { UNAUTHORIZED } from '../constants/responses';
 import { TOAST_DISPLAY_DELAY } from '../constants/values';
 
 export const uploadPictures$ = (order: Order, user: User): Observable<*> => {
-  const uploadPackagePicture$ = uploadPicture(order.pictures.package, user.token);
-  const uploadCodePicture$ = uploadPicture(order.pictures.code, user.token);
+  const uploadPackagePicture$ = uploadPicture(order.pictures.package || '', user.token || '');
+  const uploadCodePicture$ = uploadPicture(order.pictures.code || '', user.token || '');
 
   return uploadPackagePicture$
     .combineLatest(uploadCodePicture$);
@@ -87,7 +87,8 @@ export const deliverOrder$ = (order: Order, user: User): Observable<*> => {
       const orderData: DeliverOrderData = {
         numOrder: order.NumPedido,
         urlCode: codeResponse.data.storedPath,
-        urlPackage: packageResponse.data.storedPath
+        urlPackage: packageResponse.data.storedPath,
+        orderType: order.StrTipoEmpaque || ''
       };
 
       return deliverOrder(orderData, user.token);
@@ -103,7 +104,7 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
         .concatMap((isConnected) => {
           if (!isConnected) {
             return Observable.concat(
-              Observable.of(deliverOrderPartially(action.order.NumPedido)),
+              Observable.of(deliverOrderPartially(action.order.id || '')),
               hideLoadingAction(),
               Observable.of(showToast(ORDER_PARTIALLY_DELIVERED, GREY_DOVE))
                 .delay(TOAST_DISPLAY_DELAY)

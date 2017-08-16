@@ -26,11 +26,18 @@ export const callGetOrdersToDeliver = (username: string) =>
   (`${API_SERVICE_URL}/api/callGetOrdersToDeliver?username=${username}`);
 
 /**
- * Service to submit a order.
+ * Service to submit an order.
  * @returns {String} -> With the URL request.
  */
 export const callDeliverOrder = () =>
   (`${API_SERVICE_URL}/api/callDeliverOrder`);
+
+/**
+ * Service to submit a list of orders.
+ * @returns {String} -> With the URL request.
+ */
+export const callDeliverOrders = () =>
+  (`${API_SERVICE_URL}/api/callDeliverOrders`);
 
 /**
  * Service to submit a not delivered order.

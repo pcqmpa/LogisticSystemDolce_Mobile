@@ -32,6 +32,9 @@ import type {
   User
 } from '../utils/app-types';
 
+// Requests.
+import { deliverOrders } from '../utils/requests';
+
 // Observables.
 import { hideLoadingAction } from './common';
 import { uploadPictures$ } from './order-delivery';
@@ -40,8 +43,10 @@ import { uploadPictures$ } from './order-delivery';
 import {
   showLoading,
   showToast,
+  updateLoadingLabel,
   updateStore
 } from '../actions/common';
+import { syncedOrders } from '../actions/orders';
 import { logoutUser } from '../actions/user';
 
 // Constants.
@@ -55,6 +60,7 @@ import {
 import * as responses from '../constants/responses';
 import { OrderStateEnum, NONE_NET } from '../constants/types';
 import {
+  LOADING_HIDE_DELAY,
   SYNC_DELAY,
   TOAST_DISPLAY_DELAY
 } from '../constants/values';
@@ -76,7 +82,8 @@ const syncOrders$ = (orders: Order[], user: User) => {
           const orderData: DeliverOrderData = {
             numOrder: order.NumPedido,
             urlCode: codeResponse.data.storedPath,
-            urlPackage: packageResponse.data.storedPath
+            urlPackage: packageResponse.data.storedPath,
+            orderType: order.StrTipoEmpaque || ''
           };
 
           return orderData;
@@ -89,10 +96,17 @@ const syncOrders$ = (orders: Order[], user: User) => {
       ];
     }, [])
     .concatMap((ordersToDeliver: DeliverOrderData[]): Observable<*> => {
-      return Observable.of(ordersToDeliver);
+      return deliverOrders(user.username || '', ordersToDeliver, user.token || '');
     })
     .concatMap(() => {
+      const orderIds: string[] = orders.map((order: Order): string => {
+        return order.id || '';
+      });
+
       return Observable.concat(
+        Observable.of(updateLoadingLabel(`Se sincronizaron ${orders.length + 1} pedidos.`))
+          .delay(LOADING_HIDE_DELAY),
+        Observable.of(syncedOrders(orderIds)),
         Observable.of(updateStore()),
         hideLoadingAction(),
         Observable.of(showToast(ORDERS_SYNCED))
@@ -103,7 +117,7 @@ const syncOrders$ = (orders: Order[], user: User) => {
       const data: DeliveryResponse = err.data;
 
       switch (err.status) {
-      case UNAUTHORIZED:
+      case responses.UNAUTHORIZED:
         return Observable.of(logoutUser(data.message));
       default:
         return Observable.concat(
