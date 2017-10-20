@@ -34,11 +34,11 @@ export type AjaxOptions = {
   headers?: any
 };
 
-// export type AjaxHeaders = {
-//   'Content-Type'?: string,
-//   ismobile: string,
-//   token?: string | null
-// };
+export type AjaxHeaders = {
+  'Content-Type'?: string,
+  ismobile: string,
+  token?: string | null
+};
 
 export type AjaxRequest = {
   body?: any,
@@ -100,6 +100,7 @@ export type Order = {
   id?: string,
   Id?: number,
   IdTransportista?: number,
+  IntCantidadPremio?: number,
   message?: string,
   NumNumeroPedido?: number,
   NumPedido?: number,
@@ -109,6 +110,7 @@ export type Order = {
   StrCapana?: string,
   StrCiudad?: string,
   StrDepartamento?: string,
+  StrDescripcionPremio?: string,
   StrDireccion?: string,
   StrIdentificacion?: string,
   StrNombreAsesora?: string,
@@ -185,7 +187,8 @@ export type AuthenticateResult = {
 export type DeliverOrderData = {
   codePicture?: string | null,
   numOrder?: number,
-  packagePiture?: string | null
+  packagePiture?: string | null,
+  orderType: string
 };
 
 export type DeliveryResponse = {
@@ -335,7 +338,7 @@ export type FormRulesAction = {
 
 export type OrderPictureAction = {
   type: string,
-  numOrder: number | null,
+  orderId: string,
   pictureType: string,
   picture: string
 };
@@ -352,12 +355,12 @@ export type DeliverOrderAction = {
 
 export type DeliverOrderSuccededAction = {
   type: string,
-  numOrder: number
+  orderId: string
 };
 
 export type DeliverOrderPatiallyAction = {
   type: string,
-  numOrder: number
+  orderId: string
 };
 
 export type PictureAction = {
@@ -384,12 +387,13 @@ export type ShotPictureAction = {
 
 export type OrderDetailsAction = {
   type: string,
-  order: number
+  order: number,
+  orderId: string
 };
 
 export type OrderAction = {
   type: string,
-  numOrder: number
+  orderId: string
 };
 
 export type OrderMessageAction = {
@@ -397,6 +401,16 @@ export type OrderMessageAction = {
   orderId: string,
   message: string
 };
+
+export type LoadingLabelAction = {
+  type: string,
+  label: string
+};
+
+export type SyncedOrdersAction = {
+  type: string,
+  orderIds: string[]
+}
 
 //
 // Actions Creators.
@@ -410,7 +424,7 @@ export type RouterAction = (path: string | void) => HistoryAction;
 // ====================================
 export type ActionCreator = () => Action;
 export type ShowToast = (message: string, toastType: string) => ToastAction;
-export type SetOrder = (order?: number) => OrderDetailsAction;
+export type SetOrder = (order?: number, orderId: string) => OrderDetailsAction;
 
 // User.
 // ====================================
@@ -438,7 +452,7 @@ export type ShotPicture = (cameraElement: CameraElement, retake: boolean) => Sho
 // Not Delivered.
 // ====================================
 export type OrderMessage = (orderId: string, message: string) => OrderMessageAction;
-export type OrderCreator = (numOrder: number) => OrderAction;
+export type OrderCreator = (orderId: string) => OrderAction;
 
 //
 // Redux.
@@ -488,6 +502,12 @@ export type ConfigScreenData = {
   order?: Order,
   changeDisabled?: boolean
 };
+
+// Divider.
+// ====================================
+export type DividerProps = {
+  hide: boolean
+}
 
 // Toast.
 // ====================================
@@ -539,6 +559,7 @@ export type CardProps = {
 // DataItem.
 // ====================================
 export type DataItemProps = {
+  hide: boolean,
   keyText: string,
   valueText: string
 };
@@ -644,6 +665,7 @@ export type OrdersProps = {
 // ====================================
 export type OrderDetailsProps = {
   deliverOrder: DeliverOrder,
+  match: Match,
   order: Order,
   push: RouterAction,
   replace: RouterAction,

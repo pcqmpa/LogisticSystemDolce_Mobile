@@ -57,14 +57,14 @@ const notDeliveredEpic$ = (action$: Observable<*>, store: ReduxStore) => {
     .switchMap((action: OrderAction) => {
       const { orders, user }: AppState = store.getState();
       const { id, NumPedido, message }: Order = orders.find((order: Order) => {
-        return order.NumPedido === action.numOrder;
+        return order.orderId === action.orderId;
       }) || { pictures: {} };
 
       return notifyNotDeliveredOrder(NumPedido || 0, message || '', user.token || '')
         .concatMap(() => {
           return Observable.concat(
             Observable.of(
-              setOrderToNotDelivered(NumPedido),
+              setOrderToNotDelivered(id),
               updateStore(),
               replace(`${ORDER_DETAILS_PATH}/${(id || 0).toString()}`)
             ),

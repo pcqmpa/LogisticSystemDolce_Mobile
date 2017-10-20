@@ -73,3 +73,6 @@ export const OrderStateEnum = {
   NOT_DELIVERED: 'NOT_DELIVERED',
   OPEN: 'OPEN'
 };
+
+// Packages.
+export const REWARDS = 'Premios';

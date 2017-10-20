@@ -16,6 +16,7 @@ import {
   SET_STORE_UPDATED,
   SHOW_LOADING,
   SHOW_TOAST,
+  UPDATE_LOADING_LABEL,
   UPDATE_STORE
 } from '../constants/actions';
 import { BRAND_DARK } from '../constants/colors';
@@ -24,6 +25,7 @@ import { BRAND_DARK } from '../constants/colors';
 import type {
   Action,
   LoadinAction,
+  LoadingLabelAction,
   OrderDetailsAction,
   ToastAction
 } from '../utils/app-types';
@@ -104,8 +106,9 @@ export const setScreenDefaultState = (): Action => ({
  * @param {String} order -> The number of the order.
  * @returns {Object} -> The action object.
  */
-export const setOrder = (order: number = 0): OrderDetailsAction => ({
+export const setOrder = (order: number = 0, orderId: string): OrderDetailsAction => ({
   order,
+  orderId,
   type: SET_ORDER
 });
 
@@ -132,4 +135,14 @@ export const updateStore = (): Action => ({
  */
 export const initNetWatcher = (): Action => ({
   type: INIT_NET_WATCHER
+});
+
+/**
+ * Action to update the loading component label.
+ * @param label -> The new label.
+ * @returns {Object} -> The action.
+ */
+export const updateLoadingLabel = (label: string): LoadingLabelAction => ({
+  type: UPDATE_LOADING_LABEL,
+  label
 });

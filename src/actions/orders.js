@@ -13,6 +13,7 @@ import {
   INIT_ORDERS,
   REQUEST_ORDERS,
   SET_ORDER_TO_NOT_DELIVERED,
+  SYNCED_ORDERS,
   NOTIFY_NOT_DELIVERED_ORDER,
   UPDATE_ORDER_MESSAGE
 } from '../constants/actions';
@@ -27,7 +28,8 @@ import type {
   OrderAction,
   OrdersAction,
   OrderMessageAction,
-  OrderPictureAction
+  OrderPictureAction,
+  SyncedOrdersAction
 } from '../utils/app-types';
 
 /**
@@ -37,8 +39,8 @@ import type {
  * @return {Object} -> The action.
  */
 export const addPictureToOrder =
-  (numOrder: number | null = 0, pictureType: string, picture: string): OrderPictureAction => ({
-    numOrder,
+  (orderId: string = '', pictureType: string, picture: string): OrderPictureAction => ({
+    orderId,
     picture,
     pictureType,
     type: ADD_PICTURE_TO_ORDER
@@ -85,8 +87,8 @@ export const deliverOrder = (order: Order): DeliverOrderAction => ({
  * @param {Number} numOrder -> The number of the order.
  * @returns {Object} -> The action.
  */
-export const deliverOrderSucceded = (numOrder: number = 0): DeliverOrderSuccededAction => ({
-  numOrder,
+export const deliverOrderSucceded = (orderId: string = ''): DeliverOrderSuccededAction => ({
+  orderId,
   type: DELIVER_ORDER_SUCCESS
 });
 
@@ -96,8 +98,8 @@ export const deliverOrderSucceded = (numOrder: number = 0): DeliverOrderSucceded
  * @param {Number} numOrder -> The number of the order.
  * @returns {Object} -> The action.
  */
-export const deliverOrderPartially = (numOrder: number = 0): DeliverOrderPatiallyAction => ({
-  numOrder,
+export const deliverOrderPartially = (orderId: string): DeliverOrderPatiallyAction => ({
+  orderId,
   type: DELIVER_ORDER_PARTIALLY
 });
 
@@ -118,8 +120,8 @@ export const updateOrderMessage = (orderId: string, message: string = ''): Order
  * @param {Number} numOrder -> The order number.
  * @returns {Object} -> The action.
  */
-export const notifyNotDeliveredOrder = (numOrder: number = 0): OrderAction => ({
-  numOrder,
+export const notifyNotDeliveredOrder = (orderId: string = ''): OrderAction => ({
+  orderId,
   type: NOTIFY_NOT_DELIVERED_ORDER
 });
 
@@ -129,7 +131,17 @@ export const notifyNotDeliveredOrder = (numOrder: number = 0): OrderAction => ({
  * @param {Number} numOrder -> The order number.
  * @returns {Object} -> The action.
  */
-export const setOrderToNotDelivered = (numOrder: number = 0): OrderAction => ({
-  numOrder,
+export const setOrderToNotDelivered = (orderId: string = ''): OrderAction => ({
+  orderId,
   type: SET_ORDER_TO_NOT_DELIVERED
+});
+
+/**
+ * Action to update the state of a list of orders to synced.
+ * @param {Array<Number>} orderIds -> The list of orders's ids.
+ * @returns {Object} -> The action.
+ */
+export const syncedOrders = (orderIds: string[]): SyncedOrdersAction => ({
+  type: SYNCED_ORDERS,
+  orderIds
 });

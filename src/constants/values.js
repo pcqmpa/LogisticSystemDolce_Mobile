@@ -92,7 +92,7 @@ export const DIVIDER_HEIGHT = 1;
 export const REDIRECT_DELAY = 400;
 export const TOAST_DISPLAY_DELAY = 100;
 export const TOAST_HIDE_DELAY = 2000;
-export const LOADING_HIDE_DELAY = 400;
+export const LOADING_HIDE_DELAY = 100;
 export const SYNC_DELAY = 400;
 
 // Login.

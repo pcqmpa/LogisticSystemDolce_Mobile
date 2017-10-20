@@ -86,7 +86,8 @@ const authenticationSucceed = (response: FetchResponse): Observable<any> => {
     ));
 };
 
-const authenticationFailed = (): Observable<*> => {
+const authenticationFailed = (err): Observable<*> => {
+  console.log(err);
   const failureHandler = Observable.concat(
     Observable.of(clearLoginForm()),
     hideLoadingAction(),

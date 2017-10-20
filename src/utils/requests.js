@@ -9,9 +9,11 @@ import 'rxjs/add/observable/dom/ajax';
 
 // Types.
 import type {
+  AjaxHeaders,
   DeliverOrderData,
   FetchResponse,
   LoginState,
+  Order,
   PictureDataObject
 } from './app-types';
 
@@ -21,6 +23,7 @@ import streams from './streams';
 // Enpoints.
 import {
   callDeliverOrder,
+  callDeliverOrders,
   callFetchUser,
   callGetOrdersToDeliver,
   callNotifyNotDeliveredOrder,
@@ -83,6 +86,28 @@ export const deliverOrder =
   };
 
 /**
+ * Creates a request to deliver a list of orders.
+ * @param username -> The username.
+ * @param orders -> The data to deliver the order.
+ * @param token -> The user session token.
+ * @returns The deliver request.
+ */
+export const deliverOrders =
+  (username: string, orders: DeliverOrderData[], token: string): Observable<FetchResponse> => {
+    const request = streams.ajaxRequest({
+      body: JSON.stringify({ username, orders }),
+      headers: {
+        'content-type': 'application/json',
+        ismobile: 'true',
+        token
+      },
+      method: POST,
+      url: callDeliverOrders()
+    });
+    return request;
+  };
+
+/**
  * Creates a request to notify when an order could not be delivered.
  * @param numOrder -> The number of the order.
  * @param message -> The message of the notification.
@@ -111,7 +136,7 @@ export const notifyNotDeliveredOrder =
  * @returns The upload request.
  */
 export const uploadPicture =
-  (pictureUri?: string | null, token?: string | null): Observable<*> => {
+  (pictureUri: string, token: string | null): Observable<*> => {
     const headers: AjaxHeaders = {
       'Content-Type': 'multipart/form-data',
       ismobile: 'true',

@@ -15,7 +15,8 @@ import type {
   OrdersAction,
   OrderMessageAction,
   OrderPictureAction,
-  OrdersState
+  OrdersState,
+  SyncedOrdersAction
 } from '../utils/app-types';
 
 // Actions.
@@ -26,6 +27,7 @@ import {
   DELIVER_ORDER_SUCCESS,
   INIT_ORDERS,
   SET_ORDER_TO_NOT_DELIVERED,
+  SYNCED_ORDERS,
   UPDATE_ORDER_MESSAGE
 } from '../constants/actions';
 
@@ -53,7 +55,7 @@ const initialState: OrdersState = [];
 const actionHandlers = {
   [ADD_PICTURE_TO_ORDER]: (state: OrdersState, action: OrderPictureAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.orderId) {
         return {
           ...order,
           pictures: {
@@ -69,7 +71,7 @@ const actionHandlers = {
   [DELIVER_ORDER_PARTIALLY]:
   (state: OrdersState, action: DeliverOrderPatiallyAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.orderId) {
         return {
           ...order,
           state: OrderStateEnum.DELIVERED
@@ -81,7 +83,7 @@ const actionHandlers = {
   [DELIVER_ORDER_SUCCESS]:
   (state: OrdersState, action: DeliverOrderSuccededAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.orderId) {
         return {
           ...order,
           Entregado: true,
@@ -97,7 +99,7 @@ const actionHandlers = {
   ]),
   [SET_ORDER_TO_NOT_DELIVERED]: (state: OrdersState, action: OrderAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.id) {
         return {
           ...order,
           state: OrderStateEnum.NOT_DELIVERED
@@ -112,6 +114,19 @@ const actionHandlers = {
         return {
           ...order,
           message: action.message
+        };
+      }
+      return order;
+    })
+  ),
+  [SYNCED_ORDERS]: (state: OrdersState, actions: SyncedOrdersAction): OrdersState => (
+    state.map((order: Order) => {
+      if (actions.orderIds.includes(order.id || '')) {
+        return {
+          ...order,
+          Entregado: true,
+          state: OrderStateEnum.DELIVERED,
+          synced: true
         };
       }
       return order;
