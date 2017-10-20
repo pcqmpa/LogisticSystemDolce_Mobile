@@ -106,8 +106,9 @@ export const setScreenDefaultState = (): Action => ({
  * @param {String} order -> The number of the order.
  * @returns {Object} -> The action object.
  */
-export const setOrder = (order: number = 0): OrderDetailsAction => ({
+export const setOrder = (order: number = 0, orderId: string): OrderDetailsAction => ({
   order,
+  orderId,
   type: SET_ORDER
 });
 

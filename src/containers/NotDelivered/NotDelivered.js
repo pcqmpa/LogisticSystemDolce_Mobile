@@ -56,7 +56,7 @@ class NotDelivered extends Component {
   };
 
   handleNotifyNotDeliveredOrder = () => {
-    this.props.notifyNotDeliveredOrder(this.props.order.NumPedido || 0);
+    this.props.notifyNotDeliveredOrder(this.props.order.id || '');
   };
 
   render() {

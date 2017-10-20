@@ -338,7 +338,7 @@ export type FormRulesAction = {
 
 export type OrderPictureAction = {
   type: string,
-  numOrder: number | null,
+  orderId: string,
   pictureType: string,
   picture: string
 };
@@ -355,7 +355,7 @@ export type DeliverOrderAction = {
 
 export type DeliverOrderSuccededAction = {
   type: string,
-  numOrder: number
+  orderId: string
 };
 
 export type DeliverOrderPatiallyAction = {
@@ -387,12 +387,13 @@ export type ShotPictureAction = {
 
 export type OrderDetailsAction = {
   type: string,
-  order: number
+  order: number,
+  orderId: string
 };
 
 export type OrderAction = {
   type: string,
-  numOrder: number
+  orderId: string
 };
 
 export type OrderMessageAction = {
@@ -423,7 +424,7 @@ export type RouterAction = (path: string | void) => HistoryAction;
 // ====================================
 export type ActionCreator = () => Action;
 export type ShowToast = (message: string, toastType: string) => ToastAction;
-export type SetOrder = (order?: number) => OrderDetailsAction;
+export type SetOrder = (order?: number, orderId: string) => OrderDetailsAction;
 
 // User.
 // ====================================
@@ -451,7 +452,7 @@ export type ShotPicture = (cameraElement: CameraElement, retake: boolean) => Sho
 // Not Delivered.
 // ====================================
 export type OrderMessage = (orderId: string, message: string) => OrderMessageAction;
-export type OrderCreator = (numOrder: number) => OrderAction;
+export type OrderCreator = (orderId: string) => OrderAction;
 
 //
 // Redux.

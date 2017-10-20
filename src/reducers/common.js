@@ -103,9 +103,10 @@ const actionHandlers = {
     ...state,
     loading: { ...loading }
   }),
-  [SET_ORDER]: (state: CommonState, { order }: OrderDetailsAction) => ({
+  [SET_ORDER]: (state: CommonState, { order, orderId }: OrderDetailsAction) => ({
     ...state,
-    order
+    order,
+    orderId
   }),
   [SET_SCREEN_LOADED]: (state: CommonState): CommonState => ({
     ...state,

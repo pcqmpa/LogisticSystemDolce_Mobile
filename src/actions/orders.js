@@ -39,8 +39,8 @@ import type {
  * @return {Object} -> The action.
  */
 export const addPictureToOrder =
-  (numOrder: number | null = 0, pictureType: string, picture: string): OrderPictureAction => ({
-    numOrder,
+  (orderId: string = '', pictureType: string, picture: string): OrderPictureAction => ({
+    orderId,
     picture,
     pictureType,
     type: ADD_PICTURE_TO_ORDER
@@ -87,8 +87,8 @@ export const deliverOrder = (order: Order): DeliverOrderAction => ({
  * @param {Number} numOrder -> The number of the order.
  * @returns {Object} -> The action.
  */
-export const deliverOrderSucceded = (numOrder: number = 0): DeliverOrderSuccededAction => ({
-  numOrder,
+export const deliverOrderSucceded = (orderId: string = ''): DeliverOrderSuccededAction => ({
+  orderId,
   type: DELIVER_ORDER_SUCCESS
 });
 
@@ -120,8 +120,8 @@ export const updateOrderMessage = (orderId: string, message: string = ''): Order
  * @param {Number} numOrder -> The order number.
  * @returns {Object} -> The action.
  */
-export const notifyNotDeliveredOrder = (numOrder: number = 0): OrderAction => ({
-  numOrder,
+export const notifyNotDeliveredOrder = (orderId: string = ''): OrderAction => ({
+  orderId,
   type: NOTIFY_NOT_DELIVERED_ORDER
 });
 
@@ -131,8 +131,8 @@ export const notifyNotDeliveredOrder = (numOrder: number = 0): OrderAction => ({
  * @param {Number} numOrder -> The order number.
  * @returns {Object} -> The action.
  */
-export const setOrderToNotDelivered = (numOrder: number = 0): OrderAction => ({
-  numOrder,
+export const setOrderToNotDelivered = (orderId: string = ''): OrderAction => ({
+  orderId,
   type: SET_ORDER_TO_NOT_DELIVERED
 });
 

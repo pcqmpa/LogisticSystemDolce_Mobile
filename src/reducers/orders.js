@@ -55,7 +55,7 @@ const initialState: OrdersState = [];
 const actionHandlers = {
   [ADD_PICTURE_TO_ORDER]: (state: OrdersState, action: OrderPictureAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.orderId) {
         return {
           ...order,
           pictures: {
@@ -83,7 +83,7 @@ const actionHandlers = {
   [DELIVER_ORDER_SUCCESS]:
   (state: OrdersState, action: DeliverOrderSuccededAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.orderId) {
         return {
           ...order,
           Entregado: true,
@@ -99,7 +99,7 @@ const actionHandlers = {
   ]),
   [SET_ORDER_TO_NOT_DELIVERED]: (state: OrdersState, action: OrderAction): OrdersState => (
     state.map((order: Order) => {
-      if (order.NumPedido === action.numOrder) {
+      if (order.id === action.id) {
         return {
           ...order,
           state: OrderStateEnum.NOT_DELIVERED

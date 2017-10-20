@@ -33,11 +33,17 @@ import type {
 } from '../utils/app-types';
 
 // Requests.
-import { deliverOrders } from '../utils/requests';
+import {
+  deliverOrders,
+  getOrdersToDeliverRequest
+} from '../utils/requests';
 
 // Observables.
 import { hideLoadingAction } from './common';
 import { uploadPictures$ } from './order-delivery';
+
+// Libs.
+import transmuter from '../libs/transmuter';
 
 // Actions.
 import {
@@ -46,7 +52,7 @@ import {
   updateLoadingLabel,
   updateStore
 } from '../actions/common';
-import { syncedOrders } from '../actions/orders';
+import { initOrders, syncedOrders } from '../actions/orders';
 import { logoutUser } from '../actions/user';
 
 // Constants.
@@ -99,6 +105,11 @@ const syncOrders$ = (orders: Order[], user: User) => {
       return deliverOrders(user.username || '', ordersToDeliver, user.token || '');
     })
     .concatMap(() => {
+      return getOrdersToDeliverRequest(user.username);
+    })
+    .concatMap((ordersResponse: FetchResponse) => {
+      const newOrders: Order[] = transmuter
+        .toInProgressOrders(ordersResponse.data.data);
       const orderIds: string[] = orders.map((order: Order): string => {
         return order.id || '';
       });
@@ -106,6 +117,7 @@ const syncOrders$ = (orders: Order[], user: User) => {
       return Observable.concat(
         Observable.of(updateLoadingLabel(`Se sincronizaron ${orders.length + 1} pedidos.`))
           .delay(LOADING_HIDE_DELAY),
+        Observable.of(initOrders(newOrders)),
         Observable.of(syncedOrders(orderIds)),
         Observable.of(updateStore()),
         hideLoadingAction(),

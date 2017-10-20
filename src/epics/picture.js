@@ -66,7 +66,8 @@ const pictureEpic$ = (action$: Observable<*>): Observable<*> => {
             ),
             routerAction,
             hideLoadingAction()
-          ).delay(SHOT_PICTURE_DELAY);
+          // ).delay(SHOT_PICTURE_DELAY);
+          );
         })
         .catch(() => (Observable.of(showToast(PICTURE_SHOT_ERROR, ERROR))))
         .startWith(showLoading(LOADING_PICTURE));

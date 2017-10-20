@@ -110,7 +110,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
           order.id === orderId
         )) || { pictures: {} };
 
-        this.props.setOrder(selectedOrder.NumPedido);
+        this.props.setOrder(selectedOrder.NumPedido, orderId);
       }
 
       if (match.path === PICTURE_PREVIEW) {

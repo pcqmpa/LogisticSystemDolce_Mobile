@@ -65,10 +65,6 @@ import styles from './styles';
 class OrderDetails extends Component {
   props: OrderDetailsProps;
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   cannotBeSubmitted = (): boolean => {
     const { order } = this.props;
     return (

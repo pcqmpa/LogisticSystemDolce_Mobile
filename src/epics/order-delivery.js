@@ -128,7 +128,7 @@ const orderDeliveryEpic$ = (action$: Observable<*>, store: ReduxStore): Observab
                     Observable.of(
                       goBack(),
                       initOrders(newOrders),
-                      deliverOrderSucceded(order.NumPedido),
+                      deliverOrderSucceded(order.id),
                       updateStore()
                     ),
                     hideLoadingAction(),

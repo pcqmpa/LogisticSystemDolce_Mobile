@@ -55,7 +55,7 @@ const pictureStorageEpic$ =
         return Observable.concat(
           Observable.of(
             addPictureToOrder(
-              common.order,
+              common.orderId,
               picturePreview.pictureType,
               picturePreview.picture
             ),
