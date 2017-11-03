@@ -185,10 +185,10 @@ export type AuthenticateResult = {
 };
 
 export type DeliverOrderData = {
-  codePicture?: string | null,
-  numOrder?: number,
-  packagePiture?: string | null,
-  orderType: string
+  NumPedido?: number,
+  StrTipoEmpaque: string,
+  UrlCod?: string | null,
+  UrlImagen?: string | null
 };
 
 export type DeliveryResponse = {
@@ -484,7 +484,7 @@ export type ConfigScreenState = {
 export type ConfigScreenProps = {
   match: Match,
   initCurrentScreen: ActionCreator,
-  currentOrder: number,
+  currentOrder: string,
   orders: Order[];
   screenLoaded: boolean,
   setOrder: SetOrder,
@@ -623,7 +623,7 @@ export type HeaderContainerProps = {
   logoutUser: LogOut,
   order: string,
   orders: Order[],
-  requestOrders: ActionCreator,
+  syncOrders: ActionCreator,
   screenLoaded: boolean
 };
 

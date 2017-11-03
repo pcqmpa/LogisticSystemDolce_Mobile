@@ -6,6 +6,7 @@
  */
 // React.
 import { NetInfo } from 'react-native';
+import { goBack } from 'react-router-redux';
 
 // Rxjs.
 import { Observable } from 'rxjs/Observable';
@@ -64,6 +65,7 @@ import {
   SYSTEM_ERROR
 } from '../constants/messages';
 import * as responses from '../constants/responses';
+import { ORDER_DETAILS_PATH } from '../constants/screens';
 import { OrderStateEnum, NONE_NET } from '../constants/types';
 import {
   LOADING_HIDE_DELAY,
@@ -71,7 +73,7 @@ import {
   TOAST_DISPLAY_DELAY
 } from '../constants/values';
 
-const syncOrders$ = (orders: Order[], user: User) => {
+const syncOrders$ = (orders: Order[], user: User, back: boolean = false) => {
   return Observable.from(orders)
     .mergeMap((order: Order): Observable<*> => {
       return uploadPictures$(order, user)
@@ -86,10 +88,10 @@ const syncOrders$ = (orders: Order[], user: User) => {
           }
 
           const orderData: DeliverOrderData = {
-            numOrder: order.NumPedido,
-            urlCode: codeResponse.data.storedPath,
-            urlPackage: packageResponse.data.storedPath,
-            orderType: order.StrTipoEmpaque || ''
+            NumPedido: order.NumPedido,
+            StrTipoEmpaque: order.StrTipoEmpaque || '',
+            UrlCod: codeResponse.data.storedPath,
+            UrlImagen: packageResponse.data.storedPath
           };
 
           return orderData;
@@ -113,9 +115,13 @@ const syncOrders$ = (orders: Order[], user: User) => {
       const orderIds: string[] = orders.map((order: Order): string => {
         return order.id || '';
       });
+      const actions = (back) ? [
+        Observable.of(goBack())
+          .delay(200)
+      ] : [];
 
-      return Observable.concat(
-        Observable.of(updateLoadingLabel(`Se sincronizaron ${orders.length + 1} pedidos.`))
+      actions.push(
+        Observable.of(updateLoadingLabel(`Se sincronizaron ${orders.length} pedidos.`))
           .delay(LOADING_HIDE_DELAY),
         Observable.of(initOrders(newOrders)),
         Observable.of(syncedOrders(orderIds)),
@@ -124,6 +130,8 @@ const syncOrders$ = (orders: Order[], user: User) => {
         Observable.of(showToast(ORDERS_SYNCED))
           .delay(TOAST_DISPLAY_DELAY)
       );
+
+      return Observable.concat(...actions);
     })
     .catch((err: FetchResponse) => {
       const data: DeliveryResponse = err.data;
@@ -149,15 +157,17 @@ const netWatcherEpic$ = (action$: Observable<*>, store: ReduxStore): Observable<
       return netInfoEvent$
         .switchMap((reach: any) => {
           if (reach !== NONE_NET) {
-            const { orders, user }: AppState = store.getState();
+            const { orders = [], user, router }: AppState = store.getState();
+            const onDetails = (router.location.pathname.includes(ORDER_DETAILS_PATH));
 
             const unsyncedOrders: Order[] = orders.filter((order: Order) => {
               return (
                 !order.synced && !order.Entregado && order.state === OrderStateEnum.DELIVERED
               );
             });
+
             return (unsyncedOrders.length)
-              ? syncOrders$(unsyncedOrders, user).delay(SYNC_DELAY)
+              ? syncOrders$(unsyncedOrders, user, onDetails).delay(SYNC_DELAY)
               : Observable.empty();
           }
 

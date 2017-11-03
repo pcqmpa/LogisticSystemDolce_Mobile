@@ -11,7 +11,7 @@ import {
   DELIVER_ORDER_PARTIALLY,
   DELIVER_ORDER_SUCCESS,
   INIT_ORDERS,
-  REQUEST_ORDERS,
+  SYNC_ORDERS,
   SET_ORDER_TO_NOT_DELIVERED,
   SYNCED_ORDERS,
   NOTIFY_NOT_DELIVERED_ORDER,
@@ -65,11 +65,11 @@ export const clearOrders = (): Action => ({
 });
 
 /**
- * Action to requests the orders to the server.
+ * Action to sync the orders with the server.
  * @return {Object} -> The action.
  */
-export const requestOrders = (): Action => ({
-  type: REQUEST_ORDERS
+export const syncOrders = (): Action => ({
+  type: SYNC_ORDERS
 });
 
 /**

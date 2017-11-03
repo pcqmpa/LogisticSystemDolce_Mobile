@@ -23,7 +23,7 @@ import type {
 import { Header } from '../../components/';
 
 // Actions.
-import { requestOrders } from '../../actions/orders';
+import { syncOrders } from '../../actions/orders';
 import { clearPicturePreview } from '../../actions/picture-preview';
 import { logoutUser } from '../../actions/user';
 
@@ -61,7 +61,7 @@ class HeaderContainer extends Component {
   };
 
   handleRefreshPress = () => {
-    this.props.requestOrders();
+    this.props.syncOrders();
   };
 
   getCurrentContent(props: HeaderContainerProps) {
@@ -160,7 +160,7 @@ const mapDispatchToProps = (dispatch: ReduxDispatch) => (
     clearPicturePreview,
     goBack,
     logoutUser,
-    requestOrders
+    syncOrders
   }, dispatch)
 );
 
