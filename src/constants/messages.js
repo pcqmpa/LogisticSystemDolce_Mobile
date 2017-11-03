@@ -31,6 +31,14 @@ export const ORDER_DELIVERED = 'El pedido ha sido entregado satisfactoriamente';
 
 export const ORDER_NOT_DELIVERED_NOTIFIED = 'Se ha notificado que el pedido no fue entregado';
 
+export const ORDERS_SYNC = (count: number): string => (`${count} pedidos fueron sincronizados.`);
+
+export const ORDERS_UPDATED = 'Se actualizó la lista de pedidos.';
+
+export const NO_ORDERS_TO_DELIVER = 'No hay pedidos disponibles.';
+
+export const NO_ORDERS_WHERE_UPDATED = 'No hay nuevos pedidos en la lista';
+
 // Loading Labels.
 export const LOADING_ORDERS = 'Actualizando Pedidos...';
 

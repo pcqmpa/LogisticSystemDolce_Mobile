@@ -115,7 +115,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
 
       if (match.path === PICTURE_PREVIEW) {
         const selectedOrder: Order = orders.find((order: Order) => (
-          order.NumPedido === currentOrder
+          order.id === currentOrder
         )) || { pictures: {} };
 
         return { changeDisabled: selectedOrder.state === OrderStateEnum.DELIVERED };
@@ -150,7 +150,7 @@ const configScreen = (WrappedContainer: ReactClass<any>) => {
   }
 
   const mapStateToProps = ({ common, orders, user }: AppState) => ({
-    currentOrder: common.order,
+    currentOrder: common.orderId,
     orders,
     screenLoaded: common.screenLoaded,
     user

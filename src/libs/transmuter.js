@@ -22,7 +22,7 @@ import { OrderStateEnum } from '../constants/types';
  * @param {Object} order -> The order.
  * @returns {Object} -> With the serialized data.
  */
-const toInprogressOrder = (order: Order): Order => ({
+const toInprogressOrder = (order: Order = {}): Order => ({
   id: shortId.generate(),
   ...order,
   message: '',
@@ -39,7 +39,7 @@ const toInprogressOrder = (order: Order): Order => ({
  * @param {Array} orders -> The orders.
  * @returns {Array} -> With the serialized data.
  */
-const toInProgressOrders = (orders: Order[]): Order[] => (
+const toInProgressOrders = (orders: Order[] = []): Order[] => (
   orders
     .map((order: Order) => (toInprogressOrder(order)))
 );
